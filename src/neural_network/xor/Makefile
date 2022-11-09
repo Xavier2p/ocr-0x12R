@@ -6,11 +6,11 @@ CFLAGS = -Wall -Wextra
 LDFLAGS =
 LDLIBS = -lm
 
-SRC = neural_network.c
+SRC = xor.c
 OBJ = ${SRC:.c=.o}
 DEP = ${SRC:.c=.d}
 
-main: ${OBJ}
+xor: ${OBJ}
 
 -include ${DEP}
 
@@ -19,6 +19,6 @@ main: ${OBJ}
 clean:
 	${RM} ${OBJ}
 	${RM} ${DEP}
-	${RM} neural_network
+	${RM} xor
 
 # END

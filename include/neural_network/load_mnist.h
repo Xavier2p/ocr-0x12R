@@ -1,8 +1,3 @@
-/*
-Takafumi Hoiruchi. 2018.
-https://github.com/takafumihoriuchi/MNIST_for_C
-*/
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -118,53 +113,4 @@ void load_mnist()
 
     read_mnist_char(TEST_LABEL, NUM_TEST, LEN_INFO_LABEL, 1, test_label_char, info_label);
     label_char2int(NUM_TEST, test_label_char, test_label);
-}
-
-
-// name: path for saving image (ex: "./images/sample.pgm")
-void save_image(int n, char name[])
-{
-    char file_name[MAX_FILENAME];
-    FILE *fp;
-    int x, y;
-
-    if (name[0] == '\0') {
-        printf("output file name (*.pgm) : ");
-        scanf("%s", file_name);
-    } else strcpy(file_name, name);
-
-    if ( (fp=fopen(file_name, "wb"))==NULL ) {
-        printf("could not open file\n");
-        exit(1);
-    }
-
-    fputs("P5\n", fp);
-    fputs("# Created by Image Processing\n", fp);
-    fprintf(fp, "%d %d\n", width[n], height[n]);
-    fprintf(fp, "%d\n", MAX_BRIGHTNESS);
-    for (y=0; y<height[n]; y++)
-        for (x=0; x<width[n]; x++)
-            fputc(image[n][x][y], fp);
-    fclose(fp);
-    printf("Image was saved successfully\n");
-}
-
-
-// save mnist image (call for each image)
-// store train_image[][] into image[][][]
-void save_mnist_pgm(double data_image[][SIZE], int index)
-{
-    int n = 0; // id for image (set to 0)
-    int x, y;
-
-    width[n] = 28;
-    height[n] = 28;
-
-    for (y=0; y<height[n]; y++) {
-        for (x=0; x<width[n]; x++) {
-            image[n][x][y] = data_image[index][y * width[n] + x] * 255.0;
-        }
-    }
-
-    save_image(n, "");
 }

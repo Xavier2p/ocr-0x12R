@@ -191,6 +191,10 @@ void initialize_weights() // Initialize weights
         L2_to_L3_weights[i] = (double) rand() / (double) RAND_MAX;
 }
 
+double process_result(int a, int b, double c)
+{
+    return (fabs(c - a) <= fabs(c - b) ? a : b);
+}
 int main()
 {
     initialize_weights();
@@ -203,7 +207,7 @@ int main()
     for (size_t i = 0; i < 4; i++)
     {
         pass_through();
-        printf("%lf  %lf\n", L3[0], test_key[i]);
+        printf("%lf  %lf\n", process_result(0, 1, L3[0]), test_key[i]);
         clear_neurons();
         pointer += 2;
     }
