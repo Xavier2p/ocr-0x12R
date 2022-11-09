@@ -1,0 +1,43 @@
+.button {
+    color: #5770FF;
+    background: #1E2334;
+    border: 2px solid #5770FF;
+    text-shadow: none;
+    box-shadow: none;
+    font-weight: bold;
+}
+
+.button:hover {
+    color: #2C3049;
+    background: #5770FF;
+    border: #2C3049;
+}
+
+.button_launch {
+    color: #87E3CF;
+    background: #1E2334;
+    border: 2px solid #87E3CF;
+    text-shadow: none;
+    box-shadow: none;
+    font-weight: bold; 
+}
+
+.button_launch:hover {
+    color: #2C3049;
+    background: #87E3CF;
+    border: #2C3049;
+}
+
+.bg {
+    background: #1E2334;
+}
+
+.fixed {
+    opacity: 1;
+}
+
+.label {
+    color: #87E3CF;
+    font-size: large;
+    font-weight: bold;
+}
