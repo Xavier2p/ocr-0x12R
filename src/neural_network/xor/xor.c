@@ -23,10 +23,10 @@
 
 // Param initialization
 
-double train_input[8] = {0, 0, 0, 1, 1, 0, 1, 1}; // Training input
-double train_key[4] = {0, 1, 1, 0}; // Training input results
-double test_input[8] = {0, 0, 0, 1, 1, 0, 1, 1}; // Testing input
-double test_key[4] = {0, 1, 1, 0}; // Testing input results
+double train_input[8] = { 0, 0, 0, 1, 1, 0, 1, 1 }; // Training input
+double train_key[4] = { 0, 1, 1, 0 }; // Training input results
+double test_input[8] = { 0, 0, 0, 1, 1, 0, 1, 1 }; // Testing input
+double test_key[4] = { 0, 1, 1, 0 }; // Testing input results
 
 double L2[2]; // Hidden layer neurons
 double L3[1]; // Output layer neuron
@@ -43,18 +43,18 @@ double *pointer = NULL; // Pointer for training or testing
 double derivative_L3[1]; // Output layer derivative
 double derivative_L2_to_L3[1]; // Hidden to output layer value derivative
 
-double derivative_L2_to_L3_weights[2]; // Hidden to output layer weights derivatives
+double derivative_L2_to_L3_weights[2]; // Hidden to output layer weights
+                                       // derivatives
 double L2_suggested_weight_changes[2];
 
 double derivative_L2[2]; // Hidden layer derivatives
 double derivative_L1_to_L2[2]; // Input to hidden layer values derivatives
 
-double derivative_L1_to_L2_weights[4]; // Input to hidden layer weights derivatives
+double
+    derivative_L1_to_L2_weights[4]; // Input to hidden layer weights derivatives
 double L1_suggested_weight_changes[4];
 
-
 // Neural Network
-
 
 double sigmoid(double x)
 {
@@ -125,13 +125,15 @@ void apply_weights()
 void L1_to_L2_weight_updater()
 {
     for (size_t i = 0; i < 4; i++)
-        L1_suggested_weight_changes[i] += -1 * learning_rate * derivative_L1_to_L2_weights[i];
+        L1_suggested_weight_changes[i] +=
+            -1 * learning_rate * derivative_L1_to_L2_weights[i];
 }
 
 void L2_to_L3_weight_updater()
 {
     for (size_t i = 0; i < 2; i++)
-        L2_suggested_weight_changes[i] += -1 * learning_rate * derivative_L2_to_L3_weights[i];
+        L2_suggested_weight_changes[i] +=
+            -1 * learning_rate * derivative_L2_to_L3_weights[i];
 }
 
 void backprop() // Backpropagate to fix weights
@@ -161,14 +163,15 @@ void backprop() // Backpropagate to fix weights
                 derivative_L2[i] = L2_to_L3_weights[i] * derivative_L2_to_L3[0];
 
             for (size_t i = 0; i < 2; i++)
-                derivative_L1_to_L2[i] = sigmoid_prime(L2[i]) * derivative_L2 [i];
+                derivative_L1_to_L2[i] =
+                    sigmoid_prime(L2[i]) * derivative_L2[i];
 
             for (size_t i = 0; i < 2; i++)
                 for (size_t j = 0; j < 2; j++)
-                    derivative_L1_to_L2_weights[(i * 2) + j] = pointer[i] * derivative_L1_to_L2[j];
+                    derivative_L1_to_L2_weights[(i * 2) + j] =
+                        pointer[i] * derivative_L1_to_L2[j];
 
             L1_to_L2_weight_updater();
-
 
             pointer += 2; // Move the pointer to the next set
 
@@ -185,10 +188,10 @@ void initialize_weights() // Initialize weights
     srand(time(NULL)); // Initialize random num generator
 
     for (size_t i = 0; i < 4; i++)
-        L1_to_L2_weights[i] = (double) rand() / (double) RAND_MAX;
+        L1_to_L2_weights[i] = (double)rand() / (double)RAND_MAX;
 
     for (size_t i = 0; i < 2; i++)
-        L2_to_L3_weights[i] = (double) rand() / (double) RAND_MAX;
+        L2_to_L3_weights[i] = (double)rand() / (double)RAND_MAX;
 }
 
 double process_result(int a, int b, double c)
@@ -215,13 +218,13 @@ int main()
     putchar('\n');
 
     printf("%s\n", "Input layer weights");
-    for(size_t  i = 0; i < 4; i++)
+    for (size_t i = 0; i < 4; i++)
         printf("%lf\n", L1_to_L2_weights[i]);
 
     putchar('\n');
 
-    printf("%s\n","Hidden layer weights");
-    for(int i = 0; i < 2; i++)
+    printf("%s\n", "Hidden layer weights");
+    for (int i = 0; i < 2; i++)
         printf("%lf\n", L2_to_L3_weights[i]);
 
     return 0;

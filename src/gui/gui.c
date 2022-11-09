@@ -103,13 +103,13 @@ void file_select(GtkFileChooserButton *button)
     printf("In the function\n");
     filename_image = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(button));
     printf("%s\n", filename_image);
-    //char* file_w_path = strstr(filename_image, PATH);
-    // file_w_path += strlen(PATH);
+    // char* file_w_path = strstr(filename_image, PATH);
+    //  file_w_path += strlen(PATH);
 
     // add "loaded file:" before the filename
-    //char *label = malloc(strlen(file_w_path) + 13);
-    //strcpy(label, "Loaded file: ");
-    //strcat(label, file_w_path);
+    // char *label = malloc(strlen(file_w_path) + 13);
+    // strcpy(label, "Loaded file: ");
+    // strcat(label, file_w_path);
     // set label to see what is the filename
     gtk_label_set_text(label_one, filename_image);
     // free(label);

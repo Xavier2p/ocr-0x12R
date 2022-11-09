@@ -25,22 +25,24 @@
 #include "../../../include/neural_network/save_load.h"
 #include "../../../include/neural_network/load_mnist.h"
 
-
 //----- MAIN -----//
-
 
 unsigned int fetch_result(Network *network)
 {
     Layer *output_layer = &(network->layers[network->nb_layers - 1]);
-    unsigned int  result = 0;
+    unsigned int result = 0;
 
     for (unsigned int i = 0; i < output_layer->nb_neurons; i++)
-        result = (output_layer->neurons[i].value >= output_layer->neurons[result].value ? i : result);
+        result = (output_layer->neurons[i].value
+                          >= output_layer->neurons[result].value
+                      ? i
+                      : result);
 
     return result;
 }
 
-void train(unsigned int nb_hidden, unsigned int nb_neurons, double learning_rate)
+void train(unsigned int nb_hidden, unsigned int nb_neurons,
+           double learning_rate)
 {
     Network n;
     Network *network = &n;
@@ -50,7 +52,8 @@ void train(unsigned int nb_hidden, unsigned int nb_neurons, double learning_rate
 
     for (unsigned int epoch = 0; epoch < NUM_TRAIN; epoch++)
     {
-        printf("Training neural network (%d / %d)... Please wait...\r", epoch + 1, NUM_TRAIN);
+        printf("Training neural network (%d / %d)... Please wait...\r",
+               epoch + 1, NUM_TRAIN);
 
         front_propagation(network, train_image[epoch], 0);
 
@@ -74,7 +77,8 @@ int test(Network *network)
 
     for (unsigned int epoch = 0; epoch < NUM_TEST; epoch++)
     {
-        printf("Running through tests (%d / %d)... Please wait...\r", epoch + 1, NUM_TEST);
+        printf("Running through tests (%d / %d)... Please wait...\r", epoch + 1,
+               NUM_TEST);
 
         front_propagation(network, test_image[epoch], 0);
 
@@ -114,8 +118,8 @@ int main(int argc, char **argv)
 
     int success_percent = success_rate * 100 / NUM_TEST;
 
-    printf("Success rate: (%d / %d) -> %d%%.                              \n", 
-            success_rate, NUM_TEST, success_percent);
+    printf("Success rate: (%d / %d) -> %d%%.                              \n",
+           success_rate, NUM_TEST, success_percent);
 
     printf("\e[?25h");
 

@@ -6,42 +6,46 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "utilis_image.h"
-
-typedef struct Line {
-  int xStart;
-  int yStart;
-  int xEnd;
-  int yEnd;
+typedef struct Line
+{
+    int xStart;
+    int yStart;
+    int xEnd;
+    int yEnd;
 } Line;
 
-typedef struct LineList {
-  Line *lines;
-  int len;
-  double maxTheta;
+typedef struct LineList
+{
+    Line *lines;
+    int len;
+    double maxTheta;
 
 } LineList;
 
-typedef struct Dot {
-  int X;
-  int Y;
+typedef struct Dot
+{
+    int X;
+    int Y;
 } Dot;
 
-typedef struct Square {
-  Line top;
-  Line bottom;
-  Line left;
-  Line right;
+typedef struct Square
+{
+    Line top;
+    Line bottom;
+    Line left;
+    Line right;
 } Square;
 
-typedef struct SquareList {
-  Square *squares;
-  int len;
+typedef struct SquareList
+{
+    Square *squares;
+    int len;
 } SquareList;
 
-typedef struct Blob {
-  int length;
-  Dot *dots;
+typedef struct Blob
+{
+    int length;
+    Dot *dots;
 } Blob;
 
 #endif
