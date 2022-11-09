@@ -5,10 +5,10 @@
 #include <string.h>
 
 // set appropriate path for data
-#define TRAIN_IMAGE "../data/train-images.idx3-ubyte"
-#define TRAIN_LABEL "../data/train-labels.idx1-ubyte"
-#define TEST_IMAGE "../data/t10k-images.idx3-ubyte"
-#define TEST_LABEL "../data/t10k-labels.idx1-ubyte"
+#define TRAIN_IMAGE "../../../include/neural_network/data/mnist/train-images.idx3-ubyte"
+#define TRAIN_LABEL "../../../include/neural_network/data/mnist/train-labels.idx1-ubyte"
+#define TEST_IMAGE "../../../include/neural_network/data/mnist/t10k-images.idx3-ubyte"
+#define TEST_LABEL "../../../include/neural_network/data/mnist/t10k-labels.idx1-ubyte"
 
 #define SIZE 784 // 28*28
 #define NUM_TRAIN 60000
@@ -61,7 +61,7 @@ void read_mnist_char(char *file_path, int num_data, int len_info, int arr_n, uns
     unsigned char *ptr;
 
     if ((fd = open(file_path, O_RDONLY)) == -1) {
-        fprintf(stderr, "couldn't open image file");
+        fprintf(stderr, "Couldn't open image file.\n");
         exit(-1);
     }
 

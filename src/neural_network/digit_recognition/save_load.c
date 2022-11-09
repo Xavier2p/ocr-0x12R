@@ -3,11 +3,22 @@
 #include <string.h>
 #include <err.h>
 #include <unistd.h>
-#include "neural_network/neural_network.h"
+#include "../../../include/neural_network/neural_network.h"
 
 
 //----- SAVE & LOAD WEIGHTS -----//
 
+char* my_strncat(char* destination, const char* source, size_t num)
+{
+    char* ptr = destination + strlen(destination);
+
+    while (*source != '\0' && num--) {
+        *ptr++ = *source++;
+    }
+    *ptr = '\0';
+
+    return destination;
+}
 
 int is_number(char text)
 {
@@ -70,7 +81,7 @@ void load_weights(Network *network, char *path)
 
     while (curr_char != EOF && curr_char != '|' && is_number(curr_char) == 1)
     {
-        memmove(str_nb_layers, &curr_char, 1);
+        my_strncat(str_nb_layers, &curr_char, 1);
         curr_char = getc(file);
     }
     if (curr_char != EOF)
@@ -83,7 +94,7 @@ void load_weights(Network *network, char *path)
 
     while (curr_char != EOF && curr_char != '\n' && is_number(curr_char) == 1)
     {
-        memmove(str_nb_neurons, &curr_char, 1);
+        my_strncat(str_nb_neurons, &curr_char, 1);
         curr_char = getc(file);
     }
     if (curr_char != EOF)
