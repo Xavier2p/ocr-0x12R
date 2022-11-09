@@ -21,9 +21,9 @@
 #include <stdlib.h>
 #include <time.h>
 #include <err.h>
-#include "../include/neural_network.h"
-#include "../include/save_load.h"
-#include "../include/mnist.h"
+#include "neural_network/neural_network.h"
+#include "neural_network/save_load.h"
+#include "neural_network/load_mnist.h"
 
 
 //----- MAIN -----//

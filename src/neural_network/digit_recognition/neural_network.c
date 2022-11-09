@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <err.h>
-#include "../include/neural_network.h"
+#include "neural_network/neural_network.h"
 
 
 //----- NEURON INITIALIZATION -----//

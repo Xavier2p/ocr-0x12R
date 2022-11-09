@@ -3,7 +3,7 @@
 #include <string.h>
 #include <err.h>
 #include <unistd.h>
-#include "../include/neural_network.h"
+#include "neural_network/neural_network.h"
 
 
 //----- SAVE & LOAD WEIGHTS -----//
