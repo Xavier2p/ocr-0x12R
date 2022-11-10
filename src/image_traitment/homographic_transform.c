@@ -128,7 +128,7 @@ Image HomographicTransform(Image *image, Dot *TL_dot, Dot *TR_dot, Dot *BL_dot,
             double y = (mat[3] * i + mat[4] * j + mat[5])
                 / (mat[6] * i + mat[7] * j + 1);
 
-            if (x >= 0 && x < image->width && y >= 0 && y < image->height)
+            if (x >= 0 && x < image->height && y >= 0 && y < image->width)
             {
                 new_image.pixels[i][j].r = image->pixels[(int)x][(int)y].r;
                 new_image.pixels[i][j].g = image->pixels[(int)x][(int)y].g;

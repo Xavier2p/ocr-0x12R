@@ -1,6 +1,7 @@
 #include <err.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 #include "../../include/image_traitment/linkedlist.h"
 #include "../../include/image_traitment/otsu.h"
@@ -12,6 +13,23 @@
 #include "../../include/image_traitment/blob.h"
 #include "../../include/image_traitment/canny.h"
 #include "../../include/image_traitment/homographic_transform.h"
+
+void compute_homographic_transform(Image *image)
+{
+    Dot dot_TL = {.Y = 633, .X = 176};
+    Dot dot_BL = {.Y = 1360,.X = 710};
+    Dot dot_BR = {.Y = 910, .X = 1490};
+    Dot dot_TR = {.Y = 115, .X = 914};
+    
+    //Dot dot_TR = {.Y = 633, .X = 176};
+    //Dot dot_TL = {.Y = 1360,.X = 710};
+    //Dot dot_BL = {.Y = 850, .X = 1430};
+    //Dot dot_BR = {.Y = 115, .X = 914};
+    Image tmp_image = HomographicTransform(image, &dot_TL, &dot_TR, &dot_BL, &dot_BR, 500);
+    save_image(&tmp_image, "homographic_transform_");
+    free_image(&tmp_image);
+}
+
 
 void compute_hough(Image *image)
 {
@@ -56,6 +74,8 @@ int main(int argc, char **argv)
     Image tmp_image = create_image(surface, surface->w, surface->h);
     SDL_FreeSurface(surface);
 
+
+
     // Create the name to save image
     tmp_image.path = (char *)calloc(strlen(argv[1]) + 5, sizeof(char));
     tmp_image.path[0] = 'r';
@@ -63,6 +83,8 @@ int main(int argc, char **argv)
     tmp_image.path[2] = 's';
     tmp_image.path[3] = '_';
     strcat(tmp_image.path, argv[1]);
+
+    compute_homographic_transform(&tmp_image);
 
     // Resize the image and free the others
     Image image = resize_image(&tmp_image, 800);
