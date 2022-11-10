@@ -26,7 +26,7 @@
 #define UI_FILE "assets/gui.xml"
 #define CSS_FILE "assets/gui.css"
 #define PATH "ocr-0x12/"
-#define LOGO "assets/fachocr.jpg"
+#define LOGO "assets/logo.png"
 
 GtkWidget *window = NULL;
 GtkWidget *button_Load = NULL;
