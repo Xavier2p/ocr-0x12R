@@ -16,11 +16,9 @@
  * =====================================================================================
  */
 #include <stdlib.h>
-/* Multiply matA * matB
-@param the height of the matA, the width of matA, the width of matB, the result
-mat */
-void matMult(double *matA, double *matB, int heightA, int widthA, int widthB,
-             double *result)
+
+void mat_mult(double *matA, double *matB, int heightA, int widthA, int widthB,
+              double *result)
 {
     for (int iHeightA = 0; iHeightA < heightA; iHeightA++)
     {
@@ -38,8 +36,7 @@ void matMult(double *matA, double *matB, int heightA, int widthA, int widthB,
     }
 }
 
-// Substract: matC = matA - matB
-void matSub(double *matA, double *matB, double *matC, int height, int width)
+void mat_sub(double *matA, double *matB, double *matC, int height, int width)
 {
     for (int iHeight = 0; iHeight < height; ++iHeight)
     {
@@ -50,8 +47,8 @@ void matSub(double *matA, double *matB, double *matC, int height, int width)
         }
     }
 }
-// Add: matA = matA + matB
-void matAdd(double *matA, double *matB, int height, int width)
+
+void mat_add(double *matA, double *matB, int height, int width)
 {
     for (int iHeight = 0; iHeight < height; ++iHeight)
     {
@@ -63,8 +60,7 @@ void matAdd(double *matA, double *matB, int height, int width)
     }
 }
 
-// Tranpose a mat
-void matTranspose(double *mat, double *result, int height, int width)
+void mat_transpose(double *mat, double *result, int height, int width)
 {
     for (int iHeight = 0; iHeight < height * width; iHeight++)
     {
@@ -74,8 +70,7 @@ void matTranspose(double *mat, double *result, int height, int width)
     }
 }
 
-// Hadamard product: result[i][j] = matA[i][j] * matB[i][j]
-void hadamardProduct(double *matA, double *matB, int height, int width)
+void hadamard_product(double *matA, double *matB, int height, int width)
 {
     for (int iHeight = 0; iHeight < height; iHeight++)
     {
@@ -87,8 +82,7 @@ void hadamardProduct(double *matA, double *matB, int height, int width)
     }
 }
 
-// Function to get cofactor of A[p][q] in temp[][]. n is current
-void getCofactor(double *A, double *temp, int p, int q, int n, int cols)
+void get_cofactor(double *A, double *temp, int p, int q, int n, int cols)
 {
     int i = 0, j = 0;
 
@@ -114,8 +108,6 @@ void getCofactor(double *A, double *temp, int p, int q, int n, int cols)
     }
 }
 
-/* Recursive function for finding determinant of matrix.
-   n is current dimension of A[][]. */
 double determinant(double *A, int n, int cols)
 {
     double D = 0; // Initialize result
@@ -133,7 +125,7 @@ double determinant(double *A, int n, int cols)
     for (int f = 0; f < n; f++)
     {
         // Getting Cofactor of A[0][f]
-        getCofactor(A, temp, 0, f, n, cols);
+        get_cofactor(A, temp, 0, f, n, cols);
         D += sign * A[f] * determinant(temp, n - 1, cols);
 
         // terms are to be added with alternate sign
@@ -143,7 +135,6 @@ double determinant(double *A, int n, int cols)
     return D;
 }
 
-// Function to get adjoint of A[N][N] in adj[N][N].
 void adjoint(double *A, double *adj, int N)
 {
     if (N == 1)
@@ -161,7 +152,7 @@ void adjoint(double *A, double *adj, int N)
         for (int j = 0; j < N; j++)
         {
             // Get cofactor of A[i][j]
-            getCofactor(A, temp, i, j, N, N);
+            get_cofactor(A, temp, i, j, N, N);
 
             // sign of adj[j][i] positive if sum of row
             // and column indexes is even.
@@ -175,8 +166,6 @@ void adjoint(double *A, double *adj, int N)
     free(temp);
 }
 
-// Function to calculate and store inverse, returns false if
-// matrix is singular
 int inverse(double *A, double *inverse, int N)
 {
     // Find determinant of A[][]

@@ -24,7 +24,7 @@
 // input : orderedPoints *points the points
 
 // return : **float the matrix
-double *Fill_matrix(int corTLx, int corTLy, int corTRx, int corTRy, int corBLx,
+double *fill_matrix(int corTLx, int corTLy, int corTRx, int corTRy, int corBLx,
                     int corBLy, int corBRx, int corBRy, int size)
 {
     double *mat = calloc(8 * 8, sizeof(double));
@@ -62,14 +62,12 @@ double *Fill_matrix(int corTLx, int corTLy, int corTRx, int corTRy, int corBLx,
                    (double)corTRy, (double)corBLx, (double)corBLy,
                    (double)corBRx, (double)corBRy };
 
-    // Create a Matrix to store the transpose of the matrix mat
-    double *mat_transpose = calloc(8 * 8, sizeof(double));
-    matTranspose(mat, mat_transpose, 8, 8);
-    // Create a Matrix to store the multiplication of the matrix mat_transpose
-    // and mat
+    double *mattranspose = calloc(8 * 8, sizeof(double));
+    mat_transpose(mat, mattranspose, 8, 8);
+
     double *res_mult = calloc(8 * 8, sizeof(double));
-    matMult(mat_transpose, mat, 8, 8, 8, res_mult);
-    // Free mat we don't need it anymore
+    mat_mult(mattranspose, mat, 8, 8, 8, res_mult);
+
     free(mat);
     double *res_inv = calloc(8 * 8, sizeof(double));
     if (!inverse(res_mult, res_inv, 8))
@@ -79,27 +77,18 @@ double *Fill_matrix(int corTLx, int corTLy, int corTRx, int corTRy, int corBLx,
 
     free(res_mult);
     double *res_mult2 = calloc(8 * 8, sizeof(double));
-    matMult(res_inv, mat_transpose, 8, 8, 8, res_mult2);
+    mat_mult(res_inv, mattranspose, 8, 8, 8, res_mult2);
     free(res_inv);
-    free(mat_transpose);
-    matMult(res_mult2, b, 8, 8, 1, res);
+    free(mattranspose);
+    mat_mult(res_mult2, b, 8, 8, 1, res);
     free(res_mult2);
     return res;
 }
 
-// Function : HomographicTransphorm
-// Description : Computes the homographic transphormation of an image
-// input : SDL_Surface *src the source image
-//         orderedPoints points the points
-// return : SDL_Surface *the image after the transphormation
-
-// Image HomographicTransform(Image *image, int corTLx, int corTLy, int corTRx,
-// int corTRy, int corBLx, int corBLy, int corBRx, int corBRy, int size)
 Image HomographicTransform(Image *image, Dot *TL_dot, Dot *TR_dot, Dot *BL_dot,
                            Dot *BR_dot, int size)
 {
-    // Create a matrix to store the homographic transphormation matrix
-    double *mat = Fill_matrix(TL_dot->X, TL_dot->Y, TR_dot->X, TR_dot->Y,
+    double *mat = fill_matrix(TL_dot->X, TL_dot->Y, TR_dot->X, TR_dot->Y,
                               BL_dot->X, BL_dot->Y, BR_dot->X, BR_dot->Y, size);
 
     Image new_image = {
@@ -118,7 +107,6 @@ Image HomographicTransform(Image *image, Dot *TL_dot, Dot *TR_dot, Dot *BL_dot,
     new_image.path = calloc(strlen(image->path) + 1, sizeof(char));
     strcpy(new_image.path, image->path);
 
-    // Create a matrix to store the transphormation matrix
     for (int i = 0; i < size; i++)
     {
         for (int j = 0; j < size; j++)
@@ -138,5 +126,6 @@ Image HomographicTransform(Image *image, Dot *TL_dot, Dot *TR_dot, Dot *BL_dot,
     }
 
     free(mat);
+    // Create a matrix to store the transphormation matrix
     return new_image;
 }
