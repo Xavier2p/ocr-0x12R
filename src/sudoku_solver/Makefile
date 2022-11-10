@@ -1,7 +1,7 @@
 # Simple Makefile
 
 CC=gcc -I../../include
-CFLAGS= -Wall -Wextra -Werror -O3 -std=c99 -pedantic -g
+CFLAGS= -Wall -Wextra -Werror -O3 -std=c99 -fsanitize=address
 
 SRC =  $(shell find -name "*.c")
 OBJ = $(SRC:%.c=$(BUILD)/%.o)
@@ -21,7 +21,7 @@ solver: $(OBJ)
 	gcc -o $(EXEC) $(CFLAGS) $^
 
 $(BUILD)/%.o : %.c
-	$(CC) $(CFLAGS) -c $< -o $@ $(LDLFLAGS) $(CPPFLAGS) $(LDLIBS)
+	$(CC) $(CFLAGS) -c $< -o $@
 
 
 clean:

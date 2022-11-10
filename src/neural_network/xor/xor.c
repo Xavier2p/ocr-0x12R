@@ -198,6 +198,7 @@ double process_result(int a, int b, double c)
 {
     return (fabs(c - a) <= fabs(c - b) ? a : b);
 }
+
 int main()
 {
     initialize_weights();

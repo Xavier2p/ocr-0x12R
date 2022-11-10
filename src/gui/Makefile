@@ -1,6 +1,6 @@
 CC=gcc
 CPPFLAGS=
-CFLAGS=-Wall -Wextra `pkg-config --cflags gtk+-3.0 sdl2 SDL2_image` -rdynamic 
+CFLAGS=-Wall -Wextra `pkg-config --cflags gtk+-3.0 sdl2 SDL2_image` -rdynamic
 LDFLAGS=
 LDLIBS=`pkg-config --libs gtk+-3.0 sdl2 SDL2_image` -lSDL2 -lm
 
@@ -12,7 +12,7 @@ SRC=resize.c utilis_image.c gui.c
 OBJ=$(SRC:.c=.o)
 EXE=${SRC:.c=}
 
-main: 
+main:
 	${CC} ${CFLAGS} ${SRC} -o ${TARGET} ${LDLIBS}
 
 
