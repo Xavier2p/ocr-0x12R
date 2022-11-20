@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.40.0 -->
 <interface>
   <requires lib="gtk+" version="3.24"/>
   <object class="GtkWindow" id="window">
@@ -32,7 +33,7 @@
             </style>
           </object>
           <packing>
-            <property name="x">579</property>
+            <property name="x">5</property>
             <property name="y">425</property>
           </packing>
         </child>
@@ -59,7 +60,7 @@
             </style>
           </object>
           <packing>
-            <property name="x">660</property>
+            <property name="x">85</property>
             <property name="y">425</property>
           </packing>
         </child>
@@ -165,6 +166,7 @@
             <property name="tooltip-text" translatable="yes">Launch 0x12R.exe</property>
             <property name="halign">start</property>
             <property name="valign">start</property>
+            <property name="margin-right">10</property>
             <property name="margin-start">10</property>
             <property name="margin-end">10</property>
             <property name="margin-top">10</property>
@@ -175,7 +177,7 @@
             </style>
           </object>
           <packing>
-            <property name="x">5</property>
+            <property name="x">530</property>
             <property name="y">425</property>
           </packing>
         </child>
@@ -221,6 +223,29 @@
           <packing>
             <property name="x">410</property>
             <property name="y">103</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="button_Next">
+            <property name="label" translatable="yes">Next step</property>
+            <property name="width-request">200</property>
+            <property name="height-request">30</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">True</property>
+            <property name="tooltip-text" translatable="yes">Step by steps</property>
+            <property name="margin-start">10</property>
+            <property name="margin-end">10</property>
+            <property name="margin-top">10</property>
+            <property name="margin-bottom">10</property>
+            <signal name="clicked" handler="on_button_Next_clicked" swapped="no"/>
+            <style>
+              <class name="button_launch"/>
+            </style>
+          </object>
+          <packing>
+            <property name="x">320</property>
+            <property name="y">425</property>
           </packing>
         </child>
         <style>
