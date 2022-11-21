@@ -2,7 +2,6 @@
 
 Welcome on the `0x12R`!
 
-
 This is the S3 project of the best team.
 
 
