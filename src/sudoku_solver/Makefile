@@ -1,7 +1,7 @@
 # Simple Makefile
 
 CC=gcc -I../../include
-CFLAGS= -Wall -Wextra -Werror -O3 -std=c99 -fsanitize=address
+CFLAGS= -Wall -Wextra -Werror -O3 -std=c99
 
 SRC =  $(shell find -name "*.c")
 OBJ = $(SRC:%.c=$(BUILD)/%.o)

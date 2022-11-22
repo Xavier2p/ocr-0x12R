@@ -41,14 +41,12 @@ void import_grid_block(int **grid, char filename[])
     size_t j = 0;
     while (fgets(line, sizeof(line), fp))
     {
-        if (line[0] == '\n' || line[0] == '\r'
-            || line[0]
-                == ' ') // To avoid the 2 horizontal lines on the grid file
+        if (line[0] == '\n' || line[0] == '\r' || line[0] == ' ') 
             bias_hori++;
         else
         {
             size_t bias_verti = 0;
-            for (size_t i = 0; strcmp(&line[i], "\n") == 0; i++)
+            for (size_t i = 0; line[i] != '\n'; i++)
             {
                 if (line[i] == ' ')
                 {

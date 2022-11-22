@@ -18,66 +18,66 @@
  */
 
 #include "../../include/sudoku_solver/sudoku_file_manager.h"
-#include <stdbool.h>
-#include <stddef.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
-bool line_abscent(int k, int **grid, int i)
+#define N 9
+
+int is_safe(int **grid, int row, int col, int num)
 {
-    for (int j = 0; j < 9; j++)
-        if (grid[i][j] == k)
-            return false;
-
-    return true;
+     
+    for (int x = 0; x <= 8; x++)
+        if (grid[row][x] == num)
+            return 0;
+ 
+    for (int x = 0; x <= 8; x++)
+        if (grid[x][col] == num)
+            return 0;
+ 
+    int startRow = row - row % 3,
+                 startCol = col - col % 3;
+   
+    for (int i = 0; i < 3; i++)
+        for (int j = 0; j < 3; j++)
+            if (grid[i + startRow][j +
+                          startCol] == num)
+                return 0;
+ 
+    return 1;
 }
-
-bool col_abscent(int k, int **grid, int j)
+ 
+int solve_sudoku(int **grid, int row, int col)
 {
-    for (int i = 0; i < 9; i++)
-        if (grid[i][j] == k)
-            return false;
-
-    return true;
-}
-
-bool block_abscent(int k, int **grid, int i, int j)
-{
-    int _i = i - (i % 3), _j = j - (j % 3);
-    for (i = _i; i < _i + 3; i++)
-        for (j = _j; j < _j + 3; j++)
-            if (grid[i][j] == k)
-                return false;
-
-    return true;
-}
-
-bool solve_grid(int **grid, int pos)
-{
-    if (pos == 9 * 9)
-        return true;
-
-    int i = pos / 9, j = pos % 9;
-
-    if (grid[i][j] != 0)
-        return solve_grid(grid, pos + 1);
-
-    for (int k = 1; k <= 9; k++)
+     
+    if (row == N - 1 && col == N)
+        return 1;
+ 
+    if (col == N)
     {
-        if (line_abscent(k, grid, i) && col_abscent(k, grid, j)
-            && block_abscent(k, grid, i, j))
-        {
-            grid[i][j] = k;
-
-            if (solve_grid(grid, pos + 1))
-                return true;
-        }
+        row++;
+        col = 0;
     }
-    grid[i][j] = 0;
-
-    return false;
+   
+    if (grid[row][col] > 0)
+        return solve_sudoku(grid, row, col + 1);
+ 
+    for (int num = 1; num <= N; num++)
+    {
+         
+        if (is_safe(grid, row, col, num)==1)
+        {
+            grid[row][col] = num;
+           
+            if (solve_sudoku(grid, row, col + 1)==1)
+                return 1;
+        }
+       
+        grid[row][col] = 0;
+    }
+    return 0;
 }
+
 
 int main(int argc, char **argv)
 {
@@ -91,7 +91,7 @@ int main(int argc, char **argv)
     // Import a grid from the file named by the user in the argv[1] slot.
     import_grid_block(grid, argv[1]);
 
-    solve_grid(grid, 0);
+    solve_sudoku(grid, 0, 0);
 
     // Change the name of the file by adding .result at the end. Then the grid
     // will be exported in the new named file
