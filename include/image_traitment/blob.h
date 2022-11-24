@@ -13,8 +13,6 @@
 
 void free_blob_list(MyList *list);
 
-Dot *find_corners(Blob *blob, Image *image);
 
-MyList find_blob(Image *image);
-
+MyList main_blob(Image *image);
 #endif

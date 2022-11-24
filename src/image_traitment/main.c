@@ -13,6 +13,7 @@
 #include "../../include/image_traitment/blob.h"
 #include "../../include/image_traitment/canny.h"
 #include "../../include/image_traitment/homographic_transform.h"
+#include "../../include/image_traitment/queue.h"
 
 void compute_homographic_transform(Image *image)
 {
@@ -55,7 +56,7 @@ void compute_hough(Image *image)
 void compute_blob(Image *image)
 {
     Image draw_image_blob = copy_image(image);
-    MyList allblob = find_blob(&draw_image_blob);
+    MyList allblob = main_blob(&draw_image_blob);
     printf("nb bolb = %lu\n", allblob.length);
     free_blob_list(&allblob);
 
@@ -65,6 +66,49 @@ void compute_blob(Image *image)
 
 int main(int argc, char **argv)
 {
+    //    MyQueue q = {NULL, NULL, 0};
+    //
+    //    void *p = malloc(sizeof(int));
+    //    *(int*)p = 42;
+    //    void *p1 = malloc(sizeof(int));
+    //    *(int*)p1 = 12;
+    //    void *p2 = malloc(sizeof(int));
+    //    *(int*)p2 = 2;
+    //    void *p3 = malloc(sizeof(int));
+    //    *(int*)p3 = 4;
+    //    void *p4 = malloc(sizeof(int));
+    //    *(int*)p4 = 6;
+    //    void *p5 = malloc(sizeof(int));
+    //    *(int*)p5 = 9;
+    //
+    //    enqueue(&q, p);
+    //    enqueue(&q, p1);
+    //    enqueue(&q, p2);
+    //    enqueue(&q, p3);
+    //    enqueue(&q, p4);
+    //    enqueue(&q, p5);
+    //
+    //    int *d1 = ((int*)dequeue(&q));
+    //    int *d2 = ((int*)dequeue(&q));
+    //    int *d3 = ((int*)dequeue(&q));
+    //    int *d4 = ((int*)dequeue(&q));
+    //    int *d5 = ((int*)dequeue(&q));
+    //    printf("deque = %d", *d1);
+    //    printf("deque = %d", *d2);
+    //    printf("deque = %d", *d3);
+    //    printf("deque = %d", *d4);
+    //    printf("deque = %d", *d5);
+    //
+    //    free(d1);
+    //    free(d2);
+    //    free(d3);
+    //    free(d4);
+    //    free(d5);
+    //
+    //
+    //    free_queue(&q);
+    //
+    //    return 0;
     if (argc != 2)
         errx(EXIT_FAILURE, "Usage: image-file");
 
@@ -101,7 +145,7 @@ int main(int argc, char **argv)
 
     canny_edge_detection(&image);
 
-    compute_blob(&image);
+    //    compute_blob(&image);
     //    compute_hough(&image);
 
     save_image(&image, "");
