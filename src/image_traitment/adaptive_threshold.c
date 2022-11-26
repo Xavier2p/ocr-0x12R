@@ -20,7 +20,34 @@
 #define ADAPTIVETHRESHOLDING_RANGE 5
 #define ADAPTIVETHRESHOLING_C 3
 
-int compute_threshold(Image *image, int x, int y, int range, double **kernel)
+double *gaussian_kernel(size_t radius, double sigma)
+{
+    size_t k_size = 2 * radius + 1;
+    double *kernel = malloc(k_size * k_size * sizeof(*kernel));
+
+    double sum = 0;
+    for (size_t y = 0; y < k_size; ++y)
+    {
+        for (size_t x = 0; x < k_size; ++x)
+        {
+            double expNum =
+                (x - radius) * (x - radius) + (y - radius) * (y - radius);
+            double expDen = -2 * sigma * sigma;
+            double res = exp(expNum / expDen) / (2 * M_PI * sigma * sigma);
+            sum += res;
+            kernel[y * k_size + x] = res;
+        }
+    }
+
+    for (size_t i = 0; i < k_size * k_size; ++i)
+    {
+        kernel[i] /= sum;
+    }
+
+    return kernel;
+}
+
+int compute_threshold(Image *image, int x, int y, int range, double *kernel)
 {
     int w = image->width;
     int h = image->height;
@@ -40,7 +67,7 @@ int compute_threshold(Image *image, int x, int y, int range, double **kernel)
                 if (x + dx >= 0 && x + dx < w)
                 {
                     sum += (double)pixels[y + dy][x + dx].r
-                        * kernel[dy + range][dx + range];
+                        * kernel[dx * w + dy + range];
                     nb_pixels++;
                 }
             }
@@ -65,7 +92,7 @@ void adaptive_threshold(Image *image)
     Pixel **pixels = image->pixels;
 
     int range = ADAPTIVETHRESHOLDING_RANGE;
-    double **kernel = build_gaussian_kernel(range);
+    double *kernel = gaussian_kernel(range, 3);
     Image c_image = copy_image(image);
 
     for (int x = 0; x < w; ++x)

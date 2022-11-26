@@ -54,17 +54,6 @@ void compute_hough(Image *image)
     free_image(&draw_image_hough);
 }
 
-void compute_blob(Image *image)
-{
-    Image draw_image_blob = copy_image(image);
-    MyList allblob = main_blob(&draw_image_blob);
-    printf("nb bolb = %lu\n", allblob.length);
-    free_blob_list(&allblob);
-
-    save_image(&draw_image_blob, "res_blob_");
-    free_image(&draw_image_blob);
-}
-
 int main(int argc, char **argv)
 {
     //    MyQueue q = {NULL, NULL, 0};
@@ -143,8 +132,10 @@ int main(int argc, char **argv)
     // save_image(&image, "brightness_");
     gaussian_blur(&image, 4);
     // save_image(&image, "gaussian_blur_");
-    adaptive_threshold(&image);
+    // adaptive_threshold(&image);
+    apply_threshold(&image, otsu(&image));
 
+    main_blob(&image);
     // canny_edge_detection(&image);
 
     //    compute_blob(&image);

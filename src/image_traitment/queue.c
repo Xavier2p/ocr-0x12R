@@ -1,4 +1,5 @@
 #include "../../include/image_traitment/queue.h"
+#include <stdio.h>
 
 Node_queue *initialize_node_queue(void *value)
 {
@@ -41,7 +42,9 @@ void *dequeue(MyQueue *queue)
 
 int is_empty(MyQueue *queue)
 {
-    return queue->head == NULL && queue->tail == NULL && queue->length == 0;
+    if (queue->head == NULL && queue->tail == NULL && queue->length == 0)
+        return 1;
+    return 0;
 }
 
 void free_node_queue(Node_queue *node)
