@@ -24,7 +24,6 @@ typedef struct
 void *Blob_tovptr(Blob blob);
 void *Dot_tovptr(Dot dot);
 void *Line_tovptr(Line line);
-void *Square_tovptr(Square square);
 
 // Initialization
 Node *initializeNode(void *value);

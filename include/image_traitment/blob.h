@@ -13,6 +13,5 @@
 
 void free_blob_list(MyList *list);
 
-
 MyList main_blob(Image *image);
 #endif

@@ -14,6 +14,7 @@
 #include "../../include/image_traitment/canny.h"
 #include "../../include/image_traitment/homographic_transform.h"
 #include "../../include/image_traitment/queue.h"
+#include "../../include/image_traitment/adaptive_treshold.h"
 
 void compute_homographic_transform(Image *image)
 {
@@ -126,7 +127,7 @@ int main(int argc, char **argv)
     tmp_image.path[3] = '_';
     strcat(tmp_image.path, argv[1]);
 
-    compute_homographic_transform(&tmp_image);
+    //    compute_homographic_transform(&tmp_image);
 
     // Resize the image and free the others
     Image image = resize_image(&tmp_image, 800);
@@ -135,15 +136,16 @@ int main(int argc, char **argv)
 
     // Preprocess
     surface_to_grayscale(&image);
-    save_image(&image, "gray_scale_");
+    // save_image(&image, "gray_scale_");
     image_contrast(&image, 12);
-    save_image(&image, "contrast_");
+    // save_image(&image, "contrast_");
     image_normalize_brightness(&image);
-    save_image(&image, "brightness_");
+    // save_image(&image, "brightness_");
     gaussian_blur(&image, 4);
-    save_image(&image, "gaussian_blur_");
+    // save_image(&image, "gaussian_blur_");
+    adaptive_threshold(&image);
 
-    canny_edge_detection(&image);
+    // canny_edge_detection(&image);
 
     //    compute_blob(&image);
     //    compute_hough(&image);

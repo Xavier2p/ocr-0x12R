@@ -150,87 +150,87 @@ Dot find_inter_line(Line *l1, Line *l2, int width, int height)
     return dot;
 }
 
-MyList find_squares(MyList *all_lines, Image *image)
-{
-    MyList square_list = { NULL, NULL, 0 };
-    int w = image->width;
-    int h = image->height;
-    int len = all_lines->length;
-    int i = 0;
-    for (; i < len; ++i)
-    {
-        Line *l1 = get_value(all_lines, i);
-        int j = 0;
-        for (; j < len; ++j)
-        {
-            if (j == i)
-                continue;
-            Line *l2 = get_value(all_lines, j);
-            Dot dot1 = find_inter_line(l1, l2, w, h);
-
-            if (dot1.X == -1)
-                continue;
-
-            int k = 0;
-            for (; k < len; ++k)
-            {
-                if (k == j)
-                    continue;
-                //                printf("ta grosse race1\n");
-                Line *l3 = get_value(all_lines, k);
-                Dot dot2 = find_inter_line(l2, l3, w, h);
-
-                if (dot2.X == -1)
-                    continue;
-                int l = 0;
-                for (; l < len; ++l)
-                {
-                    printf("ta grosse race2\n");
-                    if (k == l)
-                        continue;
-                    Line *l4 = get_value(all_lines, l);
-                    Dot dot3 = find_inter_line(l3, l4, w, h);
-
-                    if (dot3.X == -1)
-                        continue;
-
-                    Dot dot4 = find_inter_line(l4, l1, w, h);
-
-                    if (dot4.X == -1)
-                        continue;
-                    // Found 4 lines that form a square
-
-                    Square square;
-                    Line firstLine = { .xStart = dot1.X,
-                                       .yStart = dot1.Y,
-                                       .xEnd = dot2.X,
-                                       .yEnd = dot2.Y };
-                    square.top = firstLine;
-
-                    Line secondLine = { .xStart = dot2.X,
-                                        .yStart = dot2.Y,
-                                        .xEnd = dot3.X,
-                                        .yEnd = dot3.Y };
-                    square.right = secondLine;
-
-                    Line thirdLine = { .xStart = dot3.X,
-                                       .yStart = dot3.Y,
-                                       .xEnd = dot4.X,
-                                       .yEnd = dot4.Y };
-                    square.bottom = thirdLine;
-
-                    Line fourthLine = { .xStart = dot4.X,
-                                        .yStart = dot4.Y,
-                                        .xEnd = dot1.X,
-                                        .yEnd = dot1.Y };
-                    square.left = fourthLine;
-
-                    printf("we did it");
-                    append(&square_list, Square_tovptr(square));
-                }
-            }
-        }
-    }
-
-    return square_list;
-}
+// MyList find_squares(MyList *all_lines, Image *image)
+//{
+//     MyList square_list = { NULL, NULL, 0 };
+//     int w = image->width;
+//     int h = image->height;
+//     int len = all_lines->length;
+//     int i = 0;
+//     for (; i < len; ++i)
+//     {
+//         Line *l1 = get_value(all_lines, i);
+//         int j = 0;
+//         for (; j < len; ++j)
+//         {
+//             if (j == i)
+//                 continue;
+//             Line *l2 = get_value(all_lines, j);
+//             Dot dot1 = find_inter_line(l1, l2, w, h);
+//
+//             if (dot1.X == -1)
+//                 continue;
+//
+//             int k = 0;
+//             for (; k < len; ++k)
+//             {
+//                 if (k == j)
+//                     continue;
+//                 //                printf("ta grosse race1\n");
+//                 Line *l3 = get_value(all_lines, k);
+//                 Dot dot2 = find_inter_line(l2, l3, w, h);
+//
+//                 if (dot2.X == -1)
+//                     continue;
+//                 int l = 0;
+//                 for (; l < len; ++l)
+//                 {
+//                     printf("ta grosse race2\n");
+//                     if (k == l)
+//                         continue;
+//                     Line *l4 = get_value(all_lines, l);
+//                     Dot dot3 = find_inter_line(l3, l4, w, h);
+//
+//                     if (dot3.X == -1)
+//                         continue;
+//
+//                     Dot dot4 = find_inter_line(l4, l1, w, h);
+//
+//                     if (dot4.X == -1)
+//                         continue;
+//                     // Found 4 lines that form a square
+//
+//                     Square square;
+//                     Line firstLine = { .xStart = dot1.X,
+//                                        .yStart = dot1.Y,
+//                                        .xEnd = dot2.X,
+//                                        .yEnd = dot2.Y };
+//                     square.top = firstLine;
+//
+//                     Line secondLine = { .xStart = dot2.X,
+//                                         .yStart = dot2.Y,
+//                                         .xEnd = dot3.X,
+//                                         .yEnd = dot3.Y };
+//                     square.right = secondLine;
+//
+//                     Line thirdLine = { .xStart = dot3.X,
+//                                        .yStart = dot3.Y,
+//                                        .xEnd = dot4.X,
+//                                        .yEnd = dot4.Y };
+//                     square.bottom = thirdLine;
+//
+//                     Line fourthLine = { .xStart = dot4.X,
+//                                         .yStart = dot4.Y,
+//                                         .xEnd = dot1.X,
+//                                         .yEnd = dot1.Y };
+//                     square.left = fourthLine;
+//
+//                     printf("we did it");
+//                     append(&square_list, Square_tovptr(square));
+//                 }
+//             }
+//         }
+//     }
+//
+//     return square_list;
+// }

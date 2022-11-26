@@ -44,15 +44,6 @@ void *Line_tovptr(Line line)
     return p;
 }
 
-void *Square_tovptr(Square square)
-{
-    void *p = malloc(sizeof(Square));
-    if (p == NULL)
-        errx(1, "Not enough memory");
-    *(Square *)p = square;
-    return p;
-}
-
 // Initialization
 Node *initializeNode(void *value)
 {

@@ -41,7 +41,7 @@ void import_grid_block(int **grid, char filename[])
     size_t j = 0;
     while (fgets(line, sizeof(line), fp))
     {
-        if (line[0] == '\n' || line[0] == '\r' || line[0] == ' ') 
+        if (line[0] == '\n' || line[0] == '\r' || line[0] == ' ')
             bias_hori++;
         else
         {

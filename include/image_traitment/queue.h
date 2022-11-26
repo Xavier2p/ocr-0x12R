@@ -29,7 +29,4 @@ int is_empty(MyQueue *queue);
 void free_node_queue(Node_queue *node);
 void free_queue(MyQueue *queue);
 
-
-
-
 #endif
