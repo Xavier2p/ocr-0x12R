@@ -181,13 +181,6 @@ void on_button_Launch_clicked()
 {
     gtk_label_set_text(GTK_LABEL(label_one),
                        (const gchar *)"OCR in progress...");
+    solve_all();
 }
 
-/**
- * @brief Temporary main function to test the GUI
- */
-int main(int argc, char *argv[])
-{
-    init_gui(argc, argv);
-    return EXIT_SUCCESS;
-}
