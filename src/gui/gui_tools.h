@@ -8,7 +8,7 @@
 #include "utilis_image.h"
 
 
-GtkPixbuf* convert_image_to_gui(Image* image);
+GdkPixbuf* convert_image_to_gui(Image* image);
 
 void set_image_to_gui(GdkPixbuf* pixbuf, char* GtkimageID);
 

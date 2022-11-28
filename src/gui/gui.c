@@ -15,31 +15,21 @@
  *
  * ============================================================================
  */
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
-#include <gtk/gtk.h>
-#include <stdlib.h>
+#include "gui.h"
 
-#include "resize.h"
-#include "utilis_image.h"
-
-#define UI_FILE "assets/gui.xml"
-#define CSS_FILE "assets/gui.css"
-#define PATH "ocr-0x12/"
-#define LOGO "assets/logo.png"
-
-GtkWidget *window = NULL;
-GtkWidget *button_Load = NULL;
-GtkWidget *button_Save = NULL;
-GtkWidget *button_Quit = NULL;
-GtkBuilder *builder = NULL;
-GtkWidget *fixed_one = NULL;
-GtkLabel *label_one = NULL;
-GtkWidget *image_one = NULL;
-GtkWidget *button_Launch = NULL;
-GError *error = NULL;
-gchar *filename_ui = NULL;
-char *filename_image = NULL;
+GtkWidget* window = NULL;
+GtkWidget* button_Load = NULL;
+GtkWidget* button_Save = NULL;
+GtkWidget* button_Quit = NULL;
+GtkBuilder* builder = NULL;
+GtkWidget* fixed_one = NULL;
+GtkLabel* label_one = NULL;
+GtkWidget* image_one = NULL;
+GtkWidget* button_Launch = NULL;
+GError* error = NULL;
+gchar* filename_ui = NULL;
+char* filename_image = NULL;
+Image image;
 
 /**
  * @brief  initialize the GUI
@@ -102,29 +92,35 @@ void file_select(GtkFileChooserButton *button)
                        (const gchar *)"Auto Resizing the image...");
     // Import image
     SDL_Surface *surface = IMG_Load(filename_image);
+    image = create_image(surface, surface->w, surface->h);
+    // SDL_FreeSurface(surface);
+    printf("Image loaded: %s\n", filename_image);
+    // free(surface);
     // Resize image
-    SDL_Surface *resized = resize_surface(surface, 300, 300);
-    free(surface);
+    // SDL_Surface *resized = resize_surface(surface, 300, 300);
+    // free(surface);
     // create the name of the resized image
-    char *filename_resized = malloc(strlen(filename_image) + 14);
-    strcpy(filename_resized, filename_image);
-    strcat(filename_resized, "_resized.png");
+    // char *filename_resized = malloc(strlen(filename_image) + 14);
+    // strcpy(filename_resized, filename_image);
+    // strcat(filename_resized, "_resized.png");
     // save image
-    IMG_SavePNG(resized, filename_resized);
-    filename_image = filename_resized;
-    free(resized);
+    // IMG_SavePNG(resized, filename_resized);
+    // filename_image = filename_resized;
+    // free(resized);
     // display the image
-    int x = 300, y = 10;
-    if (image_one)
-        gtk_container_remove(GTK_CONTAINER(fixed_one), image_one);
-    // load image
-    image_one = gtk_image_new_from_file(filename_image);
-    // create the widget to show image
-    gtk_widget_show(image_one);
-    // add the widget to the container
-    gtk_container_add(GTK_CONTAINER(fixed_one), image_one);
-    // set the position of the widget
-    gtk_fixed_move(GTK_FIXED(fixed_one), image_one, x, y);
+    // int x = 300, y = 10;
+    // if (image_one)
+    //     gtk_container_remove(GTK_CONTAINER(fixed_one), image_one);
+    // // load image
+    // image_one = gtk_image_new_from_file(filename_image);
+    // // create the widget to show image
+    // gtk_widget_show(image_one);
+    // // add the widget to the container
+    // gtk_container_add(GTK_CONTAINER(fixed_one), image_one);
+    // // set the position of the widget
+    // gtk_fixed_move(GTK_FIXED(fixed_one), image_one, x, y);
+
+    change_image_on_gui(&image, "main_image");
 }
 
 /**
@@ -181,6 +177,6 @@ void on_button_Launch_clicked()
 {
     gtk_label_set_text(GTK_LABEL(label_one),
                        (const gchar *)"OCR in progress...");
-    solve_all();
+    // solve_all();
 }
 

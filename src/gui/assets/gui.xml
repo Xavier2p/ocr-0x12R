@@ -221,8 +221,8 @@
             <property name="can-focus">False</property>
           </object>
           <packing>
-            <property name="x">410</property>
-            <property name="y">103</property>
+            <property name="x">330</property>
+            <property name="y">20</property>
           </packing>
         </child>
         <child>

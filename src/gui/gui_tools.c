@@ -1,6 +1,6 @@
 #include "gui_tools.h"
 
-GtkPixbuf* convert_image_to_gui(Image* image)
+GdkPixbuf* convert_image_to_gui(Image* image)
 {
     GdkPixbuf *pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, TRUE, 8,
                                        image->width, image->height);
@@ -32,11 +32,10 @@ void set_image_to_gui(GdkPixbuf* pixbuf, char* GtkimageID)
     GtkImage *imageWidget =
         GTK_IMAGE(gtk_builder_get_object(builder, GtkimageID)); // get image
 
-    // TODO fix the panel issue
-    int width = clamp(gtk_widget_get_allocated_width(GTK_WIDGET(panel)), 0,
-                      1000);
-    int height =
-        clamp(gtk_widget_get_allocated_height(GTK_WIDGET(panel)), 0, 1000);
+    int width = 300; //CLAMP(gtk_widget_get_allocated_width(GTK_WIDGET(panel)), 0,
+                    //   1000);
+    int height = 300;
+        // CLAMP(gtk_widget_get_allocated_height(GTK_WIDGET(panel)), 0, 1000);
 
 
     // get image size
@@ -57,7 +56,7 @@ void set_image_to_gui(GdkPixbuf* pixbuf, char* GtkimageID)
     printf("%f %d %d\n", scale_factor, width, height);
     // resize the image
     GdkPixbuf *resized_image = gdk_pixbuf_scale_simple(
-        pixbuf, 500, 500, GDK_INTERP_BILINEAR); // resize image
+        pixbuf, new_width, new_height, GDK_INTERP_BILINEAR); // resize image
 
     // set the image
     gtk_image_set_from_pixbuf(imageWidget, resized_image);

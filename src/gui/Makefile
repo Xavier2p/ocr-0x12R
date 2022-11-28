@@ -8,7 +8,7 @@ LDLIBS=`pkg-config --libs gtk+-3.0 sdl2 SDL2_image` -lSDL2 -lm
 TARGET=gui
 
 # The source files
-SRC=resize.c utilis_image.c gui.c main.c
+SRC=resize.c utilis_image.c gui.c main.c gui_tools.c
 OBJ=$(SRC:.c=.o)
 EXE=${SRC:.c=}
 
