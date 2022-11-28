@@ -1,11 +1,6 @@
 #ifndef STRUCT_H
 #define STRUCT_H
 
-#include <err.h>
-#include <math.h>
-#include <stdio.h>
-#include <stdlib.h>
-
 typedef struct Line
 {
     int xStart;

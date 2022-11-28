@@ -1,5 +1,4 @@
 #include "../../include/image_traitment/blob.h"
-#include <sys/queue.h>
 
 int blob_detection(Image *image, Dot start)
 {
@@ -74,47 +73,47 @@ Square find_coners(Image *image)
     int minDiff = w > h ? w : h;
     int maxDiff = -1 * minDiff;
 
-    for (int i = 0; i < h; ++i)
+    for (int y = 0; y < h; ++y)
     {
-        for (int j = 0; j < w; ++j)
+        for (int x = 0; x < w; ++x)
         {
-            if (pixels[i][j].r != 88)
+            if (pixels[y][x].r != 88)
                 continue;
 
-            size_t sum = i + j;
-            int diff = j - i;
+            size_t sum = x + y;
+            int diff = x - y;
 
             if (sum < minSum)
             {
                 minSum = sum;
-                tl.X = j;
-                tl.Y = i;
+                tl.X = x;
+                tl.Y = y;
             }
 
-            if (sum >= maxSum)
+            if (sum > maxSum)
             {
                 maxSum = sum;
-                br.X = j;
-                br.Y = i;
+                br.X = x;
+                br.Y = y;
             }
 
             if (diff < minDiff)
             {
                 minDiff = diff;
-                bl.X = j;
-                bl.Y = i;
+                bl.X = x;
+                bl.Y = y;
             }
 
             if (diff > maxDiff)
             {
                 maxDiff = diff;
-                tr.X = j;
-                tr.Y = i;
+                tr.X = x;
+                tr.Y = y;
             }
         }
     }
 
-    Square res = { .tr = tr, .br = br, .bl = bl, .tl = tl };
+    Square res = { .tl = tl, .tr = tr, .bl = bl, .br = br };
     return res;
 }
 

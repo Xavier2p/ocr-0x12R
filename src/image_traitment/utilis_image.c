@@ -28,9 +28,9 @@ void draw_dot(Image *image, Dot *dot, int size)
     {
         for (int j = -size; j < size; ++j)
         {
-            if (x + i >= 0 && x + i < height && j + y >= 0 && j + y < width)
+            if (y + i >= 0 && y + i < height && j + x >= 0 && j + x < width)
             {
-                image->pixels[x + i][y + j].r = 255;
+                image->pixels[y + i][x + j].r = 255;
             }
         }
     }
