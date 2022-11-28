@@ -20,6 +20,14 @@ typedef struct Dot
     int Y;
 } Dot;
 
+typedef struct Square
+{
+    Dot tl;
+    Dot tr;
+    Dot bl;
+    Dot br;
+} Square;
+
 typedef struct Blob
 {
     int length;

@@ -1,29 +1,5 @@
 #include "../../include/image_traitment/blob.h"
-#include <sys/types.h>
-#include <time.h>
-
-void free_blob_list(MyList *list)
-{
-    Node *n = list->head;
-    for (; n != NULL; n = n->next)
-    {
-        Blob *blob = (Blob *)n->value;
-        free(blob->dots);
-    }
-    free_list(list);
-}
-
-Blob copy_blob(Blob *blob)
-{
-    Blob res = { .length = blob->length, .dots = NULL };
-    res.dots = (Dot *)calloc(blob->length, sizeof(Dot));
-    for (int i = 0; i < blob->length; ++i)
-    {
-        Dot tmp = { .X = blob->dots[i].X, .Y = blob->dots[i].Y };
-        res.dots[i] = tmp;
-    }
-    return res;
-}
+#include <sys/queue.h>
 
 int blob_detection(Image *image, Dot start)
 {
@@ -32,16 +8,21 @@ int blob_detection(Image *image, Dot start)
     int h = image->height;
     int nb_dots = 0;
 
-    MyQueue q = { NULL, NULL, 0 }; // Queue of Dot
+    struct slisthead head;
+    SLIST_INIT(&head);
+    struct DotQueue *p = malloc(sizeof(*p));
+    p->dot = start;
 
     if (pixels[start.Y][start.X].r == 255)
-        enqueue(&q, Dot_tovptr(start));
+        SLIST_INSERT_HEAD(&head, p, next);
 
-    while (!is_empty(&q))
+    while (!SLIST_EMPTY(&head))
     {
-        Dot *p = (Dot *)dequeue(&q);
-        int x = p->X;
-        int y = p->Y;
+        p = SLIST_FIRST(&head);
+        SLIST_REMOVE_HEAD(&head, next);
+
+        int x = p->dot.X;
+        int y = p->dot.Y;
         free(p);
 
         if (x < 0 || x >= w || y < 0 || y >= h)
@@ -49,28 +30,95 @@ int blob_detection(Image *image, Dot start)
 
         if (pixels[y][x].r == 255)
         {
-            set_all_pixel(image, y, x, 0);
+            set_all_pixel(image, y, x, 88);
             nb_dots++;
 
-            Dot d1 = { .X = x - 1, .Y = y };
-            enqueue(&q, Dot_tovptr(d1));
+            p = malloc(sizeof(*p));
+            p->dot.X = x - 1;
+            p->dot.Y = y;
+            SLIST_INSERT_HEAD(&head, p, next);
 
-            Dot d2 = { .X = x + 1, .Y = y };
-            enqueue(&q, Dot_tovptr(d2));
+            p = malloc(sizeof(*p));
+            p->dot.X = x + 1;
+            p->dot.Y = y;
+            SLIST_INSERT_HEAD(&head, p, next);
 
-            Dot d3 = { .X = x, .Y = y - 1 };
-            enqueue(&q, Dot_tovptr(d3));
+            p = malloc(sizeof(*p));
+            p->dot.X = x;
+            p->dot.Y = y - 1;
+            SLIST_INSERT_HEAD(&head, p, next);
 
-            Dot d4 = { .X = x, .Y = y + 1 };
-            enqueue(&q, Dot_tovptr(d4));
+            p = malloc(sizeof(*p));
+            p->dot.X = x;
+            p->dot.Y = y + 1;
+            SLIST_INSERT_HEAD(&head, p, next);
         }
     }
 
-    free_queue(&q);
     return nb_dots;
 }
 
-void main_blob(Image *image)
+Square find_coners(Image *image)
+{
+    Pixel **pixels = image->pixels;
+    int w = image->width;
+    int h = image->height;
+
+    Dot tl = { 0, 0 };
+    Dot br = { 0, 0 };
+    Dot bl = { 0, 0 };
+    Dot tr = { 0, 0 };
+
+    size_t minSum = w + h;
+    size_t maxSum = 0;
+    int minDiff = w > h ? w : h;
+    int maxDiff = -1 * minDiff;
+
+    for (int i = 0; i < h; ++i)
+    {
+        for (int j = 0; j < w; ++j)
+        {
+            if (pixels[i][j].r != 88)
+                continue;
+
+            size_t sum = i + j;
+            int diff = j - i;
+
+            if (sum < minSum)
+            {
+                minSum = sum;
+                tl.X = j;
+                tl.Y = i;
+            }
+
+            if (sum >= maxSum)
+            {
+                maxSum = sum;
+                br.X = j;
+                br.Y = i;
+            }
+
+            if (diff < minDiff)
+            {
+                minDiff = diff;
+                bl.X = j;
+                bl.Y = i;
+            }
+
+            if (diff > maxDiff)
+            {
+                maxDiff = diff;
+                tr.X = j;
+                tr.Y = i;
+            }
+        }
+    }
+
+    Square res = { .tr = tr, .br = br, .bl = bl, .tl = tl };
+    return res;
+}
+
+Dot find_biggest_blob(Image *image)
 {
     int w = image->width;
     int h = image->height;
@@ -96,5 +144,16 @@ void main_blob(Image *image)
         }
     }
 
-    blob_detection(image, max_start);
+    return max_start;
+}
+
+void main_blob(Image *image)
+{
+    blob_detection(image, find_biggest_blob(image));
+
+    Square corners = find_coners(image);
+    draw_dot(image, &corners.bl, 4);
+    draw_dot(image, &corners.br, 4);
+    draw_dot(image, &corners.tl, 4);
+    draw_dot(image, &corners.tr, 4);
 }
