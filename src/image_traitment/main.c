@@ -16,7 +16,6 @@
 #include "../../include/image_traitment/adaptive_treshold.h"
 #include "../../include/image_traitment/segmentation.h"
 
-
 void compute_hough(Image *image)
 {
     Image draw_image_hough = copy_image(image);
@@ -119,14 +118,21 @@ int main(int argc, char **argv)
     // adaptive_threshold(&image);
     apply_threshold(&image, otsu(&image));
 
-    main_blob(&image);
+    Square corners = main_blob(&image);
+
+    Image final_grid = homographic_transform(&image, &corners, 756);
+
+    segmentation(&final_grid);
+
+    save_image(&final_grid, "homo_");
+
     // canny_edge_detection(&image);
+    // compute_blob(&image);
+    // compute_hough(&image);
 
-    //    compute_blob(&image);
-    //    compute_hough(&image);
-
-    save_image(&image, "");
+    // save_image(&image, "");
     free_image(&image);
+    free_image(&final_grid);
 
     SDL_Quit();
 

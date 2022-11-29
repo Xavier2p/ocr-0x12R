@@ -30,9 +30,31 @@ double *create_square_image(Image *image, int i, int j, int size)
     for (int _i = 0; _i < size; ++i)
         for (int _j = 0; _j < size; ++j)
             res[_i * size + j] = tmp_resized.pixels[i][j].r == 255 ? 1 : 0;
-    
+
     return res;
 }
 
+void print_array(double *arr, int size)
+{
+    for (int i = 0; i < size; ++i)
+    {
+        for (int j = 0; j < size; ++j)
+        {
+            printf("%f", arr[i * size + j]);
+        }
+        printf("\n");
+    }
+}
 
-
+void segmentation(Image *image)
+{
+    int bloc_size = image->width / 9;
+    for (int i = 0; i < image->height; i += bloc_size)
+    {
+        for (int j = 0; j < image->width; j += bloc_size)
+        {
+            double *tmp = create_square_image(image, i, j, bloc_size);
+            print_array(tmp, bloc_size);
+        }
+    }
+}

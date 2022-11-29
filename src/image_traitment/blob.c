@@ -146,7 +146,7 @@ Dot find_biggest_blob(Image *image)
     return max_start;
 }
 
-void main_blob(Image *image)
+Square main_blob(Image *image)
 {
     blob_detection(image, find_biggest_blob(image));
 
@@ -155,4 +155,6 @@ void main_blob(Image *image)
     draw_dot(image, &corners.br, 4);
     draw_dot(image, &corners.tl, 4);
     draw_dot(image, &corners.tr, 4);
+
+    return corners;
 }

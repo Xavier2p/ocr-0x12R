@@ -16,5 +16,5 @@ struct DotQueue
 
 SLIST_HEAD(slisthead, DotQueue);
 
-void main_blob(Image *image);
+Square main_blob(Image *image);
 #endif
