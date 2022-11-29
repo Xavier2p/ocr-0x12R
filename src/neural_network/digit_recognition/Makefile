@@ -1,7 +1,7 @@
 # Makefile
 
 CC = gcc
-CFLAGS = -Wall -Werror -Wextra -std=c99
+CFLAGS = -g
 LDLIBS = -lm
 
 SRC = ${shell find -name "*.c"}

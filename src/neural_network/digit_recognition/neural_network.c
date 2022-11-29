@@ -217,7 +217,7 @@ void int_to_array(double x, double desired_output[], unsigned int size)
 
 void back_propagation(Network *network, double desired_output[])
 {
-    double errorVar = 0;
+    double error_var = 0;
 
     Neuron *curr_neuron;
     Layer *output_layer = &(network->layers[network->nb_layers - 1]);
@@ -225,8 +225,8 @@ void back_propagation(Network *network, double desired_output[])
     for (unsigned int i = 0; i < output_layer->nb_neurons; i++)
     {
         curr_neuron = &(output_layer->neurons[i]);
-        errorVar = desired_output[i] - curr_neuron->value;
-        curr_neuron->delta = errorVar * sigmoid_prime(curr_neuron->value);
+        error_var = desired_output[i] - curr_neuron->value;
+        curr_neuron->delta = error_var * sigmoid_prime(curr_neuron->value);
     }
 
     for (unsigned int i = network->nb_layers - 1; i >= 2; i--)
@@ -236,14 +236,14 @@ void back_propagation(Network *network, double desired_output[])
 
         for (unsigned int j = 0; j < previousLayer->nb_neurons; j++)
         {
-            errorVar = 0;
+            error_var = 0;
             curr_neuron = &(previousLayer->neurons[j]);
 
             for (unsigned int k = 0; k < curr_layer.nb_neurons; k++)
-                errorVar += curr_layer.neurons[k].delta
+                error_var += curr_layer.neurons[k].delta
                     * curr_layer.neurons[k].weights[j];
 
-            curr_neuron->delta = errorVar * relu_prime(curr_neuron->value);
+            curr_neuron->delta = error_var * relu_prime(curr_neuron->value);
         }
     }
 }

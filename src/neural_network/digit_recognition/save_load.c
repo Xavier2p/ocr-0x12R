@@ -5,7 +5,9 @@
 #include <unistd.h>
 #include "../../../include/neural_network/neural_network.h"
 
+
 //----- SAVE & LOAD WEIGHTS -----//
+
 
 char *my_strncat(char *destination, const char *source, size_t num)
 {
