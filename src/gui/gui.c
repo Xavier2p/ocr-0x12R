@@ -90,36 +90,9 @@ void file_select(GtkFileChooserButton *button)
     filename_image = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(button));
     gtk_label_set_text(GTK_LABEL(label_one),
                        (const gchar *)"Auto Resizing the image...");
-    // Import image
     SDL_Surface *surface = IMG_Load(filename_image);
     image = create_image(surface, surface->w, surface->h);
-    // SDL_FreeSurface(surface);
     printf("Image loaded: %s\n", filename_image);
-    // free(surface);
-    // Resize image
-    // SDL_Surface *resized = resize_surface(surface, 300, 300);
-    // free(surface);
-    // create the name of the resized image
-    // char *filename_resized = malloc(strlen(filename_image) + 14);
-    // strcpy(filename_resized, filename_image);
-    // strcat(filename_resized, "_resized.png");
-    // save image
-    // IMG_SavePNG(resized, filename_resized);
-    // filename_image = filename_resized;
-    // free(resized);
-    // display the image
-    // int x = 300, y = 10;
-    // if (image_one)
-    //     gtk_container_remove(GTK_CONTAINER(fixed_one), image_one);
-    // // load image
-    // image_one = gtk_image_new_from_file(filename_image);
-    // // create the widget to show image
-    // gtk_widget_show(image_one);
-    // // add the widget to the container
-    // gtk_container_add(GTK_CONTAINER(fixed_one), image_one);
-    // // set the position of the widget
-    // gtk_fixed_move(GTK_FIXED(fixed_one), image_one, x, y);
-
     change_image_on_gui(&image, "main_image");
 }
 
@@ -136,7 +109,6 @@ void on_button_Save_clicked()
  */
 void on_button_Quit_clicked()
 {
-    remove(filename_image);
     gtk_label_set_text(GTK_LABEL(label_one), (const gchar *)"Button Quit");
     gtk_main_quit();
 }

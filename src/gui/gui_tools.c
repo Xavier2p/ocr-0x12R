@@ -37,7 +37,6 @@ void set_image_to_gui(GdkPixbuf* pixbuf, char* GtkimageID)
     int height = 300;
         // CLAMP(gtk_widget_get_allocated_height(GTK_WIDGET(panel)), 0, 1000);
 
-
     // get image size
     int image_width = gdk_pixbuf_get_width(pixbuf);
     int image_height = gdk_pixbuf_get_height(pixbuf);

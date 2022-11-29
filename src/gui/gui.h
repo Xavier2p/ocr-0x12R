@@ -11,7 +11,6 @@
 #define PATH "ocr-0x12/"
 #define LOGO "assets/logo.png"
 
-#include "resize.h"
 #include "utilis_image.h"
 #include "gui_tools.h"
 
