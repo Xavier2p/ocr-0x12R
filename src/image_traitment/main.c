@@ -1,4 +1,3 @@
-#include <err.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
@@ -15,23 +14,8 @@
 #include "../../include/image_traitment/homographic_transform.h"
 #include "../../include/image_traitment/queue.h"
 #include "../../include/image_traitment/adaptive_treshold.h"
+#include "../../include/image_traitment/segmentation.h"
 
-void compute_homographic_transform(Image *image)
-{
-    Dot dot_TL = { .Y = 633, .X = 176 };
-    Dot dot_BL = { .Y = 1360, .X = 710 };
-    Dot dot_BR = { .Y = 910, .X = 1490 };
-    Dot dot_TR = { .Y = 115, .X = 914 };
-
-    // Dot dot_TR = {.Y = 633, .X = 176};
-    // Dot dot_TL = {.Y = 1360,.X = 710};
-    // Dot dot_BL = {.Y = 850, .X = 1430};
-    // Dot dot_BR = {.Y = 115, .X = 914};
-    Image tmp_image =
-        HomographicTransform(image, &dot_TL, &dot_TR, &dot_BL, &dot_BR, 500);
-    save_image(&tmp_image, "homographic_transform_");
-    free_image(&tmp_image);
-}
 
 void compute_hough(Image *image)
 {

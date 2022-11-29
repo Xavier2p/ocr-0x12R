@@ -70,10 +70,9 @@ double *fill_matrix(int corTLx, int corTLy, int corTRx, int corTRy, int corBLx,
 
     free(mat);
     double *res_inv = calloc(8 * 8, sizeof(double));
+
     if (!inverse(res_mult, res_inv, 8))
-    {
         errx(EXIT_FAILURE, "Matrix is singular");
-    }
 
     free(res_mult);
     double *res_mult2 = calloc(8 * 8, sizeof(double));
@@ -85,11 +84,14 @@ double *fill_matrix(int corTLx, int corTLy, int corTRx, int corTRy, int corBLx,
     return res;
 }
 
-Image HomographicTransform(Image *image, Dot *TL_dot, Dot *TR_dot, Dot *BL_dot,
-                           Dot *BR_dot, int size)
+Image HomographicTransform(Image *image, Square *square, int size)
 {
-    double *mat = fill_matrix(TL_dot->X, TL_dot->Y, TR_dot->X, TR_dot->Y,
-                              BL_dot->X, BL_dot->Y, BR_dot->X, BR_dot->Y, size);
+    Dot TL_dot = square->tl;
+    Dot TR_dot = square->tr;
+    Dot BL_dot = square->bl;
+    Dot BR_dot = square->br;
+    double *mat = fill_matrix(TL_dot.X, TL_dot.Y, TR_dot.X, TR_dot.Y,
+                              BL_dot.X, BL_dot.Y, BR_dot.X, BR_dot.Y, size);
 
     Image new_image = {
         .height = size, .width = size, .pixels = NULL, .path = NULL
