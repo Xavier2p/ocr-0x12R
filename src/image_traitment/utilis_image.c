@@ -52,8 +52,11 @@ Image copy_image(Image *image)
                  "Error while allocating pixels pointers for the image");
     }
 
-    new_image.path = calloc(strlen(image->path) + 1, sizeof(char));
-    strcpy(new_image.path, image->path);
+    if (image->path != NULL)
+    {
+        new_image.path = calloc(strlen(image->path) + 1, sizeof(char));
+        strcpy(new_image.path, image->path);
+    }
 
     for (unsigned int i = 0; i < image->height; ++i)
     {
@@ -87,7 +90,9 @@ void free_image(Image *image)
 
 Image resize_image(Image *image, int dimension)
 {
-    int new_width = 0, new_height = 0;
+    int new_width = 0;
+    int new_height = 0;
+
     if (image->height == image->width)
     {
         new_width = dimension;
@@ -119,8 +124,11 @@ Image resize_image(Image *image, int dimension)
                  "Error while allocating pixels pointers for the image");
     }
     // copy the path of the previous image
-    new_image.path = (char *)calloc(strlen(image->path) + 1, sizeof(char));
-    strcpy(new_image.path, image->path);
+    if (image->path != NULL)
+    {
+        new_image.path = (char *)calloc(strlen(image->path) + 1, sizeof(char));
+        strcpy(new_image.path, image->path);
+    }
 
     int w1 = image->width;
     int h1 = image->height;

@@ -9,11 +9,10 @@ int blob_detection(Image *image, Dot start)
 
     struct slisthead head;
     SLIST_INIT(&head);
+
     struct DotQueue *p = malloc(sizeof(*p));
     p->dot = start;
-
-    if (pixels[start.Y][start.X].r == 255)
-        SLIST_INSERT_HEAD(&head, p, next);
+    SLIST_INSERT_HEAD(&head, p, next);
 
     while (!SLIST_EMPTY(&head))
     {
@@ -122,7 +121,6 @@ Dot find_biggest_blob(Image *image)
     int w = image->width;
     int h = image->height;
     Image c_image = copy_image(image);
-    Pixel **pixels = c_image.pixels;
 
     Dot max_start;
     int max_point = 0;
@@ -143,6 +141,7 @@ Dot find_biggest_blob(Image *image)
         }
     }
 
+    free_image(&c_image);
     return max_start;
 }
 
@@ -151,10 +150,11 @@ Square main_blob(Image *image)
     blob_detection(image, find_biggest_blob(image));
 
     Square corners = find_coners(image);
-    draw_dot(image, &corners.bl, 4);
-    draw_dot(image, &corners.br, 4);
-    draw_dot(image, &corners.tl, 4);
-    draw_dot(image, &corners.tr, 4);
+
+    //    draw_dot(image, &corners.bl, 4);
+    //    draw_dot(image, &corners.br, 4);
+    //    draw_dot(image, &corners.tl, 4);
+    //    draw_dot(image, &corners.tr, 4);
 
     return corners;
 }

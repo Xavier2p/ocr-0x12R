@@ -83,10 +83,6 @@ double *fill_matrix(int size, Square *square)
 
 Image homographic_transform(Image *image, Square *square, int size)
 {
-    Dot TL_dot = square->tl;
-    Dot TR_dot = square->tr;
-    Dot BL_dot = square->bl;
-    Dot BR_dot = square->br;
     double *mat = fill_matrix(size, square);
 
     Image new_image = {

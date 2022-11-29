@@ -100,7 +100,7 @@ void adaptive_threshold(Image *image)
         for (int y = 0; y < h; ++y)
         {
             int thresh = compute_threshold(&c_image, x, y, range, kernel);
-            if (pixels[y][x].r > thresh)
+            if (pixels[y][x].r > (unsigned int)thresh)
                 set_all_pixel(image, y, x, 0);
             else
                 set_all_pixel(image, y, x, 255);
