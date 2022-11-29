@@ -29,4 +29,4 @@ $(TARGET): $(OBJ)
 
 clean:
 	${RM} $(OBJ) $(EXE) $(TARGET)
-	${RM} *_resized*
+	@${RM} *_resized*

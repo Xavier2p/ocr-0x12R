@@ -1,5 +1,4 @@
 #include "gui_tools.h"
-#include <stdio.h>
 
 GdkPixbuf* convert_image_to_gui(Image* image)
 {
