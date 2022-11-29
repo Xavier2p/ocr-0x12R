@@ -27,9 +27,9 @@
 
 //----- HELPER FUNCTIONS -----//
 
-void remove_cursor()
+void remove_cursor(int disable)
 {
-    printf("\e[?25l");
+    printf("%s", disable ? "\e[?25l" : "\e[?25h");
 }
 
 void print_usage()
@@ -127,7 +127,7 @@ int training(char path[], double nb_hidden, double nb_neurons, double learning_r
                     nb_neurons == 0 || learning_rate == 0)))
             print_usage();
 
-        remove_cursor();
+        remove_cursor(1);
 
         if (state == 0)
             load_weights(network, path);
@@ -142,13 +142,13 @@ int training(char path[], double nb_hidden, double nb_neurons, double learning_r
         printf("Success rate: (%d / %d) -> %d%%.                              \n",
                 success_rate, NUM_TEST, success_percent);
 
-        remove_cursor();
+        remove_cursor(0);
         return success_percent;
 
     }
     else
     {
-        remove_cursor();
+        print_usage();
         return 0;
     }
 }
