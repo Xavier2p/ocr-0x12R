@@ -1,4 +1,5 @@
 #include "gui_tools.h"
+#include <stdio.h>
 
 GdkPixbuf* convert_image_to_gui(Image* image)
 {
@@ -7,16 +8,18 @@ GdkPixbuf* convert_image_to_gui(Image* image)
 
     int width = gdk_pixbuf_get_width(pixbuf);
     int height = gdk_pixbuf_get_height(pixbuf);
+    printf("change image on gui\n");
 
     int n_channels = gdk_pixbuf_get_n_channels(pixbuf);
     int rowstride = gdk_pixbuf_get_rowstride(pixbuf);
     guchar *pixels = gdk_pixbuf_get_pixels(pixbuf);
 
+    printf("init done\n");
     for (int x = 0; x < width; x++)
     {
         for (int y = 0; y < height; y++)
         {
-            guchar *p = pixels + y * rowstride + x * n_channels;
+            guchar *p = pixels + x * rowstride + y * n_channels;
             p[0] = image->pixels[x][y].r;
             p[1] = image->pixels[x][y].g;
             p[2] = image->pixels[x][y].b;

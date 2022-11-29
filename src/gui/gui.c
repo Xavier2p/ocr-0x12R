@@ -1,21 +1,5 @@
-/*
- * ============================================================================
- *
- *       Filename:  gui.c
- *
- *    Description: GUI for the OCR.
- *
- *        Version:  1.0
- *        Created:  10/03/2022 19:54:10
- *       Revision:  none
- *       Compiler:  gcc
- *
- *         Author:  Xavier de Place
- *   Organization:  FACHOCR
- *
- * ============================================================================
- */
 #include "gui.h"
+#include <stdio.h>
 
 GtkWidget* window = NULL;
 GtkWidget* button_Load = NULL;
@@ -26,6 +10,7 @@ GtkWidget* fixed_one = NULL;
 GtkLabel* label_one = NULL;
 GtkWidget* image_one = NULL;
 GtkWidget* button_Launch = NULL;
+GtkWidget* dialog = NULL;
 GError* error = NULL;
 gchar* filename_ui = NULL;
 char* filename_image = NULL;
@@ -65,6 +50,7 @@ void init_gui(int argc, char *argv[])
         GTK_WIDGET(gtk_builder_get_object(builder, "button_Launch"));
     label_one = GTK_LABEL(gtk_builder_get_object(builder, "label_one"));
     image_one = GTK_WIDGET(gtk_builder_get_object(builder, "image_one"));
+    dialog = GTK_WIDGET(gtk_builder_get_object(builder, "dialog_settings"));
 
     // Load CSS
     GtkCssProvider *cssProvider = gtk_css_provider_new();
@@ -110,6 +96,7 @@ void on_button_Save_clicked()
 void on_button_Quit_clicked()
 {
     gtk_label_set_text(GTK_LABEL(label_one), (const gchar *)"Button Quit");
+    g_object_unref(G_OBJECT(builder));
     gtk_main_quit();
 }
 
@@ -126,6 +113,20 @@ void on_button_Next_clicked()
     gtk_label_set_text(GTK_LABEL(label_one), (const gchar *)"Button Next");
 }
 
+void on_button_appply_settings_clicked()
+{
+    printf("training network....................................ok\n");
+    gtk_widget_destroy(dialog);
+}
+
+/**
+ * @brief  This function is called when the user click on the button "cancel"
+ */
+void on_button_cancel_settings_clicked()
+{
+    gtk_widget_hide(dialog);
+}
+
 /**
  * @brief This function is called when the user click on the button "Rotate"
  */
@@ -140,6 +141,10 @@ void on_button_Rotate_clicked()
 void on_button_Settings_clicked()
 {
     gtk_label_set_text(GTK_LABEL(label_one), (const gchar *)"Button Settings");
+    gtk_window_set_transient_for (GTK_WINDOW(dialog), GTK_WINDOW(window));
+    gtk_widget_show_all(dialog);
+    gtk_dialog_run(GTK_DIALOG(dialog));
+    gtk_widget_destroy(dialog);
 }
 
 /**
