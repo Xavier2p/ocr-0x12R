@@ -16,7 +16,7 @@
  *
  * =====================================================================================
  */
-#include "../../include/image_traitment/utilis_image.h"
+#include "include/utilis_image.h"
 
 void draw_dot(Image *image, Dot *dot, int size)
 {

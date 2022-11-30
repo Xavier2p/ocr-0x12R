@@ -1,6 +1,7 @@
 #ifndef SEGMENTAION_H
 #define SEGMENTAION_H
 
+#include <stdlib.h>
 #include "utilis_image.h"
 
 #define SIZE_OF_NEURAL_INPUT 28

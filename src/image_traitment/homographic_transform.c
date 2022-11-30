@@ -16,10 +16,7 @@
  *
  * =====================================================================================
  */
-#include "../../include/image_traitment/homographic_transform.h"
-#define FILL(mat, x, y) mat[x * 8 + y]
-
-// Function : Fill_matrix
+#include "include/homographic_transform.h"
 
 double *fill_matrix(int size, Square *square)
 {

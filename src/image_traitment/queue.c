@@ -1,5 +1,20 @@
-#include "../../include/image_traitment/queue.h"
-#include <stdio.h>
+/*
+ * =====================================================================================
+ *
+ *    Filename:    queue.c
+ *    Description:  Own implementation of FIFO data structure
+ *
+ *        Version:  1.0
+ *        Created:  10/15/2022 07:42:29 PM
+ *       Revision:  none
+ *       Compiler:  gcc
+ *
+ *         Author:  Paolo.Wattebled
+ *   Organization:  Ox12R
+ *
+ * =====================================================================================
+ */
+#include "include/queue.h"
 
 Node_queue *initialize_node_queue(void *value)
 {

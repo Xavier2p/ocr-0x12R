@@ -1,4 +1,4 @@
-CC = gcc -I../../include/
+CC = gcc -Iinclude/
 CFLAGS = -Werror -Wall -Wextra -pedantic -std=c99 `pkg-config --cflags sdl2 SDL2_image` -g #-fsanitize=address
 LDLIBS = `pkg-config --libs sdl2 SDL2_image` -lSDL2 -lm
 LDFLAGS = -g #-fsanitize=address

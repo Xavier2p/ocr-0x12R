@@ -15,7 +15,7 @@
  *
  * =====================================================================================
  */
-#include "../../include/image_traitment/adaptive_treshold.h"
+#include "include/adaptive_treshold.h"
 
 #define ADAPTIVETHRESHOLDING_RANGE 5
 #define ADAPTIVETHRESHOLING_C 3

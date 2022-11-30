@@ -3,8 +3,8 @@
  *
  *       Filename:  struc_sudoku_solver.c
  *
- *    Description: This file will contain the struct of the game and the
- *    functions to import and create the board to solve.
+ *    Description:  File containing the sudoku solver and the function to
+ *    import a grid
  *
  *        Version:  1.0
  *        Created:  09/13/2022 07:40:29 PM
@@ -16,13 +16,7 @@
  *
  * =====================================================================================
  */
-
-#include "../../include/sudoku_solver/sudoku_file_manager.h"
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
-
-#define N 9
+#include "include/sudoku_solver.h"
 
 int is_safe(int **grid, int row, int col, int num)
 {
@@ -44,7 +38,7 @@ int is_safe(int **grid, int row, int col, int num)
     return 1;
 }
 
-int solve_sudoku(int **grid, int row, int col)
+int solve_sudoku_rec(int **grid, int row, int col)
 {
     if (row == N - 1 && col == N)
         return 1;
@@ -56,7 +50,7 @@ int solve_sudoku(int **grid, int row, int col)
     }
 
     if (grid[row][col] > 0)
-        return solve_sudoku(grid, row, col + 1);
+        return solve_sudoku_rec(grid, row, col + 1);
 
     for (int num = 1; num <= N; num++)
     {
@@ -64,13 +58,80 @@ int solve_sudoku(int **grid, int row, int col)
         {
             grid[row][col] = num;
 
-            if (solve_sudoku(grid, row, col + 1) == 1)
+            if (solve_sudoku_rec(grid, row, col + 1) == 1)
                 return 1;
         }
 
         grid[row][col] = 0;
     }
+
     return 0;
+}
+
+void import_grid(int **grid, char filename[])
+{
+    FILE *fp = fopen(filename, "r");
+
+    if (fp == NULL)
+        printf("file can't be opened \n");
+
+    char line[25];
+
+    size_t bias_hori = 0;
+    size_t j = 0;
+    while (fgets(line, sizeof(line), fp))
+    {
+        if (line[0] == '\n' || line[0] == '\r' || line[0] == ' ')
+            bias_hori++;
+        else
+        {
+            size_t bias_verti = 0;
+            for (size_t i = 0; line[i] != '\n'; i++)
+            {
+                if (line[i] == ' ')
+                    bias_verti++;
+                else if (line[i] == '.')
+                    grid[j - bias_hori][i - bias_verti] = 0;
+                else
+                    grid[j - bias_hori][i - bias_verti] = line[i] - '0';
+            }
+        }
+        j++;
+    }
+
+    fclose(fp);
+}
+
+void export_grid(int **grid, char filename[])
+{
+    FILE *fp;
+    fp = fopen(filename, "w");
+
+    for (size_t i = 0; i < 9; i++)
+    {
+        for (size_t j = 0; j < 9; j++)
+        {
+            if (j == 2 || j == 5)
+            {
+                fputc(grid[i][j] + '0', fp);
+                fputc(' ', fp);
+            }
+            else
+                fputc(grid[i][j] + '0', fp);
+        }
+        fputc('\n', fp);
+        if (i == 2 || i == 5)
+            fputc('\n', fp);
+    }
+
+    fclose(fp);
+}
+
+void solve_sudoku(int **grid, int row, int col)
+{
+    solve_sudoku_rec(grid, row, col);
+
+    export_grid(grid, "grid.result");
 }
 
 int main(int argc, char **argv)
@@ -82,13 +143,10 @@ int main(int argc, char **argv)
     for (size_t i = 0; i < 9; ++i)
         grid[i] = (int *)calloc(10, sizeof(int));
 
-    // Import a grid from the file named by the user in the argv[1] slot.
-    import_grid_block(grid, argv[1]);
+    import_grid(grid, argv[1]);
 
     solve_sudoku(grid, 0, 0);
 
-    // Change the name of the file by adding .result at the end. Then the grid
-    // will be exported in the new named file
     char *res = (char *)calloc(strlen(argv[1]) + 8, sizeof(char));
     int i = 0;
     for (; argv[1][i] != '\0'; ++i)
@@ -107,6 +165,7 @@ int main(int argc, char **argv)
 
     for (size_t i = 0; i < 10; ++i)
         free(grid[i]);
+
     free(grid);
     free(res);
 

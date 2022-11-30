@@ -15,8 +15,7 @@
  *
  * =====================================================================================
  */
-
-#include "../../include/image_traitment/preprocess.h"
+#include "include/preprocess.h"
 
 void image_contrast(Image *image, size_t n)
 {

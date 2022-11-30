@@ -2,19 +2,19 @@
 #include <string.h>
 #include <time.h>
 
-#include "../../include/image_traitment/linkedlist.h"
-#include "../../include/image_traitment/otsu.h"
-#include "../../include/image_traitment/preprocess.h"
-#include "../../include/image_traitment/utilis_image.h"
-#include "../../include/image_traitment/gaussian_filter.h"
-#include "../../include/image_traitment/grid_detection.h"
-#include "../../include/image_traitment/hough_transform.h"
-#include "../../include/image_traitment/blob.h"
-#include "../../include/image_traitment/canny.h"
-#include "../../include/image_traitment/homographic_transform.h"
-#include "../../include/image_traitment/queue.h"
-#include "../../include/image_traitment/adaptive_treshold.h"
-#include "../../include/image_traitment/segmentation.h"
+#include "include/linkedlist.h"
+#include "include/otsu.h"
+#include "include/preprocess.h"
+#include "include/utilis_image.h"
+#include "include/gaussian_filter.h"
+#include "include/grid_detection.h"
+#include "include/hough_transform.h"
+#include "include/blob.h"
+#include "include/canny.h"
+#include "include/homographic_transform.h"
+#include "include/queue.h"
+#include "include/adaptive_treshold.h"
+#include "include/segmentation.h"
 
 void compute_hough(Image *image)
 {

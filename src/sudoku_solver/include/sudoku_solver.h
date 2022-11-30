@@ -18,8 +18,16 @@
 #ifndef SUDOKU_FILE_MANAGER_H
 #define SUDOKU_FILE_MANAGER_H
 
-void import_grid_block(int **grid, char filename[]);
-void import_grid_line(int **grid, char filename[]);
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+
+#define N 9
+
 void export_grid(int **grid, char filename[]);
+
+void import_grid(int **grid, char filename[]);
+
+void solve_sudoku(int **grid, int row, int col);
 
 #endif

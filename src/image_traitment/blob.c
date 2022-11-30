@@ -1,4 +1,4 @@
-#include "../../include/image_traitment/blob.h"
+#include "include/blob.h"
 
 int blob_detection(Image *image, Dot start)
 {

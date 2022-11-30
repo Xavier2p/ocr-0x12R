@@ -15,7 +15,7 @@
  *
  * =====================================================================================
  */
-#include "../../include/image_traitment/hough_transform.h"
+#include "include/hough_transform.h"
 
 void draw_line(Image *image, Line *line);
 

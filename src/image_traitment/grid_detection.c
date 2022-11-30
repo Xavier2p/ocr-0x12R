@@ -16,7 +16,7 @@
  * =====================================================================================
  */
 
-#include "../../include/image_traitment/grid_detection.h"
+#include "include/grid_detection.h"
 
 int line_equal(Line *l1, Line *l2)
 {

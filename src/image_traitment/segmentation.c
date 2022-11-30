@@ -15,8 +15,7 @@
  *
  * =====================================================================================
  */
-#include "../../include/image_traitment/segmentation.h"
-#include <stdio.h>
+#include "include/segmentation.h"
 
 double *create_square_image(Image *image, int i, int j, int size)
 {

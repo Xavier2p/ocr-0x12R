@@ -3,15 +3,16 @@
  *
  *       Filename:  utilis_matrix.c
  *
- *    Description:
+ *    Description:  Operations possbile to apply on a matrix. For example, you
+ *    can inverse a matrix with the method of the determinant
  *
  *        Version:  1.0
  *        Created:  11/09/2022 08:30:24 PM
  *       Revision:  none
  *       Compiler:  gcc
  *
- *         Author:  YOUR NAME (),
- *   Organization:
+ *         Author:  Paolo Wattebled
+ *   Organization:  Ox12R
  *
  * =====================================================================================
  */

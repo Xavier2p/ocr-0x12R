@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "../../include/image_traitment/struct.h"
+#include "struct.h"
 
 typedef struct Node_T
 {
