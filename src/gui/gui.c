@@ -1,5 +1,4 @@
 #include "gui.h"
-#include <stdio.h>
 
 GtkWidget* window = NULL;
 GtkWidget* button_Load = NULL;
@@ -10,6 +9,7 @@ GtkWidget* fixed_one = NULL;
 GtkLabel* label_one = NULL;
 GtkWidget* image_one = NULL;
 GtkWidget* button_Launch = NULL;
+GtkCheckButton* custom_params = NULL;
 GtkWidget* dialog = NULL;
 GError* error = NULL;
 gchar* filename_ui = NULL;
@@ -51,6 +51,8 @@ void init_gui(int argc, char *argv[])
     label_one = GTK_LABEL(gtk_builder_get_object(builder, "label_one"));
     image_one = GTK_WIDGET(gtk_builder_get_object(builder, "image_one"));
     dialog = GTK_WIDGET(gtk_builder_get_object(builder, "dialog_settings"));
+    custom_params =
+        GTK_CHECK_BUTTON(gtk_builder_get_object(builder, "custom_nn"));
 
     // Load CSS
     GtkCssProvider *cssProvider = gtk_css_provider_new();
@@ -117,7 +119,6 @@ void on_button_appply_settings_clicked()
 {
     printf("training network....................................ok\n");
     gtk_widget_destroy(dialog);
-}
 
 /**
  * @brief  This function is called when the user click on the button "cancel"
@@ -138,7 +139,7 @@ void on_button_Rotate_clicked()
 /**
  * @brief This function is called when the user click on the button "Settings"
  */
-void on_button_Settings_clicked()
+void on_custom_nn_toggled()
 {
     gtk_label_set_text(GTK_LABEL(label_one), (const gchar *)"Button Settings");
     gtk_window_set_transient_for (GTK_WINDOW(dialog), GTK_WINDOW(window));

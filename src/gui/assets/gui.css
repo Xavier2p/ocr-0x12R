@@ -39,5 +39,19 @@
 .label {
     color: #87E3CF;
     font-size: large;
+}
+
+.entry {
+    background: #424866;
+    border: 0;
+    border-radius: 20px;
+    /* font-weight: 500; */
+    padding: 8px 24px;
+    /* width: 100%; */
+}
+
+.heading {
+    color: #87E3CF;
+    font-size: large;
     font-weight: bold;
 }

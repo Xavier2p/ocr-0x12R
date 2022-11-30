@@ -1,3 +1,4 @@
+# Makefile
 CC=gcc
 CPPFLAGS=
 CFLAGS=-Wall -Wextra `pkg-config --cflags gtk+-3.0 sdl2 SDL2_image` -rdynamic
@@ -30,3 +31,5 @@ $(TARGET): $(OBJ)
 clean:
 	${RM} $(OBJ) $(EXE) $(TARGET)
 	@${RM} *_resized*
+
+# END OF MAKEFILE
