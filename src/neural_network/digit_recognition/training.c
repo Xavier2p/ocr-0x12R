@@ -72,6 +72,7 @@ int test(Network *network, double clean_input[])
         front_propagation(network, test_image[curr_NUM], 0);
 
         int result = fetch_result(network);
+        printf("%d %d\n", test_label[curr_NUM], result);
         if (result == test_label[curr_NUM])
             success_rate += 1;
     }
@@ -82,8 +83,21 @@ int test(Network *network, double clean_input[])
 
 //----- STATE 2 (RUN) -----//
 
+int is_empty(double image[])
+{
+    int median = 0;
+
+    for (unsigned int i = 0; i < 784; i++)
+        median = image[i];
+
+    return median < 15;
+}
+
 int run(Network *network, double image[])
 {
+    if (is_empty(image))
+        return 0;
+
     front_propagation(network, image, 0);
     return fetch_result(network);
 }

@@ -4,7 +4,7 @@
 
 int main()
 {
-    int result = training("./saved_data/weights.data", 3, 200, 0.0145, NULL, 1);
+    int result = training("./saved_data/weights.data", 3, 200, 0.01, NULL, 1);
     //3 200 0.01
     return result;
 }
