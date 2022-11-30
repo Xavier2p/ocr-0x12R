@@ -1,4 +1,4 @@
-#include "gui_tools.h"
+#include "includes/gui_tools.h"
 
 GdkPixbuf* convert_image_to_gui(Image* image)
 {

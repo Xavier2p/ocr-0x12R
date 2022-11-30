@@ -1,4 +1,4 @@
-#include "gui.h"
+#include "includes/gui.h"
 
 GtkWidget* window = NULL;
 GtkWidget* button_Load = NULL;
@@ -119,6 +119,7 @@ void on_button_appply_settings_clicked()
 {
     printf("training network....................................ok\n");
     gtk_widget_destroy(dialog);
+}
 
 /**
  * @brief  This function is called when the user click on the button "cancel"

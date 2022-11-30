@@ -1,7 +1,7 @@
 # Makefile
 CC=gcc
 CPPFLAGS=
-CFLAGS=-Wall -Wextra `pkg-config --cflags gtk+-3.0 sdl2 SDL2_image` -rdynamic
+CFLAGS=-Wall -Wextra `pkg-config --cflags gtk+-3.0 sdl2 SDL2_image`
 LDFLAGS=
 LDLIBS=`pkg-config --libs gtk+-3.0 sdl2 SDL2_image` -lSDL2 -lm
 
@@ -13,6 +13,10 @@ SRC=utilis_image.c gui.c main.c gui_tools.c
 OBJ=$(SRC:.c=.o)
 EXE=${SRC:.c=}
 
+$(TARGET): $(OBJ)
+	${CC} ${CFLAGS} -o $@ $^ ${LDLIBS}
+
+
 main:
 	${CC} ${CFLAGS} ${SRC} -o ${TARGET} ${LDLIBS}
 
@@ -23,13 +27,10 @@ format:
 
 all: $(TARGET)
 
-$(TARGET): $(OBJ)
-	$(CC) $(LDFLAGS) -o $@ $^ $(LDLIBS)
 
 .PHONY: all
 
 clean:
 	${RM} $(OBJ) $(EXE) $(TARGET)
-	@${RM} *_resized*
 
 # END OF MAKEFILE
