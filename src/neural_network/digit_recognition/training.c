@@ -1,31 +1,11 @@
-/*
- * =====================================================================================
- *
- *       Filename:  main.c
- *
- *    Description:  bro
- *
- *        Version:  1.0
- *        Created:  10/31/2022 11:08:17 PM
- *       Revision:  none
- *       Compiler:  gcc
- *
- *         Author:  Arthur GUELENNOC
- *   Organization:  FACH'OCR
- *
- * =====================================================================================
- */
-
-#include <math.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include <err.h>
-#include "../../../include/neural_network/neural_network.h"
-#include "../../../include/neural_network/save_load.h"
-#include "../../../include/neural_network/load_numeric.h"
+#include "../../../include/neural_network/training.h"
 
 //----- HELPER FUNCTIONS -----//
+
+double train_image[NUM_TRAIN][SIZE] = {0};
+double test_image[NUM_TEST][SIZE] = {0};
+int train_label[NUM_TRAIN];
+int test_label[NUM_TEST];
 
 void remove_cursor(int disable)
 {
@@ -34,7 +14,7 @@ void remove_cursor(int disable)
 
 void print_usage()
 {
-    printf("Usage: neural -p <path> | -h <nb_hidden> -n <nb_neurons> -l <nb_layers> | -i <image>");
+    printf("Usage: neural -p <path> | -h <nb_hidden> -n <nb_neurons> -l <nb_layers> | -i <image> | -s <state>\n");
     exit(2);
 }
 
@@ -47,9 +27,9 @@ unsigned int fetch_result(Network *network)
 
     for (unsigned int i = 0; i < output_layer->nb_neurons; i++)
         result = (output_layer->neurons[i].value
-                          >= output_layer->neurons[result].value
-                      ? i
-                      : result);
+                >= output_layer->neurons[result].value
+                ? i
+                : result);
 
     return result;
 }
@@ -61,12 +41,12 @@ void train(unsigned int nb_hidden, unsigned int nb_neurons, double learning_rate
     *network = new_network(784, nb_hidden, nb_neurons, 10);
 
     double desired_output[network->size_output];
-    for (unsigned int epoch = 0; epoch < 5; epoch++)
+    for (unsigned int epoch = 0; epoch < 10; epoch++)
     {
         for (unsigned int curr_NUM = 0; curr_NUM < NUM_TRAIN; curr_NUM++)
         {
             printf("Training neural network (%d / %d) (%d / %d)... Please wait...\r",
-                    curr_NUM + 1, NUM_TRAIN, epoch + 1, 5);
+                    curr_NUM + 1, NUM_TRAIN, epoch + 1, 10);
 
             front_propagation(network, train_image[curr_NUM], 0);
             int_to_array(train_label[curr_NUM], desired_output, network->size_output);
@@ -113,9 +93,6 @@ int training(char path[], double nb_hidden, double nb_neurons, double learning_r
     Network n;
     Network *network = &n;
 
-    load_numeric();
-    double clean_input[784] = {0.0};
-
     if (state == 2 && path == NULL)
     {
         load_weights(network, "./saved_data/weights.data");
@@ -123,9 +100,12 @@ int training(char path[], double nb_hidden, double nb_neurons, double learning_r
     }
     else if (state == 0 || state == 1)
     {
-        if (((state == 0) && path != NULL) || ((state == 1) && (nb_hidden == 0 ||
-                    nb_neurons == 0 || learning_rate == 0)))
+        if (((state == 0) && path == NULL) || ((state == 1) && (nb_hidden == 0 ||
+                        nb_neurons == 0 || learning_rate == 0)))
             print_usage();
+
+        double clean_input[784] = {0.0};
+        load_numeric(train_image, test_image, train_label, test_label);
 
         remove_cursor(1);
 

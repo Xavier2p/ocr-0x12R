@@ -1,23 +1,27 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <err.h>
-#include <unistd.h>
-#include "../../../include/neural_network/neural_network.h"
-
+#include "../../../include/neural_network/save_load.h"
 
 //----- SAVE & LOAD WEIGHTS -----//
 
-
 char *my_strncat(char *destination, const char *source, size_t num)
 {
-    char *ptr = destination + strlen(destination);
+    if((destination == NULL) && (source == NULL))
+        return NULL;
 
-    while (*source != '\0' && num--)
+    char *dest = destination;
+
+    while(*dest != '\0')
     {
-        *ptr++ = *source++;
+        dest++;
     }
-    *ptr = '\0';
+
+    while (num--)
+    {
+        if (!(*dest++ = *source++))
+        {
+            return destination;
+        }
+    }
+    *dest = '\0';
 
     return destination;
 }

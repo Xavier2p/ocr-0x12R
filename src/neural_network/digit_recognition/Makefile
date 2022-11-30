@@ -1,8 +1,9 @@
 # Makefile
 
 CC = gcc
-CFLAGS = -g
+CFLAGS = -Wall -Werror -Wextra -fsanitize=address -O3
 LDLIBS = -lm
+LDFLAGS = -fsanitize=address
 
 SRC = ${shell find -name "*.c"}
 OBJ = ${SRC:%.c=$(BUILD)/%.o}
