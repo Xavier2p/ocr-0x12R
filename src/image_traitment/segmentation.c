@@ -16,12 +16,26 @@
  * =====================================================================================
  */
 #include "include/segmentation.h"
+#include "include/utilis_image.h"
 
-double *create_square_image(Image *image, int i, int j, int size)
+double *create_square_image(Image *image, int i, int j, int size, int cordi,
+                            int cordj)
 {
     int w = image->width;
     int h = image->height;
     Image tmp = { .height = size, .width = size, .pixels = NULL, .path = NULL };
+
+    tmp.path = calloc(8, sizeof(char));
+    char ic = cordi + '0';
+    char jc = cordj + '0';
+    tmp.path[0] = ic;
+    tmp.path[1] = jc;
+    tmp.path[2] = '.';
+    tmp.path[3] = 'j';
+    tmp.path[4] = 'p';
+    tmp.path[5] = 'e';
+    tmp.path[6] = 'g';
+    tmp.path[7] = '\0';
 
     tmp.pixels = (Pixel **)calloc(size, sizeof(Pixel *));
     for (int x = 0; x < size; ++x)
@@ -45,12 +59,14 @@ double *create_square_image(Image *image, int i, int j, int size)
     }
 
     Image tmp_resized = resize_image(&tmp, SIZE_OF_NEURAL_INPUT);
+    save_image(&tmp_resized, "res_");
     double *res =
         calloc(SIZE_OF_NEURAL_INPUT * SIZE_OF_NEURAL_INPUT, sizeof(double));
 
     for (int y = 0; y < SIZE_OF_NEURAL_INPUT; ++y)
         for (int x = 0; x < SIZE_OF_NEURAL_INPUT; ++x)
-            res[x * size + y] = tmp_resized.pixels[y][x].r == 255 ? 1.0 : 0.0;
+            res[y * SIZE_OF_NEURAL_INPUT + x] =
+                tmp_resized.pixels[y][x].r == 255 ? 1.0 : 0.0;
 
     free_image(&tmp);
     free_image(&tmp_resized);
@@ -64,7 +80,7 @@ void print_array(double *arr, int size)
     {
         for (int j = 0; j < size; ++j)
         {
-            printf("%d", (int)arr[j * size + i]);
+            printf("%d", arr[i * size + j] == 1.0 ? 1 : 0);
         }
         printf("\n");
     }
@@ -78,13 +94,19 @@ void segmentation(Image *image)
     int h = image->height;
     int bloc_size = image->width / 9;
 
+    int cordi = 0;
+    int cordj = 0;
     for (int i = 0; i < h; i += bloc_size)
     {
+        cordj = 0;
         for (int j = 0; j < w; j += bloc_size)
         {
-            double *tmp = create_square_image(image, i, j, bloc_size);
+            double *tmp =
+                create_square_image(image, i, j, bloc_size, cordi, cordj);
             print_array(tmp, SIZE_OF_NEURAL_INPUT);
             free(tmp);
+            cordj++;
         }
+        cordi++;
     }
 }

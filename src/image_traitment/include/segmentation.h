@@ -6,7 +6,8 @@
 
 #define SIZE_OF_NEURAL_INPUT 28
 
-double *create_square_image(Image *image, int i, int j, int size);
+double *create_square_image(Image *image, int i, int j, int size, int cordi,
+                            int cordj);
 
 void segmentation(Image *image);
 
