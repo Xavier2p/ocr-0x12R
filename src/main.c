@@ -17,7 +17,6 @@
  * =====================================================================================
  */
 #include "neural_network/include/neural_network.h"
-#include "neural_network/include/training.h"
 #include "image_traitment/include/image_traitment.h"
 
 int main(int argc, char **argv)
@@ -49,4 +48,6 @@ int main(int argc, char **argv)
 
         SDL_Quit();
     }
+
+    return 0;
 }

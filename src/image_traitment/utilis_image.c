@@ -17,6 +17,7 @@
  * =====================================================================================
  */
 #include "include/utilis_image.h"
+#include <SDL2/SDL.h>
 
 void draw_dot(Image *image, Dot *dot, int size)
 {
@@ -159,9 +160,11 @@ void save_image(Image *image, char *name)
 {
     SDL_Surface *final_surface = create_surface(image);
     char *res = malloc(strlen(name) + strlen(image->path) + 1);
+
     strcpy(res, name);
     strcat(res, image->path);
     SDL_SaveBMP(final_surface, res);
+
     SDL_FreeSurface(final_surface);
     free(res);
 }

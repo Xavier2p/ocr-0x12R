@@ -1,6 +1,6 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror `pkg-config --cflags sdl2 SDL2_image` -O3 -std=c99 -pedantic
-LDLIBS = `pkg-config --libs sdl2 SDL2_image` -lSDL2 -lm
+CFLAGS = -Wall -Wextra -Werror `pkg-config --cflags sdl2 SDL2_image gtk+-3.0` -O3 -std=c99 -pedantic
+LDLIBS = `pkg-config --libs gtk+-3.0 sdl2 SDL2_image` -lSDL2 -lm
 
 BUILD := build
 SOURCE_DIR := src
@@ -46,6 +46,9 @@ test:
 	./main image_06.jpeg && \
 	mv image_0* images/
 	feh *.jpeg
+
+valim:
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes  -s ./main image_01.jpeg
 
 $(BUILD)/%.o : %.c
 	$(CC) $(CFLAGS) -c $< -o $@ $(LDLFLAGS) $(CPPFLAGS) $(LDLIBS)

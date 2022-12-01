@@ -16,10 +16,6 @@
  * =====================================================================================
  */
 #include "include/segmentation.h"
-#include <stdlib.h>
-#include <unistd.h>
-#include <stdio.h>
-#include <limits.h>
 
 double *create_square_image(Image *image, int i, int j, int size, int cordi,
                             int cordj)
@@ -48,16 +44,16 @@ double *create_square_image(Image *image, int i, int j, int size, int cordi,
         for (int x = 0; x < size; ++x)
             set_all_pixel(&tmp, y, x, 0);
 
-    for (int i2 = i; i2 + i < h && i2 < i + size; ++i2)
+    for (int i2 = 0; i2 + i < h && i2 < size; ++i2)
     {
-        for (int j2 = j; j2 + j < w && j2 < j + size; ++j2)
+        for (int j2 = 0; j2 + j < w && j2 < size; ++j2)
         {
             Pixel tmp_pixel = {
                 .r = image->pixels[i + i2][j + j2].r,
                 .g = image->pixels[i + i2][j + j2].g,
                 .b = image->pixels[i + i2][j + j2].b,
             };
-            tmp.pixels[i2 - i][j2 - j] = tmp_pixel;
+            tmp.pixels[i2][j2] = tmp_pixel;
         }
     }
 
@@ -94,13 +90,7 @@ void print_array(double *arr, int size)
 void segmentation(Image *image)
 {
     Network n;
-
-    char cwd[PATH_MAX];
-    if (getcwd(cwd, sizeof(cwd)) != NULL)
-        printf("Current working dir: %s\n", cwd);
-
     load_weights(&n, PATH_TO_WEIGHTS);
-
 
     int w = image->width;
     int h = image->height;
@@ -109,11 +99,9 @@ void segmentation(Image *image)
     int cordi = 0;
     int cordj = 0;
 
-    printf("%d", bloc_size);
-
-    int **grid = (int **)calloc(10, sizeof(int *));
+    int **grid = (int **)calloc(9, sizeof(int *));
     for (size_t i = 0; i < 9; ++i)
-        grid[i] = (int *)calloc(10, sizeof(int));
+        grid[i] = (int *)calloc(9, sizeof(int));
 
     for (int i = 0; i < h; i += bloc_size)
     {
@@ -134,11 +122,9 @@ void segmentation(Image *image)
 
             grid[cordi][cordj] = res;
 
-            printf("i: %d j:%d val:%d    ", cordi, cordj, res);
             free(tmp);
             cordj++;
         }
-        printf("\n");
         cordi++;
     }
 
@@ -153,4 +139,5 @@ void segmentation(Image *image)
     }
 
     free(grid);
+    free_network(&n);
 }
