@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "utilis_image.h"
+#include "../../include/image_traitment/utilis_image.h"
 
 
 void resize_draw(Image *src, Image *number_img, int x, int y, int dimension){
