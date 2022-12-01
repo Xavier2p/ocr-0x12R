@@ -15,7 +15,6 @@
 #include "blob.h"
 #include "canny.h"
 #include "homographic_transform.h"
-#include "queue.h"
 #include "adaptive_treshold.h"
 #include "segmentation.h"
 

@@ -9,7 +9,7 @@ int test_label[NUM_TEST];
 
 void remove_cursor(int disable)
 {
-    printf("%s", disable ? "\e[?25l" : "\e[?25h");
+    printf("%s", disable ? "\033[?25l" : "\033[?25h");
 }
 
 void print_usage()
@@ -92,9 +92,9 @@ int is_empty(double image[])
     int median = 0;
 
     for (unsigned int i = 0; i < 784; i++)
-        median = image[i];
+        median += image[i];
 
-    return median < 15;
+    return median < 12;
 }
 
 int run(Network *network, double image[])

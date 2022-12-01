@@ -16,7 +16,10 @@
  * =====================================================================================
  */
 #include "include/segmentation.h"
-#include "include/utilis_image.h"
+#include <stdlib.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <limits.h>
 
 double *create_square_image(Image *image, int i, int j, int size, int cordi,
                             int cordj)
@@ -90,12 +93,28 @@ void print_array(double *arr, int size)
 
 void segmentation(Image *image)
 {
+    Network n;
+
+    char cwd[PATH_MAX];
+    if (getcwd(cwd, sizeof(cwd)) != NULL)
+        printf("Current working dir: %s\n", cwd);
+
+    load_weights(&n, PATH_TO_WEIGHTS);
+
+
     int w = image->width;
     int h = image->height;
     int bloc_size = image->width / 9;
 
     int cordi = 0;
     int cordj = 0;
+
+    printf("%d", bloc_size);
+
+    int **grid = (int **)calloc(10, sizeof(int *));
+    for (size_t i = 0; i < 9; ++i)
+        grid[i] = (int *)calloc(10, sizeof(int));
+
     for (int i = 0; i < h; i += bloc_size)
     {
         cordj = 0;
@@ -103,10 +122,35 @@ void segmentation(Image *image)
         {
             double *tmp =
                 create_square_image(image, i, j, bloc_size, cordi, cordj);
-            print_array(tmp, SIZE_OF_NEURAL_INPUT);
+
+            int res;
+            if (is_empty(tmp))
+                res = 0;
+            else
+            {
+                front_propagation(&n, tmp, 0);
+                res = fetch_result(&n);
+            }
+
+            grid[cordi][cordj] = res;
+
+            printf("i: %d j:%d val:%d    ", cordi, cordj, res);
             free(tmp);
             cordj++;
         }
+        printf("\n");
         cordi++;
     }
+
+    for (int i = 0; i < 9; ++i)
+    {
+        for (int j = 0; j < 9; ++j)
+        {
+            printf("%d", grid[i][j]);
+        }
+        printf("\n");
+        free(grid[i]);
+    }
+
+    free(grid);
 }

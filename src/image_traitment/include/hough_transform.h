@@ -6,6 +6,7 @@
 
 #include "linkedlist.h"
 #include "utilis_image.h"
+#include "grid_detection.h"
 
 #define DEG2RAD 0.017453293f
 

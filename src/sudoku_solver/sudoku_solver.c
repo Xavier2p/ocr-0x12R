@@ -16,7 +16,7 @@
  *
  * =====================================================================================
  */
-#include "include/sudoku_solver.h"
+#include "sudoku_solver.h"
 
 int is_safe(int **grid, int row, int col, int num)
 {
@@ -134,40 +134,40 @@ void solve_sudoku(int **grid, int row, int col)
     export_grid(grid, "grid.result");
 }
 
-int main(int argc, char **argv)
-{
-    if (argc > 2)
-        return 1;
-
-    int **grid = (int **)calloc(10, sizeof(int *));
-    for (size_t i = 0; i < 9; ++i)
-        grid[i] = (int *)calloc(10, sizeof(int));
-
-    import_grid(grid, argv[1]);
-
-    solve_sudoku(grid, 0, 0);
-
-    char *res = (char *)calloc(strlen(argv[1]) + 8, sizeof(char));
-    int i = 0;
-    for (; argv[1][i] != '\0'; ++i)
-        res[i] = argv[1][i];
-
-    res[i] = '.';
-    res[i + 1] = 'r';
-    res[i + 2] = 'e';
-    res[i + 3] = 's';
-    res[i + 4] = 'u';
-    res[i + 5] = 'l';
-    res[i + 6] = 't';
-    res[i + 7] = '\0';
-
-    export_grid(grid, res);
-
-    for (size_t i = 0; i < 10; ++i)
-        free(grid[i]);
-
-    free(grid);
-    free(res);
-
-    return 0;
-}
+//int main(int argc, char **argv)
+//{
+//    if (argc > 2)
+//        return 1;
+//
+//    int **grid = (int **)calloc(9, sizeof(int *));
+//    for (size_t i = 0; i < 8; ++i)
+//        grid[i] = (int *)calloc(9, sizeof(int));
+//
+//    import_grid(grid, argv[1]);
+//
+//    solve_sudoku(grid, 0, 0);
+//
+//    char *res = (char *)calloc(strlen(argv[1]) + 8, sizeof(char));
+//    int i = 0;
+//    for (; argv[1][i] != '\0'; ++i)
+//        res[i] = argv[1][i];
+//
+//    res[i] = '.';
+//    res[i + 1] = 'r';
+//    res[i + 2] = 'e';
+//    res[i + 3] = 's';
+//    res[i + 4] = 'u';
+//    res[i + 5] = 'l';
+//    res[i + 6] = 't';
+//    res[i + 7] = '\0';
+//
+//    export_grid(grid, res);
+//
+//    for (size_t i = 0; i < 9; ++i)
+//        free(grid[i]);
+//
+//    free(grid);
+//    free(res);
+//
+//    return 0;
+//}
