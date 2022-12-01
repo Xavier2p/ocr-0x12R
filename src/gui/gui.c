@@ -1,4 +1,5 @@
 #include "includes/gui.h"
+#include "includes/main.h"
 
 GtkWidget* window = NULL;
 GtkWidget* button_Load = NULL;
@@ -15,6 +16,7 @@ GError* error = NULL;
 gchar* filename_ui = NULL;
 char* filename_image = NULL;
 Image image;
+int pc = 0;
 
 /**
  * @brief  initialize the GUI
@@ -113,6 +115,16 @@ void on_button_Resize_clicked()
 void on_button_Next_clicked()
 {
     gtk_label_set_text(GTK_LABEL(label_one), (const gchar *)"Button Next");
+    if (pc < 5)
+    {
+        funcs[pc]();
+        pc++;
+    }
+
+    else
+    {
+        gtk_label_set_text(GTK_LABEL(label_one), (const gchar *)"END");
+    }
 }
 
 void on_button_appply_settings_clicked()

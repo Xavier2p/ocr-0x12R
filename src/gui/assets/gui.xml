@@ -191,47 +191,18 @@
         <property name="visible">True</property>
         <property name="can-focus">False</property>
         <child>
-          <object class="GtkButton" id="button_Save">
-            <property name="label" translatable="yes">Save</property>
-            <property name="width-request">60</property>
-            <property name="height-request">35</property>
-            <property name="visible">True</property>
-            <property name="can-focus">True</property>
-            <property name="receives-default">True</property>
-            <property name="tooltip-text" translatable="yes">Save the solved grid</property>
-            <property name="halign">start</property>
-            <property name="valign">start</property>
-            <property name="margin-left">1</property>
-            <property name="margin-right">1</property>
-            <property name="margin-start">10</property>
-            <property name="margin-end">10</property>
-            <property name="margin-top">10</property>
-            <property name="margin-bottom">10</property>
-            <signal name="clicked" handler="on_button_Save_clicked" swapped="no"/>
-            <style>
-              <class name="button"/>
-            </style>
-          </object>
-          <packing>
-            <property name="x">5</property>
-            <property name="y">425</property>
-          </packing>
-        </child>
-        <child>
           <object class="GtkButton" id="button_Quit">
             <property name="label" translatable="yes">Quit</property>
-            <property name="width-request">60</property>
-            <property name="height-request">35</property>
+            <property name="width-request">200</property>
+            <property name="height-request">30</property>
             <property name="visible">True</property>
             <property name="can-focus">True</property>
             <property name="receives-default">True</property>
             <property name="tooltip-text" translatable="yes">Quit the OCR</property>
             <property name="halign">start</property>
             <property name="valign">start</property>
-            <property name="margin-left">1</property>
-            <property name="margin-right">1</property>
-            <property name="margin-start">10</property>
-            <property name="margin-end">10</property>
+            <property name="margin-left">10</property>
+            <property name="margin-right">10</property>
             <property name="margin-top">10</property>
             <property name="margin-bottom">10</property>
             <signal name="clicked" handler="on_button_Quit_clicked" swapped="no"/>
@@ -240,7 +211,7 @@
             </style>
           </object>
           <packing>
-            <property name="x">85</property>
+            <property name="x">5</property>
             <property name="y">425</property>
           </packing>
         </child>
@@ -405,7 +376,8 @@
         </child>
         <child>
           <object class="GtkCheckButton" id="custom_nn">
-            <property name="label" translatable="yes">Use custom config for neural network</property>
+            <property name="label" translatable="yes">Use custom config 
+for neural network</property>
             <property name="width-request">100</property>
             <property name="height-request">80</property>
             <property name="visible">True</property>
@@ -415,11 +387,11 @@
             <property name="draw-indicator">True</property>
             <signal name="toggled" handler="on_custom_nn_toggled" swapped="no"/>
             <style>
-              <class name="label"/>
+              <class name="checkbox"/>
             </style>
           </object>
           <packing>
-            <property name="x">3</property>
+            <property name="x">12</property>
             <property name="y">288</property>
           </packing>
         </child>

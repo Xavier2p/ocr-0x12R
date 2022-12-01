@@ -55,3 +55,10 @@
     font-size: large;
     font-weight: bold;
 }
+
+.checkbox {
+    color: #87E3CF;
+    background: 0 0;
+    font-size: 1rem;
+    margin-right: 0.25em;
+}

@@ -11,7 +11,6 @@
 #define PATH "ocr-0x12/"
 #define LOGO "assets/logo.png"
 
-// #include "utilis_image.h"
 #include "gui_tools.h"
 
 void init_gui(int argc, char *argv[]);
