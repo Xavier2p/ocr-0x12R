@@ -56,9 +56,6 @@ void resize_draw(Image *src, Image *number_img, int x, int y, int dimension){
     {
         for (int j = 0; j < new_width; j++)
         {
-            //i += x;
-            //j += y;
-
             j2 = ((j * j_ratio) >> 16);
             i2 = ((i * i_ratio) >> 16);
 
@@ -66,21 +63,31 @@ void resize_draw(Image *src, Image *number_img, int x, int y, int dimension){
                         .g = number_img->pixels[i2][j2].g,
                         .b = number_img->pixels[i2][j2].b };
 
-            //if black value
+            //if black value (the pixel number)
             if (curP.r < 12)
                 src->pixels[y+i][x+j] = p;
         }
     }
 
-    //return src;
 
 }
 
 
 
-void add_number(Image src, int x, int y, int size, int number){
+void add_number(Image src, int coorX, int coorY, int number){
 
     const char *file;
+
+    //remove the sudoku's lines
+    int gap = src.width / 50;
+
+
+    int x = coorX * src.width / 9 + gap / 2;
+    int y = coorY * src.height / 9 + gap / 2;
+
+    //src is a square
+    int size = src.width / 9 - gap;
+
 
     switch ( number )
     {

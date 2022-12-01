@@ -6,6 +6,6 @@
 
 
 
-void add_number(Image src, int x, int y, int size, int number);
+void add_number(Image src, int coorX, int coorY, int number);
 
 #endif
