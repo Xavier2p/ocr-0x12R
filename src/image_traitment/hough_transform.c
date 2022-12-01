@@ -176,3 +176,25 @@ void draw_line(Image *image, Line *line)
         }
     }
 }
+
+
+void compute_hough(Image *image)
+{
+    Image draw_image_hough = copy_image(image);
+    int hough_threshold =
+        image->width > image->height ? image->width / 4 : image->height / 4;
+
+    MyList lines = hough_transform(image, hough_threshold);
+    MyList simplified_lines = simplify_lines(&lines, 40);
+
+    for (size_t i = 0; i < simplified_lines.length; ++i)
+    {
+        Line *l = get_value(&simplified_lines, i);
+        draw_line(&draw_image_hough, l);
+    }
+
+    free_list(&lines);
+    free_list(&simplified_lines);
+    save_image(&draw_image_hough, "res_hough_");
+    free_image(&draw_image_hough);
+}

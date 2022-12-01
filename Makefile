@@ -24,6 +24,9 @@ main: $(OBJ)
 image_traitment:
 	make -C src/image_traitment
 
+neural_network:
+	make -C src/neural_network/digit_recognition
+
 solver:
 	make -C src/sudoku_solver
 

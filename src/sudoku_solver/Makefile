@@ -1,6 +1,6 @@
 # Simple Makefile
 
-CC=gcc -I../../include
+CC=gcc
 CFLAGS= -Wall -Wextra -Werror -O3 -std=c99
 
 SRC =  $(shell find -name "*.c")
