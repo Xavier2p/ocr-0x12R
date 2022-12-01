@@ -5,23 +5,26 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <err.h>
 #include "neural_network.h"
+#include "save_load.h"
+#include "load_numeric.h"
+
 
 //----- ARGUMENT MANAGEMENT -----//
 
+void remove_cursor(int disable);
 void print_usage();
 
 //----- DATASET TRAIN AND TEST -----//
 
-unsigned int fetch_result(Network *network, int d);
+unsigned int fetch_result(Network *network);
 
 void train(unsigned int nb_hidden, unsigned int nb_neurons, double learning_rate);
 
 int test(Network *network, double clean_input[]);
 
 //----- MAIN -----//
-
-void remove_cursor();
 
 int is_empty(double image[]);
 

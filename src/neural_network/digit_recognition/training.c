@@ -72,7 +72,6 @@ int test(Network *network, double clean_input[])
         front_propagation(network, test_image[curr_NUM], 0);
 
         int result = fetch_result(network);
-        printf("%d %d\n", test_label[curr_NUM], result);
         if (result == test_label[curr_NUM])
             success_rate += 1;
     }
