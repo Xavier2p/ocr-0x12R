@@ -177,7 +177,6 @@ void draw_line(Image *image, Line *line)
     }
 }
 
-
 void compute_hough(Image *image)
 {
     Image draw_image_hough = copy_image(image);

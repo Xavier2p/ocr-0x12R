@@ -14,7 +14,7 @@ void image_traitment(Image *image)
 
     // adaptive_threshold(&image);
     apply_threshold(image, otsu(image));
-    
+
     // Find the corners of the grid
     Square corners = main_blob(image);
 
@@ -28,8 +28,6 @@ void image_traitment(Image *image)
 
     free_image(image);
     free_image(&final_grid);
-
-
 }
 
 int main(int argc, char **argv)
