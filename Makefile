@@ -30,6 +30,9 @@ neural_network:
 solver:
 	make -C src/sudoku_solver
 
+neural:
+	make -C src/neural_network
+
 format:
 	find -name "*.[ch]" -exec clang-format --verbose -i {} \;
 
