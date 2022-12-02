@@ -1,30 +1,30 @@
 #include "include/image_traitment.h"
-#include "include/utilis_image.h"
 
 Image image_traitment(Image *image)
 {
     // Preprocess
-    surface_to_grayscale(image);
+    grayscale(image);
     // save_image(&image, "gray_scale_");
     image_contrast(image, 12);
     // save_image(&image, "contrast_");
     image_normalize_brightness(image);
     // save_image(&image, "brightness_");
     gaussian_blur(image, 4);
-    // save_image(&image, "gaussian_blur_");
+    save_image(image, "gaussian_blur_");
 
+    return copy_image(image);
     // adaptive_threshold(image);
-    apply_threshold(image, otsu(image));
+//    apply_threshold(image, otsu(image));
 
     // Find the corners of the grid
-    Square corners = main_blob(image);
+ //   Square corners = main_blob(image);
 
     // Resize, rotate and correct perspective
-    Image final_grid = homographic_transform(image, &corners, 756);
+  //  Image final_grid = homographic_transform(image, &corners, 756);
 
-    save_image(image, "save_");
+   // save_image(image, "save_");
 
-    return final_grid;
+   // return final_grid;
 }
 
 // int main(int argc, char **argv)

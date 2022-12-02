@@ -2,6 +2,8 @@
 #define PREPROCESS_H
 
 #include "utilis_image.h"
+_
+void grayscale(Image *image);
 
 void image_contrast(Image *image, size_t n);
 

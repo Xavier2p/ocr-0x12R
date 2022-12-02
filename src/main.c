@@ -73,6 +73,7 @@ int main(int argc, char **argv)
 
         for (int i = 0; i < 10; ++i)
             free(sudoku_grid[i]);
+
         free(sudoku_grid);
         free_network(&n);
         free_image(&computed_image);
