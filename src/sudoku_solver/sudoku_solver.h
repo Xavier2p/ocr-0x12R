@@ -24,6 +24,8 @@
 
 #define N 9
 
+void print_grid(int **sudoku_grid);
+
 void export_grid(int **grid, char filename[]);
 
 void import_grid(int **grid, char filename[]);

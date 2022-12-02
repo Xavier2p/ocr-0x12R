@@ -58,7 +58,7 @@ double *create_square_image(Image *image, int i, int j, int size, int cordi,
     }
 
     Image tmp_resized = resize_image(&tmp, SIZE_OF_NEURAL_INPUT);
-    save_image(&tmp_resized, "res_");
+    //    save_image(&tmp_resized, "res_");
     double *res =
         calloc(SIZE_OF_NEURAL_INPUT * SIZE_OF_NEURAL_INPUT, sizeof(double));
 
@@ -73,25 +73,8 @@ double *create_square_image(Image *image, int i, int j, int size, int cordi,
     return res;
 }
 
-void print_array(double *arr, int size)
+int **segmentation(Image *image, Network *n)
 {
-    for (int i = 0; i < size; ++i)
-    {
-        for (int j = 0; j < size; ++j)
-        {
-            printf("%d", arr[i * size + j] == 1.0 ? 1 : 0);
-        }
-        printf("\n");
-    }
-    printf("\n");
-    printf("\n");
-}
-
-void segmentation(Image *image)
-{
-    Network n;
-    load_weights(&n, PATH_TO_WEIGHTS);
-
     int w = image->width;
     int h = image->height;
     int bloc_size = image->width / 9;
@@ -99,14 +82,14 @@ void segmentation(Image *image)
     int cordi = 0;
     int cordj = 0;
 
-    int **grid = (int **)calloc(9, sizeof(int *));
-    for (size_t i = 0; i < 9; ++i)
-        grid[i] = (int *)calloc(9, sizeof(int));
+    int **grid = (int **)calloc(10, sizeof(int *));
+    for (size_t i = 0; i < 10; ++i)
+        grid[i] = (int *)calloc(10, sizeof(int));
 
-    for (int i = 0; i < h; i += bloc_size)
+    for (int i = 0; i <= h; i += bloc_size)
     {
         cordj = 0;
-        for (int j = 0; j < w; j += bloc_size)
+        for (int j = 0; j <= w; j += bloc_size)
         {
             double *tmp =
                 create_square_image(image, i, j, bloc_size, cordi, cordj);
@@ -116,8 +99,8 @@ void segmentation(Image *image)
                 res = 0;
             else
             {
-                front_propagation(&n, tmp, 0);
-                res = fetch_result(&n);
+                front_propagation(n, tmp, 0);
+                res = fetch_result(n);
             }
 
             grid[cordi][cordj] = res;
@@ -128,16 +111,5 @@ void segmentation(Image *image)
         cordi++;
     }
 
-    for (int i = 0; i < 9; ++i)
-    {
-        for (int j = 0; j < 9; ++j)
-        {
-            printf("%d", grid[i][j]);
-        }
-        printf("\n");
-        free(grid[i]);
-    }
-
-    free(grid);
-    free_network(&n);
+    return grid;
 }

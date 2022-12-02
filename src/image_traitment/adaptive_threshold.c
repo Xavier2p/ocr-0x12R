@@ -47,7 +47,7 @@ double *gaussian_kernel(size_t radius, double sigma)
     return kernel;
 }
 
-int compute_threshold(Image *image, int x, int y, int range, double *kernel)
+int compute_threshold(Image *image, int x, int y, int range)
 {
     int w = image->width;
     int h = image->height;
@@ -66,8 +66,7 @@ int compute_threshold(Image *image, int x, int y, int range, double *kernel)
             {
                 if (x + dx >= 0 && x + dx < w)
                 {
-                    sum += (double)pixels[y + dy][x + dx].r
-                        * kernel[dx * w + dy + range];
+                    sum += (double)pixels[y + dy][x + dx].r;
                     nb_pixels++;
                 }
             }
@@ -99,11 +98,11 @@ void adaptive_threshold(Image *image)
     {
         for (int y = 0; y < h; ++y)
         {
-            int thresh = compute_threshold(&c_image, x, y, range, kernel);
+            int thresh = compute_threshold(&c_image, x, y, range);
             if (pixels[y][x].r > (unsigned int)thresh)
-                set_all_pixel(image, y, x, 0);
-            else
                 set_all_pixel(image, y, x, 255);
+            else
+                set_all_pixel(image, y, x, 0);
         }
     }
 
