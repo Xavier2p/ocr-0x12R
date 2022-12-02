@@ -58,12 +58,7 @@ $(BUILD)/%.o : %.c
 
 clean:
 	${RM} main
-	${RM} res_*
 	${RM} ${OBJ}
 	rm -rf $(BUILD)
 	${RM} ${EXE}
-	${RM} res_*
-	${RM} .ut*
-	${RM} .Make*
-	${RM} .main*
-	${RM} .sob*
+	${RM} double_tresh_res_image_0* hysteris_res_image_0* non_max_res_image_0* sobel_res_image_0* gaussian_blur_res_i* gray_scale_res_ima* brightness_res_im* contrast_res_ima* res_hough_res_ima* homographic_transform_res*

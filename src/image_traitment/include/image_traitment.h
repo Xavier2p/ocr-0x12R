@@ -15,7 +15,7 @@
 #include "blob.h"
 #include "canny.h"
 #include "homographic_transform.h"
-#include "adaptive_treshold.h"
+#include "adaptative_threshold.h"
 #include "segmentation.h"
 
 Image image_traitment(Image *image);
