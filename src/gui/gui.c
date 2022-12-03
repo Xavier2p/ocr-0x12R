@@ -1,4 +1,6 @@
 #include "includes/gui.h"
+#include <stdio.h>
+#include <stdlib.h>
 #include "includes/main.h"
 
 GtkWidget* window = NULL;
@@ -17,6 +19,12 @@ gchar* filename_ui = NULL;
 char* filename_image = NULL;
 Image image;
 int pc = 0;
+
+// params for custom train of NN
+GtkEntry* param1 = NULL;
+GtkEntry* param2 = NULL;
+GtkEntry* param3 = NULL;
+
 
 /**
  * @brief  initialize the GUI
@@ -129,7 +137,15 @@ void on_button_Next_clicked()
 
 void on_button_appply_settings_clicked()
 {
+    int* nb_layers = malloc(sizeof(int));
+    int* nb_neuron = malloc(sizeof(int));
+    int* learningr = malloc(sizeof(int));
+    sscanf((char*) gtk_entry_get_text(param1), "%d", nb_layers);
+    sscanf((char*) gtk_entry_get_text(param2), "%d", nb_neuron);
+    sscanf((char*) gtk_entry_get_text(param3), "%d", learningr);
     printf("training network....................................ok\n");
+    printf("nb_layers = %d\nnb_neuron = %d\nlearningr = %d\n", *nb_layers,
+            *nb_neuron, *learningr);
     gtk_widget_destroy(dialog);
 }
 
@@ -154,6 +170,9 @@ void on_button_Rotate_clicked()
  */
 void on_custom_nn_toggled()
 {
+    param1 = GTK_ENTRY(gtk_builder_get_object(builder, "entry-param1"));
+    param2 = GTK_ENTRY(gtk_builder_get_object(builder, "entry-param2"));
+    param3 = GTK_ENTRY(gtk_builder_get_object(builder, "entry-param3"));
     gtk_label_set_text(GTK_LABEL(label_one), (const gchar *)"Button Settings");
     gtk_window_set_transient_for (GTK_WINDOW(dialog), GTK_WINDOW(window));
     gtk_widget_show_all(dialog);
