@@ -7,6 +7,7 @@
 
 #include "struct.h"
 #include "utilis_image.h"
+#include "adaptative_threshold.h"
 
 struct DotQueue
 {

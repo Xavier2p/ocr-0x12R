@@ -1,4 +1,7 @@
 #include "include/image_traitment.h"
+#include "include/blob.h"
+#include "include/linkedlist.h"
+#include "include/utilis_image.h"
 
 Image image_traitment(Image *image)
 {
@@ -9,16 +12,19 @@ Image image_traitment(Image *image)
     // save_image(&image, "contrast_");
     image_normalize_brightness(image);
     // save_image(&image, "brightness_");
-    gaussian_blur(image, 7);
+    gaussian_blur(image, 2);
+    save_image(image, "blur_");
 
-    adaptative_threshold(image);
+    //    adaptative_threshold(image);
 
-    //   dilatation(image);
-    //   erodation(image);
+    //    canny_edge_detection(image);
 
-    save_image(image, "adaptive_");
+    //    save_image(image, "adaptive_");
+    // REMOVE SMALL BLOB
+    //  main_blob(image);
 
-    // canny_edge_detection(image);
+    // dilatation(image);
+    // erodation(image);
 
     return copy_image(image);
     //    apply_threshold(image, otsu(image));
