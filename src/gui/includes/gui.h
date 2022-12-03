@@ -12,8 +12,10 @@
 #define LOGO "assets/logo.png"
 
 #include "gui_tools.h"
+#include "utilis_image.h"
 
 void init_gui(int argc, char *argv[]);
 GtkBuilder* builder;
+Image image;
 
 #endif

@@ -1,6 +1,4 @@
 #include "includes/gui.h"
-#include <stdio.h>
-#include <stdlib.h>
 #include "includes/main.h"
 
 GtkWidget* window = NULL;
@@ -17,7 +15,6 @@ GtkWidget* dialog = NULL;
 GError* error = NULL;
 gchar* filename_ui = NULL;
 char* filename_image = NULL;
-Image image;
 int pc = 0;
 
 // params for custom train of NN
