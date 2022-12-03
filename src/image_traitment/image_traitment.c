@@ -13,10 +13,10 @@ Image image_traitment(Image *image)
 
     adaptative_threshold(image);
 
-    dilatation(image);
-    erodation(image);
+    //   dilatation(image);
+    //   erodation(image);
 
-    save_image(image, "adaprive_");
+    save_image(image, "adaptive_");
 
     // canny_edge_detection(image);
 

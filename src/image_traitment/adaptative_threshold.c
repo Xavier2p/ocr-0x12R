@@ -49,14 +49,17 @@ void adaptative_threshold(Image *image)
                 }
             }
             int mean = sum / count;
-            if ((int)pixels[i][j].r < mean - ADAPTIVETHRESHOLING_C)
-            {
-                set_all_pixel(image, i, j, 0);
-            }
+
+            if (count > 0)
+                mean = sum / count;
+
+            if (mean > ADAPTIVETHRESHOLING_C)
+                mean -= ADAPTIVETHRESHOLING_C;
             else
-            {
-                set_all_pixel(image, i, j, 255);
-            }
+                mean = 0;
+
+            set_all_pixel(image, i, j,
+                          (int)image->pixels[i][j].r > mean ? 0 : 255);
         }
     }
 }
