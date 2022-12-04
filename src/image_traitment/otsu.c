@@ -15,7 +15,7 @@
  *
  * =====================================================================================
  */
-#include "../../include/image_traitment/otsu.h"
+#include "include/otsu.h"
 
 float compute_zero_order(float *hist, int k)
 {

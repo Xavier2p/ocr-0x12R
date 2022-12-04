@@ -1,9 +1,9 @@
 # Simple Makefile
 
-CC=gcc -I../../include
-CFLAGS= -Wall -Wextra -Werror -O3 -std=c99 -fsanitize=address
+CC=gcc
+CFLAGS= -Wall -Wextra -Werror -O3 -std=c99
 
-SRC =  $(shell find -name "*.c")
+SRC = sudoku_solver.c
 OBJ = $(SRC:%.c=$(BUILD)/%.o)
 DEP = $(SRC:%.c=$(BUILD)/%.d)
 
