@@ -3,7 +3,6 @@
 
 GdkPixbuf* convert_image_to_gui(Image* image)
 {
-    printf("with = %d, height = %d\n", image->width, image->height);
     GdkPixbuf *pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, TRUE, 8,
                                        image->width, image->height);
 
@@ -34,10 +33,8 @@ void set_image_to_gui(GdkPixbuf* pixbuf, char* GtkimageID)
     GtkImage *imageWidget =
         GTK_IMAGE(gtk_builder_get_object(builder, GtkimageID)); // get image
 
-    int width = 300; //CLAMP(gtk_widget_get_allocated_width(GTK_WIDGET(panel)), 0,
-                    //   1000);
+    int width = 400;
     int height = 300;
-        // CLAMP(gtk_widget_get_allocated_height(GTK_WIDGET(panel)), 0, 1000);
 
     // get image size
     int image_width = gdk_pixbuf_get_width(pixbuf);
@@ -54,7 +51,6 @@ void set_image_to_gui(GdkPixbuf* pixbuf, char* GtkimageID)
     int new_width = image_width * scale_factor;
     int new_height = image_height * scale_factor;
 
-    printf("%f %d %d\n", scale_factor, width, height);
     // resize the image
     GdkPixbuf *resized_image = gdk_pixbuf_scale_simple(
         pixbuf, new_width, new_height, GDK_INTERP_BILINEAR); // resize image

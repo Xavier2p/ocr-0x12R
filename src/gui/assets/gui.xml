@@ -253,32 +253,32 @@
           </object>
           <packing>
             <property name="x">5</property>
-            <property name="y">190</property>
+            <property name="y">240</property>
           </packing>
         </child>
         <child>
-          <object class="GtkButton" id="button_Resize">
-            <property name="label" translatable="yes">Resize Image</property>
+          <object class="GtkButton" id="custom_nn">
+            <property name="label" translatable="yes">Use Custom Neural Network</property>
             <property name="width-request">200</property>
             <property name="height-request">30</property>
             <property name="visible">True</property>
             <property name="can-focus">True</property>
             <property name="receives-default">True</property>
-            <property name="tooltip-text" translatable="yes">Resize Image</property>
+            <property name="tooltip-text" translatable="yes">Only if you know what are you doing</property>
             <property name="halign">start</property>
             <property name="valign">start</property>
             <property name="margin-left">10</property>
             <property name="margin-right">10</property>
             <property name="margin-top">10</property>
             <property name="margin-bottom">10</property>
-            <signal name="clicked" handler="on_button_Resize_clicked" swapped="no"/>
+            <signal name="clicked" handler="on_custom_nn_clicked" swapped="no"/>
             <style>
               <class name="button"/>
             </style>
           </object>
           <packing>
             <property name="x">5</property>
-            <property name="y">240</property>
+            <property name="y">375</property>
           </packing>
         </child>
         <child>
@@ -313,6 +313,7 @@
             <property name="height-request">30</property>
             <property name="visible">True</property>
             <property name="can-focus">False</property>
+            <property name="tooltip-text" translatable="yes">Load an image from file</property>
             <property name="margin-left">10</property>
             <property name="margin-right">10</property>
             <property name="margin-top">10</property>
@@ -320,12 +321,12 @@
             <property name="title" translatable="yes">Load Image</property>
             <signal name="file-set" handler="file_select" swapped="no"/>
             <style>
-              <class name="button"/>
+              <class name="filechooserbutton"/>
             </style>
           </object>
           <packing>
             <property name="x">5</property>
-            <property name="y">140</property>
+            <property name="y">160</property>
           </packing>
         </child>
         <child>
@@ -341,13 +342,14 @@
         </child>
         <child>
           <object class="GtkImage" id="main_image">
-            <property name="width-request">100</property>
-            <property name="height-request">80</property>
+            <property name="width-request">400</property>
+            <property name="height-request">300</property>
             <property name="visible">True</property>
             <property name="can-focus">False</property>
+            <property name="pixbuf">logo_big.png</property>
           </object>
           <packing>
-            <property name="x">330</property>
+            <property name="x">300</property>
             <property name="y">20</property>
           </packing>
         </child>
@@ -366,7 +368,7 @@
             <property name="margin-bottom">10</property>
             <signal name="clicked" handler="on_button_Next_clicked" swapped="no"/>
             <style>
-              <class name="button_launch"/>
+              <class name="button"/>
             </style>
           </object>
           <packing>
@@ -375,24 +377,19 @@
           </packing>
         </child>
         <child>
-          <object class="GtkCheckButton" id="custom_nn">
-            <property name="label" translatable="yes">Use custom config 
-for neural network</property>
-            <property name="width-request">100</property>
-            <property name="height-request">80</property>
+          <object class="GtkLabel" id="label-load">
+            <property name="width-request">200</property>
+            <property name="height-request">30</property>
             <property name="visible">True</property>
-            <property name="can-focus">True</property>
-            <property name="receives-default">False</property>
-            <property name="tooltip-text" translatable="yes">Override default presets, can be less accurate</property>
-            <property name="draw-indicator">True</property>
-            <signal name="toggled" handler="on_custom_nn_toggled" swapped="no"/>
+            <property name="can-focus">False</property>
+            <property name="label" translatable="yes">Choose an image:</property>
             <style>
-              <class name="checkbox"/>
+              <class name="label"/>
             </style>
           </object>
           <packing>
-            <property name="x">12</property>
-            <property name="y">288</property>
+            <property name="x">5</property>
+            <property name="y">140</property>
           </packing>
         </child>
         <style>

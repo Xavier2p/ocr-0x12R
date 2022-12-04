@@ -19,3 +19,32 @@ char* launcher_normalize()
     return "Normalized Brightness";
 }
 
+char* launcher_threshold()
+{
+    // adaptative_threshold(&image);
+    return "[NI] Threshold Applied";
+}
+
+char* launcher_canny()
+{
+    // canny_edge_detection(&image);
+    return "[NI] Canny Applied";
+}
+
+char* launcher_blob()
+{
+    // main_blob(&image);
+    return "[NI] Blob Applied";
+}
+
+char* launcher_dilatation()
+{
+    // dilatation(&image);
+    return "[NI] Dilatation Applied";
+}
+
+char* launcher_erosion()
+{
+    // erodation(&image);
+    return "[NI] Erosion Applied";
+}
