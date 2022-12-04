@@ -2,7 +2,6 @@ CC = gcc
 CFLAGS = -Wall -Wextra -Werror `pkg-config --cflags sdl2 SDL2_image gtk+-3.0` -std=c99 -g -rdynamic
 LDLIBS = `pkg-config --libs gtk+-3.0 sdl2 SDL2_image` -lSDL2 -lm -g
 
-
 BUILD := build
 SOURCE_DIR := src
 
