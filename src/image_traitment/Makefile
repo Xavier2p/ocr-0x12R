@@ -46,8 +46,8 @@ format:
 	find -name "*.[ch]" -exec clang-format --verbose -i {} \;
 
 
-$(BUILD)/%.o : %.c
-	$(CC) $(CFLAGS) -c $< -o $@ $(LDLFLAGS) $(CPPFLAGS) $(LDLIBS)
+$(build)/%.o : %.c
+	$(cc) $(cflags) -c $< -o $@ $(ldlflags) $(cppflags) $(ldlibs)
 
 clean:
 	rm -rf $(BUILD)

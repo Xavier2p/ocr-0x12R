@@ -6,12 +6,12 @@
 #include <stdlib.h>
 
 #include "gui.h"
-#include "utilis_image.h"
+#include "../../image_traitment/include/utilis_image.h"
 
 GdkPixbuf *convert_image_to_gui(Image *image);
 
-void set_image_to_gui(GdkPixbuf *pixbuf, char *GtkimageID);
+void set_image_to_gui(GdkPixbuf *pixbuf, char *GtkimageID, GtkBuilder *builder);
 
-void change_image_on_gui(Image *_image, char *GtkimageID);
+void change_image_on_gui(Image *_image, char *GtkimageID, GtkBuilder *builder);
 
 #endif

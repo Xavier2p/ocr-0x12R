@@ -6,29 +6,35 @@ LDFLAGS=
 LDLIBS=`pkg-config --libs gtk+-3.0 sdl2 SDL2_image` -lSDL2 -lm
 
 # The name of the executable
-TARGET=gui
+SRC =  $(shell find -name "*.c")
+OBJ = $(SRC:%.c=$(BUILD)/%.o)
+DEP = $(SRC:%.c=$(BUILD)/%.d)
+
+BUILD := build
+EXEC := main
 
 # The source files
-SRC=utilis_image.c gui.c main.c gui_tools.c launcher.c preprocess.c
-OBJ=$(SRC:.c=.o)
-EXE=${SRC:.c=}
 
 
-$(TARGET): $(OBJ)
-	${CC} ${CFLAGS} -o $@ $^ ${LDLIBS}
+all: init gui
 
+
+init:
+	$(shell mkdir -p $(BUILD))
+	$(shell mkdir -p $(SRC:%=$(BUILD)/%))
+
+gui: $(OBJ)
+	gcc -o $(EXEC) $(CFLAGS) $^ $(LDFLAGS) $(LDLIBS)
 
 format:
 	find -name "*.[ch]" -exec clang-format --verbose -i {} \;
 
-
-all: $(TARGET)
-
-
-.PHONY: all
-
+$(build)/%.o : %.c
+	$(cc) $(cflags) -c $< -o $@ $(ldlflags) $(cppflags) $(ldlibs)
 
 clean:
-	${RM} $(OBJ) $(EXE) $(TARGET)
+	${RM} $(OBJ) $(EXEC) $(TARGET)
+	rm -rf $(BUILD)
+
 
 # END OF MAKEFILE

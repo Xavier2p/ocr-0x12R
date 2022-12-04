@@ -23,7 +23,7 @@
 #include "image_traitment/include/image_traitment.h"
 #include "image_traitment/include/segmentation.h"
 #include "sudoku_solver/sudoku_solver.h"
-
+#include "gui/includes/gui.h"
 
 int main(int argc, char **argv)
 {
@@ -49,8 +49,6 @@ int main(int argc, char **argv)
         // Free imnage and surface used for import
         free_image(&tmp_image);
         SDL_FreeSurface(surface);
-
-
 
         // Initialise the neural network
         Network n;
@@ -82,6 +80,10 @@ int main(int argc, char **argv)
 
         printf("\n");
         SDL_Quit();
+    }
+    else
+    {
+        init_gui(argc, argv);
     }
 
     return 0;

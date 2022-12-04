@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror `pkg-config --cflags sdl2 SDL2_image gtk+-3.0` -std=c99 -g
+CFLAGS = -Wall -Wextra -Werror `pkg-config --cflags sdl2 SDL2_image gtk+-3.0` -std=c99 -g -rdynamic
 LDLIBS = `pkg-config --libs gtk+-3.0 sdl2 SDL2_image` -lSDL2 -lm -g
 
 
@@ -25,14 +25,14 @@ main: $(OBJ)
 image_traitment:
 	make -C src/image_traitment
 
-neural_network:
-	make -C src/neural_network
-
 solver:
 	make -C src/sudoku_solver
 
 neural:
 	make -C src/neural_network
+
+gui:
+	make -C src/gui
 
 format:
 	find -name "*.[ch]" -exec clang-format --verbose -i {} \;
