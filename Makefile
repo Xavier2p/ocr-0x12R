@@ -1,6 +1,6 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror `pkg-config --cflags sdl2 SDL2_image gtk+-3.0` -O3 -std=c99 -pedantic
-LDLIBS = `pkg-config --libs gtk+-3.0 sdl2 SDL2_image` -lSDL2 -lm
+CFLAGS = -Wall -Wextra -Werror `pkg-config --cflags sdl2 SDL2_image gtk+-3.0` -std=c99 -g
+LDLIBS = `pkg-config --libs gtk+-3.0 sdl2 SDL2_image` -lSDL2 -lm -g
 
 BUILD := build
 SOURCE_DIR := src
@@ -48,6 +48,9 @@ test:
 	feh *.jpeg
 
 valim:
+	valgrind ./main image_01.jpeg
+
+valim1:
 	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes  -s ./main image_01.jpeg
 
 $(BUILD)/%.o : %.c
@@ -55,12 +58,8 @@ $(BUILD)/%.o : %.c
 
 clean:
 	${RM} main
-	${RM} res_*
 	${RM} ${OBJ}
+	-rm grid.result
 	rm -rf $(BUILD)
 	${RM} ${EXE}
-	${RM} res_*
-	${RM} .ut*
-	${RM} .Make*
-	${RM} .main*
-	${RM} .sob*
+	${RM} double_tresh_res_image_0* hysteris_res_image_0* non_max_res_image_0* sobel_res_image_0* gaussian_blur_res_i* gray_scale_res_ima* brightness_res_im* contrast_res_ima* res_hough_res_ima* homographic_transform_res* adaptive_res* blur_res*

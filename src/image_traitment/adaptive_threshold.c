@@ -17,95 +17,109 @@
  */
 #include "include/adaptive_treshold.h"
 
-#define ADAPTIVETHRESHOLDING_RANGE 5
-#define ADAPTIVETHRESHOLING_C 3
+#define ADAPTIVETHRESHOLDING_RANGE 7
+#define ADAPTIVETHRESHOLING_C 4
+#define DILATAION_RANGE 2
 
-double *gaussian_kernel(size_t radius, double sigma)
-{
-    size_t k_size = 2 * radius + 1;
-    double *kernel = malloc(k_size * k_size * sizeof(*kernel));
-
-    double sum = 0;
-    for (size_t y = 0; y < k_size; ++y)
-    {
-        for (size_t x = 0; x < k_size; ++x)
-        {
-            double expNum =
-                (x - radius) * (x - radius) + (y - radius) * (y - radius);
-            double expDen = -2 * sigma * sigma;
-            double res = exp(expNum / expDen) / (2 * M_PI * sigma * sigma);
-            sum += res;
-            kernel[y * k_size + x] = res;
-        }
-    }
-
-    for (size_t i = 0; i < k_size * k_size; ++i)
-    {
-        kernel[i] /= sum;
-    }
-
-    return kernel;
-}
-
-int compute_threshold(Image *image, int x, int y, int range)
+// Compute adaptive threshold on the image
+void adaptative_threshold(Image *image)
 {
     int w = image->width;
     int h = image->height;
-    Pixel **pixels = image->pixels;
+    Image c_image = copy_image(image);
+    Pixel **pixels = c_image.pixels;
 
-    int res = 0;
-    int c = ADAPTIVETHRESHOLING_C;
-    int nb_pixels = 0;
-    double sum = 0;
-
-    for (int dy = -range; dy < range; ++dy)
+    for (int i = 0; i < h; ++i)
     {
-        if (y + dy >= 0 && y + dy < h)
+        for (int j = 0; j < w; ++j)
         {
-            for (int dx = -range; dx < range; ++dx)
+            int sum = 0;
+            int count = 0;
+            for (int k = i - ADAPTIVETHRESHOLDING_RANGE;
+                 k < i + ADAPTIVETHRESHOLDING_RANGE; k++)
             {
-                if (x + dx >= 0 && x + dx < w)
+                for (int l = j - ADAPTIVETHRESHOLDING_RANGE;
+                     l < j + ADAPTIVETHRESHOLDING_RANGE; l++)
                 {
-                    sum += (double)pixels[y + dy][x + dx].r;
-                    nb_pixels++;
+                    if (k >= 0 && k < h && l >= 0 && l < w)
+                    {
+                        sum += pixels[k][l].r;
+                        count++;
+                    }
+                }
+            }
+            int mean = sum / count;
+
+            if (count > 0)
+                mean = sum / count;
+
+            if (mean > ADAPTIVETHRESHOLING_C)
+                mean -= ADAPTIVETHRESHOLING_C;
+            else
+                mean = 0;
+
+            set_all_pixel(image, i, j,
+                          (int)image->pixels[i][j].r > mean ? 0 : 255);
+        }
+    }
+}
+
+void dilatation(Image *image)
+{
+    int w = image->width;
+    int h = image->height;
+    Image c_image = copy_image(image);
+    Pixel **pixels = c_image.pixels;
+
+    for (int i = 0; i < h; ++i)
+    {
+        for (int j = 0; j < w; ++j)
+        {
+            int count = 0;
+            for (int k = i - DILATAION_RANGE;
+                 k < i + DILATAION_RANGE && count != 1; k++)
+            {
+                for (int l = j - DILATAION_RANGE;
+                     l < j + DILATAION_RANGE && count != 1; l++)
+                {
+                    if (k >= 0 && k < h && l >= 0 && l < w
+                        && pixels[k][l].r == 255)
+                    {
+                        set_all_pixel(image, i, j, 255);
+                        count = 1;
+                    }
                 }
             }
         }
     }
-
-    if (nb_pixels > 0)
-        res = sum / nb_pixels;
-
-    if (res > c)
-        res -= c;
-    else
-        res = 0;
-
-    return res;
 }
 
-void adaptive_threshold(Image *image)
+void erodation(Image *image)
 {
     int w = image->width;
     int h = image->height;
-    Pixel **pixels = image->pixels;
-
-    int range = ADAPTIVETHRESHOLDING_RANGE;
-    double *kernel = gaussian_kernel(range, 3);
     Image c_image = copy_image(image);
+    Pixel **pixels = c_image.pixels;
 
-    for (int x = 0; x < w; ++x)
+    for (int i = 0; i < h; ++i)
     {
-        for (int y = 0; y < h; ++y)
+        for (int j = 0; j < w; ++j)
         {
-            int thresh = compute_threshold(&c_image, x, y, range);
-            if (pixels[y][x].r > (unsigned int)thresh)
-                set_all_pixel(image, y, x, 255);
-            else
-                set_all_pixel(image, y, x, 0);
+            int count = 0;
+            for (int k = i - DILATAION_RANGE;
+                 k < i + DILATAION_RANGE && count != 0; k++)
+            {
+                for (int l = j - DILATAION_RANGE;
+                     l < j + DILATAION_RANGE && count != 0; l++)
+                {
+                    if (k >= 0 && k < h && l >= 0 && l < w
+                        && pixels[k][l].r == 0)
+                    {
+                        set_all_pixel(image, i, j, 0);
+                        count++;
+                    }
+                }
+            }
         }
     }
-
-    free_image(&c_image);
-    free(kernel);
 }

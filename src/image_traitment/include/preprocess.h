@@ -3,6 +3,8 @@
 
 #include "utilis_image.h"
 
+void grayscale(Image *image);
+
 void image_contrast(Image *image, size_t n);
 
 float max_color(Image *image);
