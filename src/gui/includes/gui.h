@@ -1,10 +1,10 @@
 #ifndef GUI_H
 #define GUI_H
-#include <stdlib.h>
-#include <gtk/gtk.h>
-#include <stdio.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <gtk/gtk.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 #define UI_FILE "assets/gui.xml"
 #define CSS_FILE "assets/gui.css"
@@ -15,7 +15,7 @@
 #include "utilis_image.h"
 
 void init_gui(int argc, char *argv[]);
-GtkBuilder* builder;
+GtkBuilder *builder;
 Image image;
 
 #endif

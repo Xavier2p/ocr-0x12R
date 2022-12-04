@@ -65,8 +65,8 @@ void init_gui(int argc, char *argv[])
     // Inject CSS
     GdkScreen *screen = gdk_screen_get_default();
     gtk_style_context_add_provider_for_screen(screen,
-                                              GTK_STYLE_PROVIDER(cssProvider),
-                                              GTK_STYLE_PROVIDER_PRIORITY_USER);
+            GTK_STYLE_PROVIDER(cssProvider),
+            GTK_STYLE_PROVIDER_PRIORITY_USER);
 
     gtk_widget_show(window);
     gtk_main();
@@ -112,7 +112,7 @@ void on_button_Next_clicked()
     if (selected == 0)
     {
         gtk_label_set_text(GTK_LABEL(label_one),
-                           (const gchar *)"Please select an image first");
+                (const gchar *)"Please select an image first");
         return;
     }
 
@@ -126,26 +126,27 @@ void on_button_Next_clicked()
     }
 
     else
-    {
         gtk_label_set_text(GTK_LABEL(label_one), (const gchar *)"END");
-    }
 }
 
 void on_button_appply_settings_clicked()
 {
-    int *nb_layers = malloc(sizeof(int));
-    int *nb_neuron = malloc(sizeof(int));
-    int *learningr = malloc(sizeof(int));
+    int *nb_layers = calloc(1, sizeof(int));
+    int *nb_neuron = calloc(1, sizeof(int));
+    int *learningr = calloc(1, sizeof(int));
     sscanf((char *)gtk_entry_get_text(param1), "%d", nb_layers);
     sscanf((char *)gtk_entry_get_text(param2), "%d", nb_neuron);
     sscanf((char *)gtk_entry_get_text(param3), "%d", learningr);
     gtk_label_set_text(GTK_LABEL(label_one),
-                       (const gchar *)"Settings applied, the Neural Network "
-                                      "will be retrained");
+            (const gchar *)"Settings applied, the Neural Network "
+            "will be retrained");
     printf("training network....................................ok\n");
     printf("nb_layers = %d\nnb_neuron = %d\nlearningr = %d\n", *nb_layers,
-           *nb_neuron, *learningr);
+            *nb_neuron, *learningr);
     gtk_widget_destroy(dialog);
+    free(nb_layers);
+    free(nb_neuron);
+    free(learningr);
 }
 
 /**
@@ -173,7 +174,7 @@ void on_custom_nn_clicked()
     param2 = GTK_ENTRY(gtk_builder_get_object(builder, "entry-param2"));
     param3 = GTK_ENTRY(gtk_builder_get_object(builder, "entry-param3"));
     gtk_label_set_text(GTK_LABEL(label_one),
-                       (const gchar *)"Choose your parameters");
+            (const gchar *)"Choose your parameters");
     gtk_window_set_transient_for(GTK_WINDOW(dialog), GTK_WINDOW(window));
     gtk_widget_show_all(dialog);
     gtk_dialog_run(GTK_DIALOG(dialog));
@@ -188,11 +189,11 @@ void on_button_Launch_clicked()
     if (selected == 0)
     {
         gtk_label_set_text(GTK_LABEL(label_one),
-                           (const gchar *)"Please select an image first");
+                (const gchar *)"Please select an image first");
         return;
     }
 
     gtk_label_set_text(GTK_LABEL(label_one),
-                       (const gchar *)"OCR in progress...");
+            (const gchar *)"OCR in progress...");
     // solve_all();
 }

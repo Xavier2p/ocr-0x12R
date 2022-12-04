@@ -1,7 +1,8 @@
 #include "includes/gui_tools.h"
+
 #include <stdio.h>
 
-GdkPixbuf* convert_image_to_gui(Image* image)
+GdkPixbuf *convert_image_to_gui(Image *image)
 {
     GdkPixbuf *pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, TRUE, 8,
                                        image->width, image->height);
@@ -28,7 +29,7 @@ GdkPixbuf* convert_image_to_gui(Image* image)
     return pixbuf;
 }
 
-void set_image_to_gui(GdkPixbuf* pixbuf, char* GtkimageID)
+void set_image_to_gui(GdkPixbuf *pixbuf, char *GtkimageID)
 {
     GtkImage *imageWidget =
         GTK_IMAGE(gtk_builder_get_object(builder, GtkimageID)); // get image

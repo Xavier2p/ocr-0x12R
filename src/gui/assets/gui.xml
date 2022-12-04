@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.40.0 -->
+<!-- Generated with glade 3.38.2 -->
 <interface>
   <requires lib="gtk+" version="3.24"/>
+  <!-- interface-css-provider-path gui.css -->
   <object class="GtkDialog" id="dialog_settings">
     <property name="can-focus">False</property>
     <property name="title" translatable="yes">Settings of Neural Network</property>
@@ -258,13 +259,14 @@
         </child>
         <child>
           <object class="GtkButton" id="custom_nn">
-            <property name="label" translatable="yes">Use Custom Neural Network</property>
+            <property name="label" translatable="yes">Settings</property>
             <property name="width-request">200</property>
             <property name="height-request">30</property>
             <property name="visible">True</property>
             <property name="can-focus">True</property>
             <property name="receives-default">True</property>
-            <property name="tooltip-text" translatable="yes">Only if you know what are you doing</property>
+            <property name="tooltip-text" translatable="yes">Settings of Neural Network.
+Only if you know what are you doing</property>
             <property name="halign">start</property>
             <property name="valign">start</property>
             <property name="margin-left">10</property>
