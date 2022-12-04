@@ -1,9 +1,6 @@
 #include "include/blob.h"
-#include <stdio.h>
-#include "include/utilis_image.h"
 
-int blob_detection(Image *image, Dot start, unsigned int prev_color,
-                   int new_color)
+int blob_detection(Image *image, Dot start)
 {
     Pixel **pixels = image->pixels;
     int w = image->width;
@@ -29,9 +26,9 @@ int blob_detection(Image *image, Dot start, unsigned int prev_color,
         if (x < 0 || x >= w || y < 0 || y >= h)
             continue;
 
-        if (pixels[y][x].r == prev_color)
+        if (pixels[y][x].r == 255)
         {
-            set_all_pixel(image, y, x, new_color);
+            set_all_pixel(image, y, x, 88);
             nb_dots++;
 
             p = malloc(sizeof(*p));
@@ -41,7 +38,7 @@ int blob_detection(Image *image, Dot start, unsigned int prev_color,
 
             p = malloc(sizeof(*p));
             p->dot.X = x + 1;
-
+            p->dot.Y = y;
             SLIST_INSERT_HEAD(&head, p, next);
 
             p = malloc(sizeof(*p));
@@ -133,7 +130,7 @@ Dot find_biggest_blob(Image *image)
         for (int j = 0; j < w; ++j)
         {
             Dot tmp_start = { .X = j, .Y = i };
-            int tmp_nb = blob_detection(&c_image, tmp_start, 255, 42);
+            int tmp_nb = blob_detection(&c_image, tmp_start);
 
             if (tmp_nb > max_point)
             {
@@ -148,36 +145,9 @@ Dot find_biggest_blob(Image *image)
     return max_start;
 }
 
-void remove_small_blob(Image *image, Image *dest_image)
-{
-    int w = image->width;
-    int h = image->height;
-    for (int i = 0; i < h; ++i)
-    {
-        for (int j = 0; j < w; ++j)
-        {
-            if (image->pixels[i][j].r == 255)
-                set_all_pixel(dest_image, i, j, 0);
-        }
-    }
-}
-
 Square main_blob(Image *image)
 {
-    Image c_image = copy_image(image);
-
-    // Find the biggest blob on the tmp image and remove the other on the
-    // original
-    Dot start = find_biggest_blob(&c_image);
-    blob_detection(&c_image, start, 255, 88);
-
-    //remove_small_blob(&c_image, image);
-    // save_image(image, "tmp_big_}");
-
-    // Dilate the image with the smalest blob removed and extract the corners
-    //dilatation(image);
-    //start = find_biggest_blob(image);
-    //blob_detection(image, start, 255, 88);
+    blob_detection(image, find_biggest_blob(image));
 
     Square corners = find_coners(image);
 
@@ -186,6 +156,5 @@ Square main_blob(Image *image)
     //    draw_dot(image, &corners.tl, 4);
     //    draw_dot(image, &corners.tr, 4);
 
-    free_image(&c_image);
     return corners;
 }

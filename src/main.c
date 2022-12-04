@@ -32,7 +32,6 @@ int main(int argc, char **argv)
         // Import image
         SDL_Surface *surface = IMG_Load(argv[1]);
         printf("Imported image of size %ix%i\n", surface->w, surface->h);
-
         Image tmp_image = create_image(surface, surface->w, surface->h);
 
         // Create the name to save image
@@ -47,6 +46,7 @@ int main(int argc, char **argv)
         Image image = resize_image(&tmp_image, 800);
         printf("new h = %i , new w = %i\n", image.height, image.width);
 
+        // Free imnage and surface used for import
         free_image(&tmp_image);
         SDL_FreeSurface(surface);
 
@@ -61,22 +61,21 @@ int main(int argc, char **argv)
         Image computed_image = image_traitment(&image);
 
         free_image(&image);
-        
+
         // Segment the image and export the grid for the sudoku solver
         int **sudoku_grid = segmentation(&computed_image, &n);
-        
+
         printf("\nNon-Solved Grid: \n");
         print_grid(sudoku_grid);
-        
+
         // Solve the grid
         solve_sudoku(sudoku_grid, 0, 0);
-        
+
         printf("\nSolved Grid: \n");
         print_grid(sudoku_grid);
-        
+
         for (int i = 0; i < 10; ++i)
             free(sudoku_grid[i]);
-        
         free(sudoku_grid);
         free_network(&n);
         free_image(&computed_image);
