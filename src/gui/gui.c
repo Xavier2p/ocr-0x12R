@@ -99,14 +99,6 @@ void on_button_Quit_clicked()
     gtk_main_quit();
 }
 
-/**
- * @brief This function is called when the user click on the button "Resize"
- */
-void on_button_Resize_clicked()
-{
-    gtk_label_set_text(GTK_LABEL(label_one), (const gchar *)"Button Resize");
-}
-
 void on_button_Next_clicked()
 {
     if (selected == 0)
@@ -155,14 +147,6 @@ void on_button_appply_settings_clicked()
 void on_button_cancel_settings_clicked()
 {
     gtk_widget_hide(dialog);
-}
-
-/**
- * @brief This function is called when the user click on the button "Rotate"
- */
-void on_button_Rotate_clicked()
-{
-    gtk_label_set_text(GTK_LABEL(label_one), (const gchar *)"Button Rotate");
 }
 
 /**
