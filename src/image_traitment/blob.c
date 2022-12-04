@@ -171,13 +171,13 @@ Square main_blob(Image *image)
     Dot start = find_biggest_blob(&c_image);
     blob_detection(&c_image, start, 255, 88);
 
-    remove_small_blob(&c_image, image);
+    //remove_small_blob(&c_image, image);
     // save_image(image, "tmp_big_}");
 
     // Dilate the image with the smalest blob removed and extract the corners
-    dilatation(image);
-    start = find_biggest_blob(image);
-    blob_detection(image, start, 255, 88);
+    //dilatation(image);
+    //start = find_biggest_blob(image);
+    //blob_detection(image, start, 255, 88);
 
     Square corners = find_coners(image);
 

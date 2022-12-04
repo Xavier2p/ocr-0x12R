@@ -24,6 +24,7 @@
 #include "image_traitment/include/segmentation.h"
 #include "sudoku_solver/sudoku_solver.h"
 
+
 int main(int argc, char **argv)
 {
     if (argc == 2)
@@ -49,36 +50,38 @@ int main(int argc, char **argv)
         free_image(&tmp_image);
         SDL_FreeSurface(surface);
 
+
+
         // Initialise the neural network
-        //        Network n;
-        //        load_weights(&n, PATH_TO_WEIGHTS);
+        Network n;
+        load_weights(&n, PATH_TO_WEIGHTS);
 
         printf("\n");
         // Compute all operation on the image to segment it
         Image computed_image = image_traitment(&image);
 
-        //        free_image(&image);
-        //
-        //        // Segment the image and export the grid for the sudoku solver
-        //        int **sudoku_grid = segmentation(&computed_image, &n);
-        //
-        //        printf("\nNon-Solved Grid: \n");
-        //        print_grid(sudoku_grid);
-        //
-        //        // Solve the grid
-        //        solve_sudoku(sudoku_grid, 0, 0);
-        //
-        //        printf("\nSolved Grid: \n");
-        //        print_grid(sudoku_grid);
-        //
-        //        for (int i = 0; i < 10; ++i)
-        //            free(sudoku_grid[i]);
-        //
-        //        free(sudoku_grid);
-        //        free_network(&n);
+        free_image(&image);
+        
+        // Segment the image and export the grid for the sudoku solver
+        int **sudoku_grid = segmentation(&computed_image, &n);
+        
+        printf("\nNon-Solved Grid: \n");
+        print_grid(sudoku_grid);
+        
+        // Solve the grid
+        solve_sudoku(sudoku_grid, 0, 0);
+        
+        printf("\nSolved Grid: \n");
+        print_grid(sudoku_grid);
+        
+        for (int i = 0; i < 10; ++i)
+            free(sudoku_grid[i]);
+        
+        free(sudoku_grid);
+        free_network(&n);
         free_image(&computed_image);
-        //
-        //        printf("\n");
+
+        printf("\n");
         SDL_Quit();
     }
 

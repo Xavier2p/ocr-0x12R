@@ -4,6 +4,6 @@
 #include "utilis_image.h"
 #include <math.h>
 
-void gaussian_blur(Image *source, double radius);
+void gaussian_blur(Image *source, int radius);
 
 #endif
