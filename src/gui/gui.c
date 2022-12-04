@@ -1,5 +1,6 @@
 #include "includes/gui.h"
 #include "includes/main.h"
+#include "includes/launcher.h"
 
 GtkWidget* window = NULL;
 GtkWidget* button_Load = NULL;
@@ -89,6 +90,7 @@ void file_select(GtkFileChooserButton *button)
     image = create_image(surface, surface->w, surface->h);
     printf("Image loaded: %s\n", filename_image);
     change_image_on_gui(&image, "main_image");
+    pc = 0;
 }
 
 /**
@@ -119,11 +121,12 @@ void on_button_Resize_clicked()
 
 void on_button_Next_clicked()
 {
-    gtk_label_set_text(GTK_LABEL(label_one), (const gchar *)"Button Next");
-    if (pc < 5)
+    if (pc < STEPS)
     {
-        funcs[pc]();
+        char* verbose = steps[pc]();
         pc++;
+        change_image_on_gui(&image, "main_image");
+        gtk_label_set_text(GTK_LABEL(label_one), (const gchar *) verbose);
     }
 
     else

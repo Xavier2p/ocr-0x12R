@@ -1,32 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include "includes/gui.h"
-
-void func4()
-{
-    printf("pointed\n");
-}
-
-void func5()
-{
-    printf("functions.\n");
-}
-
-void func3()
-{
-    printf("array of\n");
-}
-
-void func2()
-{
-    printf("is an\n");
-}
-
-void func1()
-{
-    printf("This\n");
-}
-
+#include "includes/main.h"
 
 int main(int argc, char* argv[])
 {
