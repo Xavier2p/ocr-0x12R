@@ -7,3 +7,4 @@ build/
 main
 .vscode/
 .idea/
+.DS_Store

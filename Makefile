@@ -62,7 +62,7 @@ clean:
 	make -C src/neural_network clean
 	make -C src/image_traitment clean
 	make -C src/sudoku_solver clean
-	# ${RM} main
+	${RM} main
 	# ${RM} ${OBJ}
 	# -rm grid.result
 	rm -rf $(BUILD)

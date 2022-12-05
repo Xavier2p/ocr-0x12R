@@ -27,7 +27,6 @@ GtkEntry *param3 = NULL;
  * @brief  initialize the GUI
  * @param argc: number of arguments
  * @param argv[]: arguments
- * @return 0 if success, -1 if error
  */
 void init_gui(int argc, char *argv[])
 {
