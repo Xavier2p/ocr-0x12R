@@ -1,6 +1,7 @@
 #include "include/image_traitment.h"
 #include "include/adaptative_threshold.h"
 #include "include/blob.h"
+#include "include/canny.h"
 #include "include/linkedlist.h"
 #include "include/utilis_image.h"
 
@@ -22,7 +23,12 @@ Image image_traitment(Image *image)
     // apply_threshold(image, otsu(image));
 
     // Adaptive threshold
-    adaptative_threshold(image);
+    // adaptative_threshold(image);
+    
+    // Canny edges
+    canny_edge_detection(image);
+
+    erodation(image);
     save_image(image, "gray_scale_");
 
     // Find the corners of the grid

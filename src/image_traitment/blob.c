@@ -173,7 +173,9 @@ void remove_small_blob(Image *image)
 
 Square main_blob(Image *image)
 {
+    save_image(image, "before_remove");
     remove_small_blob(image);
+    save_image(image, "after_remove");
 
     Dot biggest_blob_dot = find_biggest_blob(image);
     blob_detection(image, biggest_blob_dot, 255, 88);
