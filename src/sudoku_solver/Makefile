@@ -30,8 +30,8 @@ clean:
 	$(RM) $(EXEC)
 	${RM} ${DEP}
 	${RM} grid.result
-	${RM} vg*
-	${RM} .Ma*
-	${RM} .sudo*
+	@${RM} vg*
+	@${RM} .Ma*
+	@${RM} .sudo*
 
 # END

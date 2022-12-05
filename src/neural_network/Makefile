@@ -28,8 +28,6 @@ $(BUILD)/%.o : %.c
 
 clean:
 	rm -rf $(BUILD)
-	${RM} ${EXEC}
-	${RM} ${DEP}
-	${RM} main
+	${RM} ${EXEC} ${DEP} ${EXEC}
 
 # END

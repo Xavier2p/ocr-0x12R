@@ -4,4 +4,6 @@ build/
 *.o
 *.d
 *.so
-
+main
+.vscode/
+.idea/

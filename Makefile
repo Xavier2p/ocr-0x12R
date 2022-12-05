@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror `pkg-config --cflags sdl2 SDL2_image gtk+-3.0` -std=c99 -g -rdynamic
+CFLAGS = -Wall -Wextra `pkg-config --cflags sdl2 SDL2_image gtk+-3.0` -std=c99 -g -rdynamic
 LDLIBS = `pkg-config --libs gtk+-3.0 sdl2 SDL2_image` -lSDL2 -lm -g
 
 
@@ -58,9 +58,13 @@ $(BUILD)/%.o : %.c
 	$(CC) $(CFLAGS) -c $< -o $@ $(LDLFLAGS) $(CPPFLAGS) $(LDLIBS)
 
 clean:
-	${RM} main
-	${RM} ${OBJ}
-	-rm grid.result
+	make -C src/gui clean
+	make -C src/neural_network clean
+	make -C src/image_traitment clean
+	make -C src/sudoku_solver clean
+	# ${RM} main
+	# ${RM} ${OBJ}
+	# -rm grid.result
 	rm -rf $(BUILD)
 	${RM} ${EXE}
-	${RM} double_tresh_res_image_0* hysteris_res_image_0* non_max_res_image_0* sobel_res_image_0* gaussian_blur_res_i* gray_scale_res_ima* brightness_res_im* contrast_res_ima* res_hough_res_ima* homographic_transform_res* adaptive_res* blur_res*
+	# ${RM} double_tresh_res_image_0* hysteris_res_image_0* non_max_res_image_0* sobel_res_image_0* gaussian_blur_res_i* gray_scale_res_ima* brightness_res_im* contrast_res_ima* res_hough_res_ima* homographic_transform_res* adaptive_res* blur_res*
