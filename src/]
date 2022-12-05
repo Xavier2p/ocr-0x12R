@@ -1,9 +1,10 @@
 #include "include/blob.h"
-#include "include/adaptative_threshold.h"
+#include "include/linkedlist.h"
 #include "include/utilis_image.h"
 
 int blob_detection(Image *image, Dot start, unsigned int prev, int new)
 {
+    Pixel **pixels = image->pixels;
     int w = image->width;
     int h = image->height;
     int nb_dots = 0;
@@ -27,7 +28,7 @@ int blob_detection(Image *image, Dot start, unsigned int prev, int new)
         if (x < 0 || x >= w || y < 0 || y >= h)
             continue;
 
-        if (image->pixels[y][x].r == prev)
+        if (pixels[y][x].r == prev)
         {
             set_all_pixel(image, y, x, new);
             nb_dots++;
@@ -148,9 +149,10 @@ Dot find_biggest_blob(Image *image)
 
 void remove_small_blob(Image *image)
 {
-    int threshold = 40;
+    int threshold = 2;
     int w = image->width;
     int h = image->height;
+    Image c_image = copy_image(image);
 
     for (int i = 0; i < h; ++i)
     {
@@ -160,34 +162,30 @@ void remove_small_blob(Image *image)
                 continue;
 
             Dot tmp_start = { .X = j, .Y = i };
-            int tmp_nb = blob_detection(image, tmp_start, 255, 88);
+            int tmp_nb = blob_detection(&c_image, tmp_start, 255, 88);
+            
 
             if (tmp_nb < threshold)
             {
-                blob_detection(image, tmp_start, 88, 0);
+                if (tmp_nb != 0)
+                    printf("nb: %d\n", tmp_nb);
+                blob_detection(&c_image, tmp_start, 88, 0);
             }
         }
     }
+    save_image(&c_image, "after_remove");
 
-    for (int i = 0; i < h; ++i)
-    {
-        for (int j = 0; j < w; ++j)
-        {
-            if (image->pixels[i][j].r == 88)
-                set_all_pixel(image, i, j, 255);
-        }
-    }
+    free_image(&c_image);
 }
+
 
 Square main_blob(Image *image)
 {
+    save_image(image, "before_remove");
     remove_small_blob(image);
 
     Dot biggest_blob_dot = find_biggest_blob(image);
     blob_detection(image, biggest_blob_dot, 255, 88);
-
-    erosion(image);
-    dilatation(image);
 
     Square corners = find_coners(image);
 

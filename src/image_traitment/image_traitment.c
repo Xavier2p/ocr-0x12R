@@ -24,19 +24,19 @@ Image image_traitment(Image *image)
 
     // Adaptive threshold
     // adaptative_threshold(image);
-    
+
     // Canny edges
     canny_edge_detection(image);
-
-    erodation(image);
-    save_image(image, "gray_scale_");
 
     // Find the corners of the grid
     Square corners = main_blob(image);
 
+    save_image(image, "blob_");
+
     // Resize, rotate and correct perspective
     Image final_grid = homographic_transform(image, &corners, 756);
 
+    save_image(&final_grid, "homographic_transform_");
 
     return final_grid;
 }

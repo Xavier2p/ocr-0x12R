@@ -94,7 +94,7 @@ void dilatation(Image *image)
     }
 }
 
-void erodation(Image *image)
+void erosion(Image *image)
 {
     int w = image->width;
     int h = image->height;
