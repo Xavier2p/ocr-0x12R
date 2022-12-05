@@ -1,6 +1,8 @@
 #include "include/blob.h"
+#include "include/linkedlist.h"
+#include "include/utilis_image.h"
 
-int blob_detection(Image *image, Dot start)
+int blob_detection(Image *image, Dot start, unsigned int prev, int new)
 {
     Pixel **pixels = image->pixels;
     int w = image->width;
@@ -26,9 +28,9 @@ int blob_detection(Image *image, Dot start)
         if (x < 0 || x >= w || y < 0 || y >= h)
             continue;
 
-        if (pixels[y][x].r == 255)
+        if (pixels[y][x].r == prev)
         {
-            set_all_pixel(image, y, x, 88);
+            set_all_pixel(image, y, x, new);
             nb_dots++;
 
             p = malloc(sizeof(*p));
@@ -130,7 +132,7 @@ Dot find_biggest_blob(Image *image)
         for (int j = 0; j < w; ++j)
         {
             Dot tmp_start = { .X = j, .Y = i };
-            int tmp_nb = blob_detection(&c_image, tmp_start);
+            int tmp_nb = blob_detection(&c_image, tmp_start, 255, 88);
 
             if (tmp_nb > max_point)
             {
@@ -145,9 +147,36 @@ Dot find_biggest_blob(Image *image)
     return max_start;
 }
 
+void remove_small_blob(Image *image)
+{
+    printf("Remove small blob");
+    int threshold = 50;
+    int w = image->width;
+    int h = image->height;
+    Image c_image = copy_image(image);
+
+    for (int i = 0; i < h; ++i)
+    {
+        for (int j = 0; j < w; ++j)
+        {
+            Dot tmp_start = { .X = j, .Y = i };
+            int tmp_nb = blob_detection(&c_image, tmp_start, 255, 88);
+
+            if (tmp_nb < threshold)
+                blob_detection(image, tmp_start, 88, 0);
+        }
+    }
+
+    free_image(&c_image);
+}
+
+
 Square main_blob(Image *image)
 {
-    blob_detection(image, find_biggest_blob(image));
+    remove_small_blob(image);
+
+    Dot biggest_blob_dot = find_biggest_blob(image);
+    blob_detection(image, biggest_blob_dot, 255, 88);
 
     Square corners = find_coners(image);
 

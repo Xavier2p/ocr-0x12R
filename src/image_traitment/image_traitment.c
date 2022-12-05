@@ -1,4 +1,5 @@
 #include "include/image_traitment.h"
+#include "include/adaptative_threshold.h"
 #include "include/blob.h"
 #include "include/linkedlist.h"
 #include "include/utilis_image.h"
@@ -18,7 +19,11 @@ Image image_traitment(Image *image)
     gaussian_blur(image, 4);
 
     // Otsu threshold
-    apply_threshold(image, otsu(image));
+    // apply_threshold(image, otsu(image));
+
+    // Adaptive threshold
+    adaptative_threshold(image);
+    save_image(image, "gray_scale_");
 
     // Find the corners of the grid
     Square corners = main_blob(image);
@@ -26,7 +31,6 @@ Image image_traitment(Image *image)
     // Resize, rotate and correct perspective
     Image final_grid = homographic_transform(image, &corners, 756);
 
-    save_image(&final_grid, "final_grid_");
 
     return final_grid;
 }
