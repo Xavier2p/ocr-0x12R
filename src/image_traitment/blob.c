@@ -57,7 +57,7 @@ int blob_detection(Image *image, Dot start, unsigned int prev, int new)
     return nb_dots;
 }
 
-Square find_coners(Image *image)
+Square find_corners(Image *image)
 {
     Pixel **pixels = image->pixels;
     int w = image->width;
@@ -148,7 +148,7 @@ Dot find_biggest_blob(Image *image)
 
 void remove_small_blob(Image *image)
 {
-    int threshold = 40;
+    int threshold = 50;
     int w = image->width;
     int h = image->height;
 
@@ -173,23 +173,19 @@ void remove_small_blob(Image *image)
     {
         for (int j = 0; j < w; ++j)
         {
+            Dot tmp_start = { .X = j, .Y = i };
             if (image->pixels[i][j].r == 88)
-                set_all_pixel(image, i, j, 255);
+                blob_detection(image, tmp_start, 88, 255);
         }
     }
 }
 
 Square main_blob(Image *image)
 {
-    remove_small_blob(image);
-
     Dot biggest_blob_dot = find_biggest_blob(image);
     blob_detection(image, biggest_blob_dot, 255, 88);
 
-    erosion(image);
-    dilatation(image);
-
-    Square corners = find_coners(image);
+    Square corners = find_corners(image);
 
     //    draw_dot(image, &corners.bl, 4);
     //    draw_dot(image, &corners.br, 4);

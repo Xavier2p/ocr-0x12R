@@ -16,52 +16,68 @@
  * =====================================================================================
  */
 #include "include/adaptative_threshold.h"
+#include "include/utilis_image.h"
 
-#define ADAPTIVETHRESHOLDING_RANGE 7
-#define ADAPTIVETHRESHOLING_C 4
-#define DILATAION_RANGE 2
+#define ADAPTIVETHRESHOLDING_RANGE 3
+#define ADAPTIVETHRESHOLING_C 3
+#define DILATAION_RANGE 3
 
 // Compute adaptive threshold on the image
-void adaptative_threshold(Image *image)
+int find_adaptative_threshold(Image *image, int y, int x)
 {
     int w = image->width;
     int h = image->height;
-    Image c_image = copy_image(image);
-    Pixel **pixels = c_image.pixels;
+    Pixel **pixels = image->pixels;
 
-    for (int i = 0; i < h; ++i)
+    int sum = 0;
+    int count = 0;
+
+    for (int dy = -ADAPTIVETHRESHOLDING_RANGE; dy < ADAPTIVETHRESHOLDING_RANGE; dy++)
     {
-        for (int j = 0; j < w; ++j)
+        if (0 <= y + dy && y + dy < h)
         {
-            int sum = 0;
-            int count = 0;
-            for (int k = i - ADAPTIVETHRESHOLDING_RANGE;
-                 k < i + ADAPTIVETHRESHOLDING_RANGE; k++)
+            for (int dx = -ADAPTIVETHRESHOLDING_RANGE; dx < ADAPTIVETHRESHOLDING_RANGE; dx++)
             {
-                for (int l = j - ADAPTIVETHRESHOLDING_RANGE;
-                     l < j + ADAPTIVETHRESHOLDING_RANGE; l++)
+                if (0 <= x + dx && x + dx < w)
                 {
-                    if (k >= 0 && k < h && l >= 0 && l < w)
-                    {
-                        sum += pixels[k][l].r;
-                        count++;
-                    }
+                    sum += pixels[y + dy][x + dx].r;
+                    count++;
                 }
             }
-            int mean = sum / count;
-
-            if (count > 0)
-                mean = sum / count;
-
-            if (mean > ADAPTIVETHRESHOLING_C)
-                mean -= ADAPTIVETHRESHOLING_C;
-            else
-                mean = 0;
-
-            set_all_pixel(image, i, j,
-                          (int)image->pixels[i][j].r > mean ? 0 : 255);
         }
     }
+
+    int mean = sum / count;
+
+    if (count > 0)
+        mean = sum / count;
+
+    if (mean > ADAPTIVETHRESHOLING_C)
+        mean -= ADAPTIVETHRESHOLING_C;
+    else
+        mean = 0;
+
+    return mean;
+}
+
+
+
+void adaptative_threshold(Image *image)
+{
+    Image c_image = copy_image(image);
+    int w = image->width;
+    int h = image->height;
+
+    for (int y = 0; y < h; y++)
+    {
+        for (int x = 0; x < w; x++)
+        {
+            int mean = find_adaptative_threshold(&c_image, y, x);
+            set_all_pixel(image, y, x, mean > (int)image->pixels[y][x].r ? 255 : 0);
+        }
+    }
+
+    free_image(&c_image);
 }
 
 void dilatation(Image *image)
@@ -77,13 +93,13 @@ void dilatation(Image *image)
         {
             int count = 0;
             for (int k = i - DILATAION_RANGE;
-                 k < i + DILATAION_RANGE && count != 1; k++)
+                    k < i + DILATAION_RANGE && count != 1; k++)
             {
                 for (int l = j - DILATAION_RANGE;
-                     l < j + DILATAION_RANGE && count != 1; l++)
+                        l < j + DILATAION_RANGE && count != 1; l++)
                 {
                     if (k >= 0 && k < h && l >= 0 && l < w
-                        && pixels[k][l].r == 255)
+                            && pixels[k][l].r == 255)
                     {
                         set_all_pixel(image, i, j, 255);
                         count = 1;
@@ -92,6 +108,8 @@ void dilatation(Image *image)
             }
         }
     }
+
+    free_image(&c_image);
 }
 
 void erosion(Image *image)
@@ -107,13 +125,13 @@ void erosion(Image *image)
         {
             int count = 0;
             for (int k = i - DILATAION_RANGE;
-                 k < i + DILATAION_RANGE && count != 0; k++)
+                    k < i + DILATAION_RANGE && count != 0; k++)
             {
                 for (int l = j - DILATAION_RANGE;
-                     l < j + DILATAION_RANGE && count != 0; l++)
+                        l < j + DILATAION_RANGE && count != 0; l++)
                 {
                     if (k >= 0 && k < h && l >= 0 && l < w
-                        && pixels[k][l].r == 0)
+                            && pixels[k][l].r == 0)
                     {
                         set_all_pixel(image, i, j, 0);
                         count++;
@@ -122,4 +140,6 @@ void erosion(Image *image)
             }
         }
     }
+
+    free_image(&c_image);
 }

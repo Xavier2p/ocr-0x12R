@@ -44,14 +44,18 @@ test:
 	./main image_04.jpeg && \
 	./main image_05.jpeg && \
 	./main image_06.jpeg && \
-	mv image_0* images/
+	./main image_07.jpeg && \
+	./main image_08.jpeg && \
+	./main image_09.jpeg && \
+	./main image_10.jpeg && \
+	mv image_* images/
 	feh *.jpeg
 
 valim:
 	valgrind ./main image_01.jpeg
 
 valim1:
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes  -s ./main image_01.jpeg
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose ./main image_01.jpeg
 
 $(BUILD)/%.o : %.c
 	$(CC) $(CFLAGS) -c $< -o $@ $(LDLFLAGS) $(CPPFLAGS) $(LDLIBS)
@@ -59,7 +63,7 @@ $(BUILD)/%.o : %.c
 clean:
 	${RM} main
 	${RM} ${OBJ}
-	-rm grid.result
-	rm -rf $(BUILD)
+	${RM} grid.result
+	${RM} -rf $(BUILD)
 	${RM} ${EXE}
-	${RM} double_tresh_res_image_0* hysteris_res_image_0* non_max_res_image_0* sobel_res_image_0* gaussian_blur_res_i* gray_scale_res_ima* brightness_res_im* contrast_res_ima* res_hough_res_ima* homographic_transform_res* adaptive_res* blur_res*
+	${RM} double_tresh_res_image_0* hysteris_res_image_0* non_max_res_image_0* sobel_res_image_0* gaussian_blur_res_i* gray_scale_res_ima* brightness_res_im* contrast_res_ima* res_hough_res_ima* homographic_transform_res* adaptive_res* blur_res* blob_res*
