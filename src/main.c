@@ -62,12 +62,22 @@ int main(int argc, char **argv)
 
         // Segment the image and export the grid for the sudoku solver
         int **sudoku_grid = segmentation(&computed_image, &n);
+        int **to_solve_grid = NULL;
+
+
+        // MALLOC AND COPY
+
 
         printf("\nNon-Solved Grid: \n");
         print_grid(sudoku_grid);
 
         // Solve the grid
         solve_sudoku(sudoku_grid, 0, 0);
+
+       // Your function
+
+
+
 
         printf("\nSolved Grid: \n");
         print_grid(sudoku_grid);
