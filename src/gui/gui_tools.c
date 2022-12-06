@@ -1,8 +1,8 @@
 #include "includes/gui_tools.h"
 
-GdkPixbuf *convert_image_to_gui(Image *image)
+GdkPixbuf* convert_image_to_gui(Image* image)
 {
-    GdkPixbuf *pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, TRUE, 8,
+    GdkPixbuf* pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, TRUE, 8,
                                        image->width, image->height);
 
     int width = gdk_pixbuf_get_width(pixbuf);
@@ -10,13 +10,13 @@ GdkPixbuf *convert_image_to_gui(Image *image)
 
     int n_channels = gdk_pixbuf_get_n_channels(pixbuf);
     int rowstride = gdk_pixbuf_get_rowstride(pixbuf);
-    guchar *pixels = gdk_pixbuf_get_pixels(pixbuf);
+    guchar* pixels = gdk_pixbuf_get_pixels(pixbuf);
 
     for (int x = 0; x < width; x++)
     {
         for (int y = 0; y < height; y++)
         {
-            guchar *p = pixels + y * rowstride + x * n_channels;
+            guchar* p = pixels + y * rowstride + x * n_channels;
             p[0] = image->pixels[y][x].r;
             p[1] = image->pixels[y][x].g;
             p[2] = image->pixels[y][x].b;
@@ -27,9 +27,9 @@ GdkPixbuf *convert_image_to_gui(Image *image)
     return pixbuf;
 }
 
-void set_image_to_gui(GdkPixbuf *pixbuf, char *GtkimageID, GtkBuilder *builder)
+void set_image_to_gui(GdkPixbuf* pixbuf, char* GtkimageID, GtkBuilder* builder)
 {
-    GtkImage *imageWidget =
+    GtkImage* imageWidget =
         GTK_IMAGE(gtk_builder_get_object(builder, GtkimageID)); // get image
 
     int width = 400;
@@ -51,7 +51,7 @@ void set_image_to_gui(GdkPixbuf *pixbuf, char *GtkimageID, GtkBuilder *builder)
     int new_height = image_height * scale_factor;
 
     // resize the image
-    GdkPixbuf *resized_image = gdk_pixbuf_scale_simple(
+    GdkPixbuf* resized_image = gdk_pixbuf_scale_simple(
         pixbuf, new_width, new_height, GDK_INTERP_BILINEAR); // resize image
 
     // set the image
@@ -62,16 +62,16 @@ void set_image_to_gui(GdkPixbuf *pixbuf, char *GtkimageID, GtkBuilder *builder)
     g_object_unref(resized_image);
 }
 
-void change_image_on_gui(Image *_image, char *GtkimageID, GtkBuilder *builder)
+void change_image_on_gui(Image* _image, char* GtkimageID, GtkBuilder* builder)
 {
-    GdkPixbuf *pixbuf = convert_image_to_gui(_image);
+    GdkPixbuf* pixbuf = convert_image_to_gui(_image);
     set_image_to_gui(pixbuf, GtkimageID, builder);
 }
 
 // a function to convert a char* in double using the . as decimal separator
-double char_to_double(char *str)
+double char_to_double(char* str)
 {
-    char *endptr;
+    char* endptr;
     double value = strtod(str, &endptr);
     if (endptr == str)
     {
