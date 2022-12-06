@@ -18,9 +18,10 @@
 #include "include/adaptative_threshold.h"
 #include "include/utilis_image.h"
 
-#define ADAPTIVETHRESHOLDING_RANGE 3
+#define ADAPTIVETHRESHOLDING_RANGE 5
 #define ADAPTIVETHRESHOLING_C 3
-#define DILATAION_RANGE 3
+#define DILATAION_RANGE 1
+#define EROSION_RANGE 3
 
 // Compute adaptive threshold on the image
 int find_adaptative_threshold(Image *image, int y, int x)
@@ -124,11 +125,11 @@ void erosion(Image *image)
         for (int j = 0; j < w; ++j)
         {
             int count = 0;
-            for (int k = i - DILATAION_RANGE;
-                    k < i + DILATAION_RANGE && count != 0; k++)
+            for (int k = i - EROSION_RANGE;
+                    k < i + EROSION_RANGE && count != 0; k++)
             {
-                for (int l = j - DILATAION_RANGE;
-                        l < j + DILATAION_RANGE && count != 0; l++)
+                for (int l = j - EROSION_RANGE;
+                        l < j + EROSION_RANGE && count != 0; l++)
                 {
                     if (k >= 0 && k < h && l >= 0 && l < w
                             && pixels[k][l].r == 0)

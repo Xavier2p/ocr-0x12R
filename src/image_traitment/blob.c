@@ -148,7 +148,7 @@ Dot find_biggest_blob(Image *image)
 
 void remove_small_blob(Image *image)
 {
-    int threshold = 50;
+    int threshold = 60;
     int w = image->width;
     int h = image->height;
 
@@ -183,6 +183,7 @@ void remove_small_blob(Image *image)
 Square main_blob(Image *image)
 {
     Dot biggest_blob_dot = find_biggest_blob(image);
+
     blob_detection(image, biggest_blob_dot, 255, 88);
 
     Square corners = find_corners(image);

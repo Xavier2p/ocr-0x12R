@@ -12,37 +12,23 @@ Image image_traitment(Image *image)
     // Grayscale
     grayscale(image);
 
-    // Contrast
-    image_contrast(image, 12);
-
-    // Brightness
-    image_normalize_brightness(image);
-
     // Blur
     gaussian_blur(image, 2);
 
 
     // Binarization thechniques
 
-    // Otsu threshold
-    // apply_threshold(image, otsu(image));
-
     // Adaptive threshold
     adaptative_threshold(image);
-
-    // Canny edges
-    // canny_edge_detection(image);
 
 
 
     // Remove small blobs
     remove_small_blob(image);
 
-    // Dilatation and erosion
-    // erosion(image);
-    // dilatation(image);
+    erosion(image);
+    dilatation(image);
 
-    save_image(image, "adaptative_threshold");
     // Find the corners of the grid
     Square corners = main_blob(image);
 
@@ -51,5 +37,6 @@ Image image_traitment(Image *image)
     // Resize, rotate and correct perspective
     Image final_grid = homographic_transform(image, &corners, 756);
 
+    save_image(&final_grid, "adaptative_threshold");
     return final_grid;
 }
