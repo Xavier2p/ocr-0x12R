@@ -14,4 +14,6 @@ void set_image_to_gui(GdkPixbuf *pixbuf, char *GtkimageID, GtkBuilder *builder);
 
 void change_image_on_gui(Image *_image, char *GtkimageID, GtkBuilder *builder);
 
+double char_to_double(char *str);
+
 #endif

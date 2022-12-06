@@ -67,3 +67,16 @@ void change_image_on_gui(Image *_image, char *GtkimageID, GtkBuilder *builder)
     GdkPixbuf *pixbuf = convert_image_to_gui(_image);
     set_image_to_gui(pixbuf, GtkimageID, builder);
 }
+
+// a function to convert a char* in double using the . as decimal separator
+double char_to_double(char *str)
+{
+    char *endptr;
+    double value = strtod(str, &endptr);
+    if (endptr == str)
+    {
+        printf("Error: no digits were found");
+        exit(1);
+    }
+    return value;
+}
