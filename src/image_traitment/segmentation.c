@@ -16,22 +16,61 @@
  * =====================================================================================
  */
 #include "include/segmentation.h"
-#include "include/utilis_image.h"
 
-void clean_image(Image *image)
+int find_nbr_blob(Image *image)
 {
-    for (int i = 0; i < image->height; i++)
+    int nbr_blob = 0;
+    Image c_image = copy_image(image);
+
+    for (unsigned int i = 0; i < image->height; i++)
     {
-        for (int j = 0; j < image->width; j++)
+        for (unsigned int j = 0; j < image->width; j++)
         {
-            if (image->pixels[i][j].r == 88)
+            Dot start_dot = { .X = j, .Y = i };
+            if (image->pixels[i][j].r == 255)
             {
-                set_all_pixel(image, i, j , 0);
+                nbr_blob++;
+                blob_detection(&c_image, start_dot, 255, 88);
             }
         }
     }
 
+    return nbr_blob;
+}
 
+void clean_image(Image *image)
+{
+    for (unsigned int i = 0; i < image->height; i++)
+    {
+        for (unsigned int j = 0; j < image->width; j++)
+        {
+            if (image->pixels[i][j].r == 88)
+            {
+                set_all_pixel(image, i, j, 0);
+            }
+        }
+    }
+
+    if (find_nbr_blob(image) >= 2)
+    {
+        Dot biggest_dot = find_biggest_blob(image);
+        blob_detection(image, biggest_dot, 255, 88);
+    }
+
+    for (unsigned int i = 0; i < image->height; i++)
+    {
+        for (unsigned int j = 0; j < image->width; j++)
+        {
+            if (image->pixels[i][j].r == 88)
+            {
+                set_all_pixel(image, i, j, 255);
+            }
+            else if (image->pixels[i][j].r == 255)
+            {
+                set_all_pixel(image, i, j, 0);
+            }
+        }
+    }
 }
 
 double *create_square_image(Image *image, int i, int j, int size, int cordi,
@@ -75,7 +114,9 @@ double *create_square_image(Image *image, int i, int j, int size, int cordi,
     }
 
     Image tmp_resized = resize_image(&tmp, SIZE_OF_NEURAL_INPUT);
-   
+
+    clean_image(&tmp_resized);
+
     save_image(&tmp_resized, "res_");
 
     double *res =

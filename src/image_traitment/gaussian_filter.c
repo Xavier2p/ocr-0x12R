@@ -40,8 +40,7 @@ int *gaussian_kernel(int sigma, int n)
     int wu = wl + 2;
 
     float m_ideal =
-        (12 * sigma * sigma - n * wl * wl - 4 * n * wl - 3 * n) / (-4 * wl -
-                4);
+        (12 * sigma * sigma - n * wl * wl - 4 * n * wl - 3 * n) / (-4 * wl - 4);
     int m = round(m_ideal);
 
     int *kernel = calloc(n, sizeof(int));
@@ -210,4 +209,3 @@ void gaussian_blur(Image *source)
     free(bxs);
     free_image(target);
 }
-

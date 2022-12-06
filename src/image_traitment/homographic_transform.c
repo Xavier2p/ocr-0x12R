@@ -118,8 +118,7 @@ void homographic_transform(Image *image, Square *square, int size)
     }
 
     free(mat);
-        
+
     free_image(image);
     *image = new_image;
-
 }

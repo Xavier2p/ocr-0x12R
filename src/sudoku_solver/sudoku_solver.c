@@ -17,6 +17,8 @@
  * =====================================================================================
  */
 #include "sudoku_solver.h"
+#include <stdio.h>
+#include <time.h>
 
 void print_grid(int **sudoku_grid)
 {
@@ -28,13 +30,14 @@ void print_grid(int **sudoku_grid)
         }
         printf("\n");
     }
+    printf("\n");
 }
+
 int is_safe(int **grid, int row, int col, int num)
 {
     for (int x = 0; x <= 8; x++)
         if (grid[row][x] == num)
             return 0;
-
     for (int x = 0; x <= 8; x++)
         if (grid[x][col] == num)
             return 0;
@@ -49,8 +52,12 @@ int is_safe(int **grid, int row, int col, int num)
     return 1;
 }
 
-int solve_sudoku_rec(int **grid, int row, int col)
+int solve_sudoku_rec(int **grid, int row, int col, int *i)
 {
+    *i = *i + 1;
+    if (*i >= 20000)
+        return 0;
+
     if (row == N - 1 && col == N)
         return 1;
 
@@ -61,7 +68,7 @@ int solve_sudoku_rec(int **grid, int row, int col)
     }
 
     if (grid[row][col] > 0)
-        return solve_sudoku_rec(grid, row, col + 1);
+        return solve_sudoku_rec(grid, row, col + 1, i);
 
     for (int num = 1; num <= N; num++)
     {
@@ -69,7 +76,7 @@ int solve_sudoku_rec(int **grid, int row, int col)
         {
             grid[row][col] = num;
 
-            if (solve_sudoku_rec(grid, row, col + 1) == 1)
+            if (solve_sudoku_rec(grid, row, col + 1, i) == 1)
                 return 1;
         }
 
@@ -138,10 +145,20 @@ void export_grid(int **grid, char filename[])
     fclose(fp);
 }
 
-void solve_sudoku(int **grid, int row, int col)
+void solve_sudoku(int **grid)
 {
-    solve_sudoku_rec(grid, row, col);
+    int i = 0;
 
-    export_grid(grid, "grid.result");
+    if (solve_sudoku_rec(grid, 0, 0, &i) == 0)
+    {
+        printf("No solution exists\n\n");
+    }
+    else
+    {
+        printf("i = %d\n", i);
+        printf("Sudoku solved:\n");
+
+        print_grid(grid);
+        export_grid(grid, "grid.result");
+    }
 }
-

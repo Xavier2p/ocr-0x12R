@@ -17,7 +17,6 @@ void image_traitment(Image *image)
     // Blur
     gaussian_blur(image);
 
-
     // Binarization thechniques
 
     // Adaptive threshold
@@ -27,12 +26,12 @@ void image_traitment(Image *image)
     remove_small_blob(image);
 
     erosion(image);
-    dilatation(image);
-
+    //      dilatation(image);
 
     // Find the corners of the grid
     Square corners = find_corners(image);
 
     // Resize, rotate and correct perspective
     homographic_transform(image, &corners, 756);
+    save_image(image, "homographic_transform_");
 }

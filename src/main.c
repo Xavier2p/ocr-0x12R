@@ -61,23 +61,17 @@ int main(int argc, char **argv)
         // Compute all operation on the image to segment it
         image_traitment(&image);
 
-
         // Segment the image and export the grid for the sudoku solver
         int **sudoku_grid = segmentation(&image, &n);
 
         printf("\nNon-Solved Grid: \n");
         print_grid(sudoku_grid);
 
-
         // Solve the grid
-        solve_sudoku(sudoku_grid, 0, 0);
-
-        printf("\nSolved Grid: \n");
-        print_grid(sudoku_grid);
+        solve_sudoku(sudoku_grid);
 
         for (int i = 0; i < 10; ++i)
             free(sudoku_grid[i]);
-
 
         // Free Memory
         free(sudoku_grid);

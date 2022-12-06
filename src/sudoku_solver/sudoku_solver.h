@@ -30,6 +30,6 @@ void export_grid(int **grid, char filename[]);
 
 void import_grid(int **grid, char filename[]);
 
-void solve_sudoku(int **grid, int row, int col);
+void solve_sudoku(int **grid);
 
 #endif

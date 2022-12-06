@@ -33,11 +33,13 @@ int find_adaptative_threshold(Image *image, int y, int x)
     int sum = 0;
     int count = 0;
 
-    for (int dy = -ADAPTIVETHRESHOLDING_RANGE; dy < ADAPTIVETHRESHOLDING_RANGE; dy++)
+    for (int dy = -ADAPTIVETHRESHOLDING_RANGE; dy < ADAPTIVETHRESHOLDING_RANGE;
+         dy++)
     {
         if (0 <= y + dy && y + dy < h)
         {
-            for (int dx = -ADAPTIVETHRESHOLDING_RANGE; dx < ADAPTIVETHRESHOLDING_RANGE; dx++)
+            for (int dx = -ADAPTIVETHRESHOLDING_RANGE;
+                 dx < ADAPTIVETHRESHOLDING_RANGE; dx++)
             {
                 if (0 <= x + dx && x + dx < w)
                 {
@@ -61,8 +63,6 @@ int find_adaptative_threshold(Image *image, int y, int x)
     return mean;
 }
 
-
-
 void adaptative_threshold(Image *image)
 {
     Image c_image = copy_image(image);
@@ -74,7 +74,8 @@ void adaptative_threshold(Image *image)
         for (int x = 0; x < w; x++)
         {
             int mean = find_adaptative_threshold(&c_image, y, x);
-            set_all_pixel(image, y, x, mean > (int)image->pixels[y][x].r ? 255 : 0);
+            set_all_pixel(image, y, x,
+                          mean > (int)image->pixels[y][x].r ? 255 : 0);
         }
     }
 
@@ -94,13 +95,13 @@ void dilatation(Image *image)
         {
             int count = 0;
             for (int k = i - DILATAION_RANGE;
-                    k < i + DILATAION_RANGE && count != 1; k++)
+                 k < i + DILATAION_RANGE && count != 1; k++)
             {
                 for (int l = j - DILATAION_RANGE;
-                        l < j + DILATAION_RANGE && count != 1; l++)
+                     l < j + DILATAION_RANGE && count != 1; l++)
                 {
                     if (k >= 0 && k < h && l >= 0 && l < w
-                            && pixels[k][l].r == 255)
+                        && pixels[k][l].r == 255)
                     {
                         set_all_pixel(image, i, j, 255);
                         count = 1;
@@ -125,14 +126,14 @@ void erosion(Image *image)
         for (int j = 0; j < w; ++j)
         {
             int count = 0;
-            for (int k = i - EROSION_RANGE;
-                    k < i + EROSION_RANGE && count != 0; k++)
+            for (int k = i - EROSION_RANGE; k < i + EROSION_RANGE && count != 0;
+                 k++)
             {
                 for (int l = j - EROSION_RANGE;
-                        l < j + EROSION_RANGE && count != 0; l++)
+                     l < j + EROSION_RANGE && count != 0; l++)
                 {
                     if (k >= 0 && k < h && l >= 0 && l < w
-                            && pixels[k][l].r == 0)
+                        && pixels[k][l].r == 0)
                     {
                         set_all_pixel(image, i, j, 0);
                         count++;
