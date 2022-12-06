@@ -27,7 +27,7 @@ $(BUILD)/%.o : %.c
 	$(CC) $(CFLAGS) -c $< -o $@ $(LDLIBS)
 
 clean:
-	rm -rf $(BUILD)
-	${RM} ${EXEC} ${DEP} ${EXEC}
+	@rm -rf $(BUILD)
+	@${RM} ${EXEC} ${DEP} ${EXEC}
 
 # END

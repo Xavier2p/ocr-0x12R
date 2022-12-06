@@ -25,11 +25,11 @@ $(BUILD)/%.o : %.c
 
 
 clean:
-	${RM} ${OBJ}
-	rm -rf $(BUILD)
-	$(RM) $(EXEC)
-	${RM} ${DEP}
-	${RM} grid.result
+	@${RM} ${OBJ}
+	@rm -rf $(BUILD)
+	@$(RM) $(EXEC)
+	@${RM} ${DEP}
+	@${RM} grid.result
 	@${RM} vg*
 	@${RM} .Ma*
 	@${RM} .sudo*
