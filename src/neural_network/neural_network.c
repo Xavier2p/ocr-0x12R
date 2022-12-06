@@ -13,7 +13,7 @@ Neuron new_neuron(unsigned int nb_weights)
 
     if (nb_weights != 0)
     {
-        neuron.weights = (double *)calloc((nb_weights + 1), sizeof(double));
+        neuron.weights = (double*)calloc((nb_weights + 1), sizeof(double));
         if (neuron.weights == NULL)
             errx(EXIT_FAILURE, "Error while allocating memory");
     }
@@ -21,7 +21,7 @@ Neuron new_neuron(unsigned int nb_weights)
     return neuron;
 }
 
-void init_neuron(Neuron *neuron)
+void init_neuron(Neuron* neuron)
 {
     unsigned int nb_weights = neuron->nb_weights;
 
@@ -29,14 +29,14 @@ void init_neuron(Neuron *neuron)
         neuron->weights[i] = (double)rand() / (double)RAND_MAX;
 }
 
-void free_neuron(Neuron *neuron)
+void free_neuron(Neuron* neuron)
 {
     free(neuron->weights);
 }
 
 //----- LAYER INITIALIZATION -----//
 
-void init_layer(Layer *layer, unsigned int weights)
+void init_layer(Layer* layer, unsigned int weights)
 {
     unsigned int nb_neurons = layer->nb_neurons;
 
@@ -51,7 +51,7 @@ Layer new_layer(unsigned int size, unsigned int weights)
         .neurons = NULL,
     };
 
-    layer.neurons = (Neuron *)calloc((size + 1), sizeof(struct Neuron));
+    layer.neurons = (Neuron*)calloc((size + 1), sizeof(struct Neuron));
     if (layer.neurons == NULL)
         errx(EXIT_FAILURE, "Error while allocating memory");
 
@@ -60,7 +60,7 @@ Layer new_layer(unsigned int size, unsigned int weights)
     return layer;
 }
 
-void free_layer(Layer *layer)
+void free_layer(Layer* layer)
 {
     for (unsigned int i = 0; i < layer->nb_neurons; i++)
         free_neuron(&(layer->neurons[i]));
@@ -70,20 +70,20 @@ void free_layer(Layer *layer)
 
 //----- NETWORK INITIALIZATION -----//
 
-void init_weights(Network *network)
+void init_weights(Network* network)
 {
     srand(time(NULL));
 
     for (unsigned int i = 0; i < network->nb_layers; i++)
     {
-        Layer *curr_layer = &(network->layers[i]);
+        Layer* curr_layer = &(network->layers[i]);
 
         for (unsigned int j = 0; j < curr_layer->nb_neurons; j++)
             init_neuron(&(curr_layer->neurons[j]));
     }
 }
 
-void init_network(Network *network)
+void init_network(Network* network)
 {
     network->layers[0] = new_layer(network->size_input, 0);
 
@@ -110,7 +110,7 @@ Network new_network(unsigned int size_input, unsigned int nb_hidden,
     };
 
     network.layers =
-        (Layer *)calloc((network.nb_layers + 1), sizeof(struct Layer));
+        (Layer*)calloc((network.nb_layers + 1), sizeof(struct Layer));
     if (network.layers == NULL)
         errx(EXIT_FAILURE, "Error while allocating memory");
 
@@ -119,7 +119,7 @@ Network new_network(unsigned int size_input, unsigned int nb_hidden,
     return network;
 }
 
-void free_network(Network *network)
+void free_network(Network* network)
 {
     for (unsigned int i = 0; i < network->nb_layers; i++)
         free_layer(&(network->layers[i]));
@@ -154,7 +154,7 @@ double softmax(double x)
     return exp(x) / (1 + exp(x));
 }
 
-void softmax_layer(Layer *layer)
+void softmax_layer(Layer* layer)
 {
     double sum = 0;
 
@@ -170,11 +170,11 @@ void softmax_layer(Layer *layer)
 
 //----- FRONTPROPAGATION -----//
 
-void front_propagation(Network *network, double input_data[],
+void front_propagation(Network* network, double input_data[],
                        unsigned int clean)
 {
-    Layer *prev_layer;
-    Layer *curr_layer = &(network->layers[0]);
+    Layer* prev_layer;
+    Layer* curr_layer = &(network->layers[0]);
 
     for (unsigned int i = 0; i < curr_layer->nb_neurons; i++)
         curr_layer->neurons[i].value = input_data[i];
@@ -186,7 +186,7 @@ void front_propagation(Network *network, double input_data[],
 
         for (unsigned int j = 0; j < curr_layer->nb_neurons; j++)
         {
-            Neuron *curr_neuron = &(curr_layer->neurons[j]);
+            Neuron* curr_neuron = &(curr_layer->neurons[j]);
             curr_neuron->value = 0;
 
             for (unsigned int k = 0; k <= prev_layer->nb_neurons; k++)
@@ -210,12 +210,12 @@ void int_to_array(double x, double desired_output[], unsigned int size)
         desired_output[i] = (i == x ? 1 : 0);
 }
 
-void back_propagation(Network *network, double desired_output[])
+void back_propagation(Network* network, double desired_output[])
 {
     double error_var = 0;
 
-    Neuron *curr_neuron;
-    Layer *output_layer = &(network->layers[network->nb_layers - 1]);
+    Neuron* curr_neuron;
+    Layer* output_layer = &(network->layers[network->nb_layers - 1]);
 
     for (unsigned int i = 0; i < output_layer->nb_neurons; i++)
     {
@@ -227,7 +227,7 @@ void back_propagation(Network *network, double desired_output[])
     for (unsigned int i = network->nb_layers - 1; i >= 2; i--)
     {
         Layer curr_layer = network->layers[i];
-        Layer *previousLayer = &(network->layers[i - 1]);
+        Layer* previousLayer = &(network->layers[i - 1]);
 
         for (unsigned int j = 0; j < previousLayer->nb_neurons; j++)
         {
@@ -243,16 +243,16 @@ void back_propagation(Network *network, double desired_output[])
     }
 }
 
-void gradient_descent(Network *network, double learning_rate)
+void gradient_descent(Network* network, double learning_rate)
 {
     for (unsigned int i = network->nb_layers - 1; i >= 1; i--)
     {
-        Layer *curr_layer = &(network->layers[i]);
-        Layer *previousLayer = &(network->layers[i - 1]);
+        Layer* curr_layer = &(network->layers[i]);
+        Layer* previousLayer = &(network->layers[i - 1]);
 
         for (unsigned int j = 0; j < curr_layer->nb_neurons; j++)
         {
-            Neuron *curr_neuron = &(curr_layer->neurons[j]);
+            Neuron* curr_neuron = &(curr_layer->neurons[j]);
 
             for (unsigned int k = 0; k < previousLayer->nb_neurons; k++)
                 curr_neuron->weights[k] += curr_neuron->delta

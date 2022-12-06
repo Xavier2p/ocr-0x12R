@@ -37,7 +37,7 @@ double test_image[NUM_TEST][SIZE];
 int train_label[NUM_TRAIN];
 int test_label[NUM_TEST];
 
-void FlipLong(unsigned char *ptr)
+void FlipLong(unsigned char* ptr)
 {
     unsigned char val;
 
@@ -53,11 +53,11 @@ void FlipLong(unsigned char *ptr)
     *(ptr + 1) = val;
 }
 
-void read_mnist_char(char *file_path, int num_data, int len_info, int arr_n,
+void read_mnist_char(char* file_path, int num_data, int len_info, int arr_n,
                      unsigned char data_char[][arr_n], int info_arr[])
 {
     int i, fd;
-    unsigned char *ptr;
+    unsigned char* ptr;
 
     if ((fd = open(file_path, O_RDONLY)) == -1)
     {
@@ -70,7 +70,7 @@ void read_mnist_char(char *file_path, int num_data, int len_info, int arr_n,
     // read-in information about size of data
     for (i = 0; i < len_info; i++)
     {
-        ptr = (unsigned char *)(info_arr + i);
+        ptr = (unsigned char*)(info_arr + i);
         FlipLong(ptr);
         ptr = ptr + sizeof(int);
     }

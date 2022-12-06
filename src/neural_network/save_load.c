@@ -2,12 +2,12 @@
 
 //----- SAVE & LOAD WEIGHTS -----//
 
-char *my_strncat(char *destination, const char *source, size_t num)
+char* my_strncat(char* destination, const char* source, size_t num)
 {
     if ((destination == NULL) && (source == NULL))
         return NULL;
 
-    char *dest = destination;
+    char* dest = destination;
 
     while (*dest != '\0')
     {
@@ -31,11 +31,11 @@ int is_number(char text)
     return (('0' <= text) && (text <= '9')) ? 1 : 0;
 }
 
-void save_weights(Network *network, char *path)
+void save_weights(Network* network, char* path)
 {
     printf("%s\r", "Saving weights... Please wait...");
 
-    FILE *file;
+    FILE* file;
     file = fopen(path, "w");
 
     char str_header[20];
@@ -51,12 +51,12 @@ void save_weights(Network *network, char *path)
     for (unsigned int i = 1; i < network->nb_layers; i++)
     {
         fputs("\n#", file);
-        Layer *curr_layer = &(network->layers[i]);
+        Layer* curr_layer = &(network->layers[i]);
 
         for (unsigned int j = 0; j < curr_layer->nb_neurons; j++)
         {
             fputs("\n~\n", file);
-            Neuron *curr_neuron = &(network->layers[i].neurons[j]);
+            Neuron* curr_neuron = &(network->layers[i].neurons[j]);
 
             for (unsigned int k = 0; k < curr_neuron->nb_weights; k++)
             {
@@ -71,14 +71,14 @@ void save_weights(Network *network, char *path)
     fclose(file);
 }
 
-void load_weights(Network *network, char *path)
+void load_weights(Network* network, char* path)
 {
     printf("%s\r", "Loading weights file... Please wait..");
 
     if (access(path, F_OK) != 0)
         errx(EXIT_FAILURE, "Specified file doesn't exist.");
 
-    FILE *file;
+    FILE* file;
     file = fopen(path, "r");
 
     int nb_layers, nb_neurons;

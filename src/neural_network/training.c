@@ -1,4 +1,5 @@
 #include "include/training.h"
+#include <stdio.h>
 
 //----- HELPER FUNCTIONS -----//
 
@@ -12,18 +13,11 @@ void remove_cursor(int disable)
     printf("%s", disable ? "\033[?25l" : "\033[?25h");
 }
 
-void print_usage()
-{
-    printf("Usage: neural -p <path> | -h <nb_hidden> -n <nb_neurons> -l "
-           "<nb_layers> | -i <image> | -s <state>\n");
-    exit(2);
-}
-
 //----- STATE 0 OR 1 (TEST/TRAIN) -----//
 
-unsigned int fetch_result(Network *network)
+unsigned int fetch_result(Network* network)
 {
-    Layer *output_layer = &(network->layers[network->nb_layers - 1]);
+    Layer* output_layer = &(network->layers[network->nb_layers - 1]);
     unsigned int result = 0;
 
     for (unsigned int i = 0; i < output_layer->nb_neurons; i++)
@@ -39,7 +33,7 @@ void train(unsigned int nb_hidden, unsigned int nb_neurons,
            double learning_rate)
 {
     Network n;
-    Network *network = &n;
+    Network* network = &n;
     *network = new_network(784, nb_hidden, nb_neurons, 10);
 
     double desired_output[network->size_output];
@@ -59,11 +53,11 @@ void train(unsigned int nb_hidden, unsigned int nb_neurons,
         }
     }
 
-    save_weights(network, "./saved_data/weights.data");
+    save_weights(network, "src/neural_network/saved_data/weights.data");
     free_network(network);
 }
 
-int test(Network *network, double clean_input[])
+int test(Network* network, double clean_input[])
 {
     int success_rate = 0;
 
@@ -97,7 +91,7 @@ int is_empty(double image[])
     return median < 12;
 }
 
-int run(Network *network, double image[])
+int run(Network* network, double image[])
 {
     if (is_empty(image))
         return 0;
@@ -110,11 +104,11 @@ int training(char path[], double nb_hidden, double nb_neurons,
              double learning_rate, double image[], int state)
 {
     Network n;
-    Network *network = &n;
+    Network* network = &n;
 
     if (state == 2 && path == NULL)
     {
-        load_weights(network, "./saved_data/weights.data");
+        load_weights(network, "src/neural_network/saved_data/weights.data");
         return run(network, image);
     }
     else if (state == 0 || state == 1)
@@ -122,7 +116,7 @@ int training(char path[], double nb_hidden, double nb_neurons,
         if (((state == 0) && path == NULL)
             || ((state == 1)
                 && (nb_hidden == 0 || nb_neurons == 0 || learning_rate == 0)))
-            print_usage();
+            printf("rtfm\n");
 
         double clean_input[784] = { 0.0 };
         load_numeric(train_image, test_image, train_label, test_label);
@@ -134,7 +128,7 @@ int training(char path[], double nb_hidden, double nb_neurons,
         if (state == 1)
         {
             train(nb_hidden, nb_neurons, learning_rate);
-            load_weights(network, "./saved_data/weights.data");
+            load_weights(network, "src/neural_network/saved_data/weights.data");
         }
 
         int success_rate = test(network, clean_input);

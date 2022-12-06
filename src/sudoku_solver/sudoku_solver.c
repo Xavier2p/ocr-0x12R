@@ -20,7 +20,7 @@
 #include <stdio.h>
 #include <time.h>
 
-void print_grid(int **sudoku_grid)
+void print_grid(int** sudoku_grid)
 {
     for (int i = 0; i < 9; ++i)
     {
@@ -33,7 +33,7 @@ void print_grid(int **sudoku_grid)
     printf("\n");
 }
 
-int is_safe(int **grid, int row, int col, int num)
+int is_safe(int** grid, int row, int col, int num)
 {
     for (int x = 0; x <= 8; x++)
         if (grid[row][x] == num)
@@ -52,7 +52,7 @@ int is_safe(int **grid, int row, int col, int num)
     return 1;
 }
 
-int solve_sudoku_rec(int **grid, int row, int col, int *i)
+int solve_sudoku_rec(int** grid, int row, int col, int* i)
 {
     *i = *i + 1;
     if (*i >= 20000)
@@ -86,9 +86,9 @@ int solve_sudoku_rec(int **grid, int row, int col, int *i)
     return 0;
 }
 
-void import_grid(int **grid, char filename[])
+void import_grid(int** grid, char filename[])
 {
-    FILE *fp = fopen(filename, "r");
+    FILE* fp = fopen(filename, "r");
 
     if (fp == NULL)
         printf("file can't be opened \n");
@@ -120,9 +120,9 @@ void import_grid(int **grid, char filename[])
     fclose(fp);
 }
 
-void export_grid(int **grid, char filename[])
+void export_grid(int** grid, char filename[])
 {
-    FILE *fp;
+    FILE* fp;
     fp = fopen(filename, "w");
 
     for (size_t i = 0; i < 9; i++)
@@ -145,7 +145,7 @@ void export_grid(int **grid, char filename[])
     fclose(fp);
 }
 
-void solve_sudoku(int **grid)
+void solve_sudoku(int** grid)
 {
     int i = 0;
 

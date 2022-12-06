@@ -11,8 +11,8 @@
 
 int is_number(char text);
 
-void save_weights(Network *network, char *path);
+void save_weights(Network* network, char* path);
 
-void load_weights(Network *network, char *path);
+void load_weights(Network* network, char* path);
 
 #endif

@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror `pkg-config --cflags sdl2 SDL2_image gtk+-3.0` -std=c99 -g -rdynamic
+CFLAGS = -Wall -Wextra `pkg-config --cflags sdl2 SDL2_image gtk+-3.0` -std=c99 -g -rdynamic
 LDLIBS = `pkg-config --libs gtk+-3.0 sdl2 SDL2_image` -lSDL2 -lm -g
 
 BUILD := build
@@ -20,18 +20,6 @@ init:
 
 main: $(OBJ)
 	gcc -o $@ $(CFLAGS) $^ $(LDLIBS)
-
-image_traitment:
-	make -C src/image_traitment
-
-solver:
-	make -C src/sudoku_solver
-
-neural:
-	make -C src/neural_network
-
-gui:
-	make -C src/gui
 
 format:
 	find -name "*.[ch]" -exec clang-format --verbose -i {} \;
@@ -61,10 +49,9 @@ $(BUILD)/%.o : %.c
 	$(CC) $(CFLAGS) -c $< -o $@ $(LDLFLAGS) $(CPPFLAGS) $(LDLIBS)
 
 clean:
-	${RM} main
-	${RM} ${OBJ}
-	${RM} grid.result
-	${RM} -rf $(BUILD)
-	${RM} ${EXE}
-	${RM} res_*
-	${RM} double_tresh_res_image_0* hysteris_res_image_0* non_max_res_image_0* sobel_res_image_0* gaussian_blur_res_i* gray_scale_res_ima* brightness_res_im* contrast_res_ima* res_hough_res_ima* homographic_transform_res* adaptive_res* blur_res* blob_res*
+	make -C src/gui clean
+	make -C src/neural_network clean
+	make -C src/image_traitment clean
+	make -C src/sudoku_solver clean
+	@${RM} main
+	@${RM} -r $(BUILD)

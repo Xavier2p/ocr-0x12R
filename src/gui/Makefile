@@ -16,7 +16,10 @@ EXEC := main
 # The source files
 
 
-all: init gui
+all: init gui clear
+
+clear:
+	find . -type d -empty -delete
 
 
 init:
@@ -33,8 +36,9 @@ $(build)/%.o : %.c
 	$(cc) $(cflags) -c $< -o $@ $(ldlflags) $(cppflags) $(ldlibs)
 
 clean:
-	${RM} $(OBJ) $(EXEC) $(TARGET)
-	rm -rf $(BUILD)
+	@${RM} *.o *.d
+	@${RM} $(OBJ) $(EXEC) $(TARGET)
+	@rm -rf $(BUILD)
 
 
 # END OF MAKEFILE

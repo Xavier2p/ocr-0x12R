@@ -7,8 +7,8 @@ void load_numeric(double train_image[NUM_TRAIN][SIZE],
     size_t curr_NUM = 0;
     int expected;
 
-    DIR *directory = opendir("include/data/numeric");
-    struct dirent *file;
+    DIR* directory = opendir("src/neural_network/include/data/numeric");
+    struct dirent* file;
     char ch;
 
     while ((file = readdir(directory)) != NULL)
@@ -18,9 +18,10 @@ void load_numeric(double train_image[NUM_TRAIN][SIZE],
         expected = tmp[0] - '0';
 
         char filename[1000];
-        sprintf(filename, "%s/%s", "include/data/numeric", file->d_name);
+        sprintf(filename, "%s/%s", "src/neural_network/include/data/numeric",
+                file->d_name);
 
-        FILE *fin = fopen(filename, "r");
+        FILE* fin = fopen(filename, "r");
 
         if (fin != NULL && strcmp(file->d_name, ".") != 0
             && strcmp(file->d_name, "..") != 0)

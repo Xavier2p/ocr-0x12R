@@ -17,18 +17,18 @@ void print_usage();
 
 //----- DATASET TRAIN AND TEST -----//
 
-unsigned int fetch_result(Network *network);
+unsigned int fetch_result(Network* network);
 
 void train(unsigned int nb_hidden, unsigned int nb_neurons,
            double learning_rate);
 
-int test(Network *network, double clean_input[]);
+int test(Network* network, double clean_input[]);
 
 //----- MAIN -----//
 
 int is_empty(double image[]);
 
-int run(Network *network, double image[]);
+int run(Network* network, double image[]);
 
 int training(char path[], double nb_hidden, double nb_neurons,
              double learning_rate, double image[], int state);
