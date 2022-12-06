@@ -134,7 +134,7 @@ void on_button_appply_settings_clicked()
     printf("training network....................................ok\n");
     printf("nb_layers = %d\nnb_neuron = %d\nlearningr = %f\n", *nb_layers,
            *nb_neuron, learningr);
-    launcher_neural((double)*nb_layers, (double)*nb_neuron, learningr);
+    launcher_train((double)*nb_layers, (double)*nb_neuron, learningr);
     gtk_label_set_text(GTK_LABEL(label_one),
                        (const gchar*)"Neural Network retrained");
     free(nb_layers);

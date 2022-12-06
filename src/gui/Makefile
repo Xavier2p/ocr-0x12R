@@ -16,7 +16,10 @@ EXEC := main
 # The source files
 
 
-all: init gui
+all: init gui clear
+
+clear:
+	find . -type d -empty -delete
 
 
 init:

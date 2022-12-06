@@ -49,7 +49,7 @@ char* launcher_normalize(Image* image)
 //     return "[NI] Erosion Applied";
 // }
 
-int launcher_neural(double hl, double nbn, double lr)
+int launcher_train(double hl, double nbn, double lr)
 {
     return training(NULL, hl, nbn, lr, NULL, 1);
 }

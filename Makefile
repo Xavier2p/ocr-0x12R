@@ -22,18 +22,6 @@ init:
 main: $(OBJ)
 	gcc -o $@ $(CFLAGS) $^ $(LDLIBS)
 
-image_traitment:
-	make -C src/image_traitment
-
-solver:
-	make -C src/sudoku_solver
-
-neural:
-	make -C src/neural_network
-
-gui:
-	make -C src/gui
-
 format:
 	find -name "*.[ch]" -exec clang-format --verbose -i {} \;
 
@@ -63,4 +51,4 @@ clean:
 	make -C src/image_traitment clean
 	make -C src/sudoku_solver clean
 	@${RM} main
-	@rm -rf $(BUILD)
+	@${RM} -r $(BUILD)
