@@ -13,6 +13,7 @@
 
 #include "gui_tools.h"
 #include "../../image_traitment/include/preprocess.h"
+#include "../../neural_network/include/training.h"
 
 void init_gui(int argc, char *argv[]);
 

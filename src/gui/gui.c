@@ -124,20 +124,25 @@ void on_button_appply_settings_clicked()
 {
     int *nb_layers = calloc(1, sizeof(int));
     int *nb_neuron = calloc(1, sizeof(int));
-    int *learningr = calloc(1, sizeof(int));
+    double *learningr = calloc(1, sizeof(double));
     sscanf((char *)gtk_entry_get_text(param1), "%d", nb_layers);
     sscanf((char *)gtk_entry_get_text(param2), "%d", nb_neuron);
-    sscanf((char *)gtk_entry_get_text(param3), "%d", learningr);
+    // double learningr = atof((char *)gtk_entry_get_text(param3));
+    sscanf((char *)gtk_entry_get_text(param3), "%f", learningr);
     gtk_label_set_text(GTK_LABEL(label_one),
                        (const gchar *)"Settings applied, the Neural Network "
                                       "will be retrained");
     printf("training network....................................ok\n");
-    printf("nb_layers = %d\nnb_neuron = %d\nlearningr = %d\n", *nb_layers,
+    printf("nb_layers = %d\nnb_neuron = %d\nlearningr = %f\n", *nb_layers,
            *nb_neuron, *learningr);
+    int success_percent = training(NULL, (double) *nb_layers,
+            (double) *nb_neuron, *learningr, NULL, 1);
+    gtk_label_set_text(GTK_LABEL(label_one),
+                       (const gchar *)"Neural Network retrained");
     gtk_widget_destroy(dialog);
     free(nb_layers);
     free(nb_neuron);
-    free(learningr);
+    // free(learningr);
 }
 
 /**
