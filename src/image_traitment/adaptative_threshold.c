@@ -20,7 +20,7 @@
 
 #define ADAPTIVETHRESHOLDING_RANGE 5
 #define ADAPTIVETHRESHOLING_C 3
-#define DILATAION_RANGE 1
+#define DILATAION_RANGE 2
 #define EROSION_RANGE 3
 
 // Compute adaptive threshold on the image

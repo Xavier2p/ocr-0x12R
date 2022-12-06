@@ -171,8 +171,9 @@ void box_blur(Image *source, Image *target, int w, int h, int radius)
     box_blur_t(source, target, w, h, radius);
 }
 
-void gaussian_blur(Image *source, int radius)
+void gaussian_blur(Image *source)
 {
+    int radius = 2;
     int width = source->width;
     int height = source->height;
     // allocate image

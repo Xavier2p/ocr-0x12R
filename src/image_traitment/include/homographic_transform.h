@@ -14,6 +14,6 @@
 
 #define FILL(mat, x, y) mat[x * 8 + y]
 
-Image homographic_transform(Image *image, Square *square, int size);
+void homographic_transform(Image *image, Square *square, int size);
 
 #endif

@@ -3,9 +3,11 @@
 #include "include/blob.h"
 #include "include/canny.h"
 #include "include/linkedlist.h"
+#include "include/otsu.h"
+#include "include/preprocess.h"
 #include "include/utilis_image.h"
 
-Image image_traitment(Image *image)
+void image_traitment(Image *image)
 {
     // Preprocess
 
@@ -13,7 +15,7 @@ Image image_traitment(Image *image)
     grayscale(image);
 
     // Blur
-    gaussian_blur(image, 2);
+    gaussian_blur(image);
 
 
     // Binarization thechniques
@@ -21,22 +23,16 @@ Image image_traitment(Image *image)
     // Adaptive threshold
     adaptative_threshold(image);
 
-
-
     // Remove small blobs
     remove_small_blob(image);
 
     erosion(image);
     dilatation(image);
 
-    // Find the corners of the grid
-    Square corners = main_blob(image);
 
-    // save_image(image, "blob_");
+    // Find the corners of the grid
+    Square corners = find_corners(image);
 
     // Resize, rotate and correct perspective
-    Image final_grid = homographic_transform(image, &corners, 756);
-
-    save_image(&final_grid, "adaptative_threshold");
-    return final_grid;
+    homographic_transform(image, &corners, 756);
 }

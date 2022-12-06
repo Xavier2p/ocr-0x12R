@@ -17,7 +17,13 @@ struct DotQueue
 
 SLIST_HEAD(slisthead, DotQueue);
 
+
+int blob_detection(Image *image, Dot start, unsigned int prev, int new_color);
+
+Dot find_biggest_blob(Image *image);
+
 void remove_small_blob(Image *image);
 
-Square main_blob(Image *image);
+Square find_corners(Image *image);
+
 #endif

@@ -16,8 +16,6 @@
  *
  * =====================================================================================
  */
-#include <stdio.h>
-#include <stdlib.h>
 #include "image_traitment/include/utilis_image.h"
 #include "neural_network/include/neural_network.h"
 #include "image_traitment/include/image_traitment.h"
@@ -33,6 +31,7 @@ int main(int argc, char **argv)
     }
     else
     {
+        printf("%s imported\n", argv[1]);
         // Import image
         SDL_Surface *surface = IMG_Load(argv[1]);
         printf("Imported image of size %ix%i\n", surface->w, surface->h);
@@ -60,30 +59,30 @@ int main(int argc, char **argv)
 
         printf("\n");
         // Compute all operation on the image to segment it
-        Image computed_image = image_traitment(&image);
+        image_traitment(&image);
 
-        //        free_image(&image);
-        //
-        //        // Segment the image and export the grid for the sudoku solver
-        //        int **sudoku_grid = segmentation(&computed_image, &n);
-        //
-        //        printf("\nNon-Solved Grid: \n");
-        //        print_grid(sudoku_grid);
-        //
-        //        // Solve the grid
-        //        solve_sudoku(sudoku_grid, 0, 0);
-        //
-        //        printf("\nSolved Grid: \n");
-        //        print_grid(sudoku_grid);
-        //
-        //        for (int i = 0; i < 10; ++i)
-        //            free(sudoku_grid[i]);
-        //        free(sudoku_grid);
-        free_image(&image);
+
+        // Segment the image and export the grid for the sudoku solver
+        int **sudoku_grid = segmentation(&image, &n);
+
+        printf("\nNon-Solved Grid: \n");
+        print_grid(sudoku_grid);
+
+
+        // Solve the grid
+        solve_sudoku(sudoku_grid, 0, 0);
+
+        printf("\nSolved Grid: \n");
+        print_grid(sudoku_grid);
+
+        for (int i = 0; i < 10; ++i)
+            free(sudoku_grid[i]);
+
+
+        // Free Memory
+        free(sudoku_grid);
         free_network(&n);
-        free_image(&computed_image);
-        //
-        //        printf("\n");
+        free_image(&image);
         SDL_Quit();
     }
 

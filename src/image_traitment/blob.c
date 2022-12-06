@@ -1,8 +1,6 @@
 #include "include/blob.h"
-#include "include/adaptative_threshold.h"
-#include "include/utilis_image.h"
 
-int blob_detection(Image *image, Dot start, unsigned int prev, int new)
+int blob_detection(Image *image, Dot start, unsigned int prev, int new_color)
 {
     int w = image->width;
     int h = image->height;
@@ -29,7 +27,7 @@ int blob_detection(Image *image, Dot start, unsigned int prev, int new)
 
         if (image->pixels[y][x].r == prev)
         {
-            set_all_pixel(image, y, x, new);
+            set_all_pixel(image, y, x, new_color);
             nb_dots++;
 
             p = malloc(sizeof(*p));
@@ -57,7 +55,7 @@ int blob_detection(Image *image, Dot start, unsigned int prev, int new)
     return nb_dots;
 }
 
-Square find_corners(Image *image)
+Square compute_corners(Image *image)
 {
     Pixel **pixels = image->pixels;
     int w = image->width;
@@ -131,7 +129,7 @@ Dot find_biggest_blob(Image *image)
         for (int j = 0; j < w; ++j)
         {
             Dot tmp_start = { .X = j, .Y = i };
-            int tmp_nb = blob_detection(&c_image, tmp_start, 255, 88);
+            int tmp_nb = blob_detection(&c_image, tmp_start, 255, 0);
 
             if (tmp_nb > max_point)
             {
@@ -180,13 +178,13 @@ void remove_small_blob(Image *image)
     }
 }
 
-Square main_blob(Image *image)
+Square find_corners(Image *image)
 {
     Dot biggest_blob_dot = find_biggest_blob(image);
 
     blob_detection(image, biggest_blob_dot, 255, 88);
 
-    Square corners = find_corners(image);
+    Square corners = compute_corners(image);
 
     //    draw_dot(image, &corners.bl, 4);
     //    draw_dot(image, &corners.br, 4);

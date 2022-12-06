@@ -18,6 +18,6 @@
 #include "adaptative_threshold.h"
 #include "segmentation.h"
 
-Image image_traitment(Image *image);
+void image_traitment(Image *image);
 
 #endif

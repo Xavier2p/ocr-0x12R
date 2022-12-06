@@ -17,6 +17,7 @@
  * =====================================================================================
  */
 #include "include/homographic_transform.h"
+#include "include/utilis_image.h"
 
 double *fill_matrix(int size, Square *square)
 {
@@ -78,7 +79,7 @@ double *fill_matrix(int size, Square *square)
     return res;
 }
 
-Image homographic_transform(Image *image, Square *square, int size)
+void homographic_transform(Image *image, Square *square, int size)
 {
     double *mat = fill_matrix(size, square);
 
@@ -117,6 +118,8 @@ Image homographic_transform(Image *image, Square *square, int size)
     }
 
     free(mat);
-    // Create a matrix to store the transphormation matrix
-    return new_image;
+        
+    free_image(image);
+    *image = new_image;
+
 }

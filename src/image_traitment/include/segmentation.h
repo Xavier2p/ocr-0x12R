@@ -5,6 +5,7 @@
 #include <stdio.h>
 
 #include "utilis_image.h"
+#include "blob.h"
 #include "../../neural_network/include/training.h"
 
 #define PATH_TO_WEIGHTS "src/neural_network/saved_data/best_weights-89.data"

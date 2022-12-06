@@ -16,6 +16,23 @@
  * =====================================================================================
  */
 #include "include/segmentation.h"
+#include "include/utilis_image.h"
+
+void clean_image(Image *image)
+{
+    for (int i = 0; i < image->height; i++)
+    {
+        for (int j = 0; j < image->width; j++)
+        {
+            if (image->pixels[i][j].r == 88)
+            {
+                set_all_pixel(image, i, j , 0);
+            }
+        }
+    }
+
+
+}
 
 double *create_square_image(Image *image, int i, int j, int size, int cordi,
                             int cordj)
@@ -58,7 +75,9 @@ double *create_square_image(Image *image, int i, int j, int size, int cordi,
     }
 
     Image tmp_resized = resize_image(&tmp, SIZE_OF_NEURAL_INPUT);
-    //    save_image(&tmp_resized, "res_");
+   
+    save_image(&tmp_resized, "res_");
+
     double *res =
         calloc(SIZE_OF_NEURAL_INPUT * SIZE_OF_NEURAL_INPUT, sizeof(double));
 
