@@ -72,13 +72,13 @@ int main(int argc, char **argv)
         solve_sudoku(to_solve_grid, 0, 0);
 
 
-        write_numbers(&computed_image, sudoku_grid, to_solve_grid);
+        Image img = write_numbers(sudoku_grid, to_solve_grid);
 
 
 
-        SDL_Surface* final_surface = create_surface(&computed_image);
+        SDL_Surface* final_surface = create_surface(&img);
 
-        const char* file_name = "saved_picture.bmp";
+        const char* file_name = "picture.bmp";
 
 
         SDL_SaveBMP(final_surface, file_name);

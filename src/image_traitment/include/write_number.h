@@ -4,6 +4,6 @@
 #    include "utilis_image.h"
 
 
-void write_numbers(Image *src, int **virgin, int **solved);
+Image write_numbers(int **origin, int **solved);
 
 #endif

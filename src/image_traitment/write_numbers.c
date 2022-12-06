@@ -7,15 +7,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 #include "include/utilis_image.h"
 
 
-void resize_draw(Image *src, Image *number_img, int x, int y, int dimension){
+void resize_draw(Image *src, Image *number_img, int x, int y, int dimension,
+        int color){
 
     int block = dimension / 9;
     int num_size = dimension / 14;
-    int gap = block / 4;
+    int gap = (block - num_size) / 2;
+    //int xgap = gap * 4 / 5;
 
 
     int new_width = 0;
@@ -50,9 +53,14 @@ void resize_draw(Image *src, Image *number_img, int x, int y, int dimension){
     int i_ratio = (int)((h1 << 16) / new_height) + 1;
 
 
-    Pixel p = { .r = 87,
+    Pixel blue = { .r = 87,
                 .g = 112,
                 .b = 255 };
+
+    Pixel brown = { .r = 139,
+                .g = 69,
+                .b = 19 };
+
 
 
     // calculate the new pixels
@@ -71,9 +79,13 @@ void resize_draw(Image *src, Image *number_img, int x, int y, int dimension){
                         .g = number_img->pixels[i2][j2].g,
                         .b = number_img->pixels[i2][j2].b };
 
-            //if black value
-            if (curP.r < 12)
-                src->pixels[x*block+i+gap][y*block+j+gap] = p;
+            //color in blue
+            if (color && curP.r < 12)
+                src->pixels[x*block+i+gap][y*block+j+gap] = blue;
+
+            //color in brown
+            else if (curP.r < 12)
+                src->pixels[x*block+i+gap][y*block+j+gap] = brown;
         }
     }
 
@@ -83,7 +95,7 @@ void resize_draw(Image *src, Image *number_img, int x, int y, int dimension){
 
 
 
-void add_number(Image *src, int x, int y, int number){
+void add_number(Image *src, int x, int y, int number, int color){
 
     const char *file;
 
@@ -140,24 +152,32 @@ void add_number(Image *src, int x, int y, int number){
     Image number_img = create_image(number_img_sdl, number_img_sdl->w,
                                     number_img_sdl->h);
 
-    int size = src->width;
+    int size = (src->width + src->height) / 2;
 
-    resize_draw(src, &number_img, x, y, size);
+    resize_draw(src, &number_img, x, y, size, color);
 
 
 }
 
 
-void write_numbers(Image *src, int **virgin, int **solved)
+Image write_numbers(int **origin, int **solved)
 {
+    SDL_Surface *sudoku_sdl = IMG_Load("src/image_traitment/numbers/grid.png");
+
+    Image sudoku_img = create_image(sudoku_sdl, sudoku_sdl->w, sudoku_sdl->h);
+
+
     for (int y = 0; y < 9; y++)
     {
         for (int x = 0; x < 9; x++)
         {
-            if (virgin[x][y] == 0)
-            {
-                add_number(src, x, y, solved[x][y]);
-            }
+            if (origin[x][y] == 0)
+                add_number(&sudoku_img, x, y, solved[x][y], 1); //blue
+
+            else
+                add_number(&sudoku_img, x, y, solved[x][y], 0); //brown
         }
     }
+
+    return sudoku_img;
 }
