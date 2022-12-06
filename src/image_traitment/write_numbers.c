@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "../../include/image_traitment/utilis_image.h"
+#include "include/utilis_image.h"
 
 
 void resize_draw(Image *src, Image *number_img, int x, int y, int dimension){
@@ -50,9 +50,9 @@ void resize_draw(Image *src, Image *number_img, int x, int y, int dimension){
     int i_ratio = (int)((h1 << 16) / new_height) + 1;
 
 
-    Pixel p = { .r = 35,
-                .g = 122,
-                .b = 198 };
+    Pixel p = { .r = 87,
+                .g = 112,
+                .b = 255 };
 
 
     // calculate the new pixels
@@ -90,43 +90,43 @@ void add_number(Image *src, int x, int y, int number){
     switch ( number )
     {
         case 0:
-            file = "numbers/0.png";
+            file = "src/image_traitment/numbers/0.png";
             break;
 
         case 1:
-            file = "numbers/1.png";
+            file = "src/image_traitment/numbers/1.png";
             break;
 
         case 2:
-            file = "numbers/2.png";
+            file = "src/image_traitment/numbers/2.png";
             break;
 
         case 3:
-            file = "numbers/3.png";
+            file = "src/image_traitment/numbers/3.png";
             break;
 
         case 4:
-            file = "numbers/4.png";
+            file = "src/image_traitment/numbers/4.png";
             break;
 
         case 5:
-            file = "numbers/5.png";
+            file = "src/image_traitment/numbers/5.png";
             break;
 
         case 6:
-            file = "numbers/6.png";
+            file = "src/image_traitment/numbers/6.png";
             break;
 
         case 7:
-            file = "numbers/7.png";
+            file = "src/image_traitment/numbers/7.png";
             break;
 
         case 8:
-            file = "numbers/8.png";
+            file = "src/image_traitment/numbers/8.png";
             break;
 
         case 9:
-            file = "numbers/9.png";
+            file = "src/image_traitment/numbers/9.png";
             break;
 
 

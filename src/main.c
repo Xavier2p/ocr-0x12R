@@ -22,8 +22,11 @@
 #include "neural_network/include/neural_network.h"
 #include "image_traitment/include/image_traitment.h"
 #include "image_traitment/include/segmentation.h"
+#include "image_traitment/include/write_number.h"
 #include "sudoku_solver/sudoku_solver.h"
 #include "gui/includes/gui.h"
+#include "image_traitment/include/write_number.h"
+
 
 int main(int argc, char **argv)
 {
@@ -62,25 +65,26 @@ int main(int argc, char **argv)
 
         // Segment the image and export the grid for the sudoku solver
         int **sudoku_grid = segmentation(&computed_image, &n);
-        int **to_solve_grid = NULL;
+        int **to_solve_grid = segmentation(&computed_image, &n);
 
-
-        // MALLOC AND COPY
-
-
-        printf("\nNon-Solved Grid: \n");
-        print_grid(sudoku_grid);
 
         // Solve the grid
-        solve_sudoku(sudoku_grid, 0, 0);
-
-       // Your function
+        solve_sudoku(to_solve_grid, 0, 0);
 
 
+        write_numbers(&computed_image, sudoku_grid, to_solve_grid);
 
 
-        printf("\nSolved Grid: \n");
-        print_grid(sudoku_grid);
+
+        SDL_Surface* final_surface = create_surface(&computed_image);
+
+        const char* file_name = "saved_picture.bmp";
+
+
+        SDL_SaveBMP(final_surface, file_name);
+
+
+
 
         for (int i = 0; i < 10; ++i)
             free(sudoku_grid[i]);
