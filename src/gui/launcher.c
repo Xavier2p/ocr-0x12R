@@ -1,19 +1,19 @@
 #include "includes/gui.h"
 #include "../neural_network/include/training.h"
 
-char *launcher_grayscale(Image *image)
+char* launcher_grayscale(Image* image)
 {
     grayscale(image);
     return "Set to Grayscale";
 }
 
-char *launcher_contrast(Image *image)
+char* launcher_contrast(Image* image)
 {
     image_contrast(image, 12);
     return "Contrast Applied";
 }
 
-char *launcher_normalize(Image *image)
+char* launcher_normalize(Image* image)
 {
     image_normalize_brightness(image);
     return "Normalized Brightness";

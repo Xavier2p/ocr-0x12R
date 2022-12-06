@@ -33,6 +33,7 @@ $(build)/%.o : %.c
 	$(cc) $(cflags) -c $< -o $@ $(ldlflags) $(cppflags) $(ldlibs)
 
 clean:
+	@${RM} *.o *.d
 	@${RM} $(OBJ) $(EXEC) $(TARGET)
 	@rm -rf $(BUILD)
 

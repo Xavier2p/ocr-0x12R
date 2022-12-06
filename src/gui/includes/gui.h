@@ -14,6 +14,6 @@
 #include "gui_tools.h"
 #include "../../image_traitment/include/preprocess.h"
 
-void init_gui(int argc, char *argv[]);
+void init_gui(int argc, char* argv[]);
 
 #endif
