@@ -59,7 +59,7 @@ void train(unsigned int nb_hidden, unsigned int nb_neurons,
         }
     }
 
-    save_weights(network, "./saved_data/weights.data");
+    save_weights(network, "src/neural_network/saved_data/weights.data");
     free_network(network);
 }
 
@@ -114,7 +114,7 @@ int training(char path[], double nb_hidden, double nb_neurons,
 
     if (state == 2 && path == NULL)
     {
-        load_weights(network, "./saved_data/weights.data");
+        load_weights(network, "src/neural_network/saved_data/weights.data");
         return run(network, image);
     }
     else if (state == 0 || state == 1)
@@ -134,7 +134,7 @@ int training(char path[], double nb_hidden, double nb_neurons,
         if (state == 1)
         {
             train(nb_hidden, nb_neurons, learning_rate);
-            load_weights(network, "./saved_data/weights.data");
+            load_weights(network, "src/neural_network/saved_data/weights.data");
         }
 
         int success_rate = test(network, clean_input);
