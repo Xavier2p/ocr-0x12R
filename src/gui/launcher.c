@@ -1,4 +1,5 @@
 #include "includes/gui.h"
+#include "../neural_network/include/training.h"
 
 char *launcher_grayscale(Image *image)
 {
@@ -47,3 +48,8 @@ char *launcher_normalize(Image *image)
 //     // erodation(image);
 //     return "[NI] Erosion Applied";
 // }
+
+int launcher_neural(double hl, double nbn, double lr)
+{
+    return training(NULL, hl, nbn, lr, NULL, 1);
+}
