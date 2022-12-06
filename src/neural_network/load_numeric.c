@@ -52,7 +52,6 @@ void load_numeric(double train_image[NUM_TRAIN][SIZE],
         }
 
         fclose(fin);
-        printf("%d\n", curr_NUM);
     }
 
     closedir(directory);
