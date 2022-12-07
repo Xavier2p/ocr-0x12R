@@ -1,6 +1,6 @@
 CC = gcc
-CFLAGS = -Wall -Wextra `pkg-config --cflags sdl2 SDL2_image gtk+-3.0` -std=c99 -g -rdynamic -fsanitize=address
-LDLIBS = `pkg-config --libs gtk+-3.0 sdl2 SDL2_image` -lSDL2 -lm -g -fsanitize=address
+CFLAGS = -Wall -Wextra `pkg-config --cflags sdl2 SDL2_image gtk+-3.0` -std=c99 -g -rdynamic -O3
+LDLIBS = `pkg-config --libs gtk+-3.0 sdl2 SDL2_image` -lSDL2 -lm -g
 
 BUILD := build
 SOURCE_DIR := src

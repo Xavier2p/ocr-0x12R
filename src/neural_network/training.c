@@ -88,7 +88,7 @@ int is_empty(double image[])
     for (unsigned int i = 0; i < 784; i++)
         median += image[i];
 
-    return median < 12;
+    return median < 20;
 }
 
 int run(Network* network, double image[])

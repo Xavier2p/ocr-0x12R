@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <getopt.h>
+#include <err.h>
 #include "image_traitment/include/utilis_image.h"
 #include "neural_network/include/neural_network.h"
 #include "image_traitment/include/image_traitment.h"
@@ -22,20 +23,18 @@ typedef struct {
     int nb_layers;
     int nb_neurons;
     double learning_rate;
-    int verbose;
     int mode;
 } t_options;
 
 static const char* ARGS_HELP =
-"%s 0x12R help:\n"
+"0x12R help:\n"
 "[ Image mode options ]\n"
 "   -i file: Specify the input file (required)\n"
 "[ Train mode options ]\n"
 "   -l n / --nb-layers n: Specify the number of hidden layers (default: 2)\n"
 "   -n n / --nb-neurons n: Specify the numbers of neurons per hidden layer (default: 200)\n"
-"   -r n / --learning-rate n: Specify the learning rate (default: 0.1)\n"
+"   -a n / --learning-rate n: Specify the learning rate (default: 0.1)\n"
 "[ General options ]\n"
-"   -v: Set the verbose level (default: 1)\n"
 "   --mode mode: Specify the mode to use. Can be one of IMAGE/TRAIN/GUI (default is GUI)\n"
 "   -h / --help: Show usage and quit\n"
 ;
@@ -44,7 +43,7 @@ static const char* ARGS_HELP =
 
 char* strtoupper(char* string);
 
-void print_usage();
+void print_usage(int error_code);
 
 //----- MAIN -----//
 

@@ -29,11 +29,14 @@ char* strtoupper(char* string)
     return string;
 }
 
-void print_usage()
+void print_usage(int error_code)
 {
-    printf("Usage: neural -p <path> | -h <nb_hidden> -n <nb_neurons> -l "
-           "<nb_layers> | -i <image> | -s <state>\n");
-    exit(2);
+    if (error_code == 0)
+        printf("%s", ARGS_HELP);
+    else
+        errx(error_code, "%s", ARGS_HELP);
+
+    exit(error_code);
 }
 
 //----- MAIN -----//
@@ -91,9 +94,11 @@ void main_image(const char* path)
 }
 
 void main_train(unsigned int nb_hidden, unsigned int nb_neurons,
-                double learning_rate)
+        double learning_rate)
 {
     training(NULL, nb_hidden, nb_neurons, learning_rate, NULL, 1);
+
+    printf("%s\n", "Do you wish to save these weights in order to use them in IMAGE mode?");
 }
 
 int main(int argc, char** argv)
@@ -106,7 +111,6 @@ int main(int argc, char** argv)
         2, // hidden layers
         200, // nb neurons
         0.1, // learning rate
-        1, // verbose
         2, // mode
     };
 
@@ -115,7 +119,7 @@ int main(int argc, char** argv)
         { "help", no_argument, 0, 'h' },
         { "nb-layers", required_argument, 0, 'l' },
         { "nb-neurons", required_argument, 0, 'n' },
-        { "learning-rate", required_argument, 0, 'r' },
+        { "learning-rate", required_argument, 0, 'a' },
         { 0, 0, 0, 0 }
     };
 
@@ -128,74 +132,70 @@ int main(int argc, char** argv)
 
         switch (c)
         {
-        case 'v':
-            options.verbose = atoi(optarg);
-            break;
+            case 'i':
+                options.input = optarg;
+                break;
 
-        case 'i':
-            options.input = optarg;
-            break;
-
-        case 'm':
-            strcpy(output, optarg);
-            strtoupper(output);
-            int found = 0;
-            for (size_t i = 0; i < 3; ++i)
-            {
-                if (strcmp(optarg, MODE[i]) == 0)
+            case 'm':
+                strcpy(output, optarg);
+                strtoupper(output);
+                int found = 0;
+                for (size_t i = 0; i < 3; ++i)
                 {
-                    found = 1;
-                    options.mode = i;
+                    if (strcmp(optarg, MODE[i]) == 0)
+                    {
+                        found = 1;
+                        options.mode = i;
+                    }
                 }
-            }
-            if (found == 0)
-                print_usage();
-            break;
+                if (found == 0)
+                    print_usage(1);
+                break;
 
-        case 'h':
-            print_usage();
-            break;
+            case 'h':
+                print_usage(0);
+                break;
 
-        case 'l':
-            options.nb_layers = atoi(optarg);
-            break;
+            case 'l':
+                options.nb_layers = atoi(optarg);
+                break;
 
-        case 'n':
-            options.nb_neurons = atoi(optarg);
-            break;
+            case 'n':
+                options.nb_neurons = atoi(optarg);
+                break;
 
-        case 'r':
-            options.learning_rate = atof(optarg);
-            break;
+            case 'a':
+                options.learning_rate = atof(optarg);
+                break;
 
-        default:
-            print_usage();
-            break;
+            default:
+                print_usage(1);
+                break;
         }
     }
 
     switch (options.mode)
     {
-    case 0: // IMAGE
-        if (options.input == NULL)
-            errx(1,
-                 "Invalid arguments: IMAGE mode is specified without the -i "
-                 "flag");
-        main_image(options.input);
-        break;
+        case 0: // IMAGE
+            if (options.input == NULL)
+                errx(1,
+                        "Invalid arguments: IMAGE mode is specified without the -i "
+                        "flag");
+            main_image(options.input);
+            break;
 
-    case 1: // TRAIN
-        main_train(options.nb_layers, options.nb_neurons,
-                   options.learning_rate);
-        break;
+        case 1: // TRAIN
+            main_train(options.nb_layers, options.nb_neurons,
+                    options.learning_rate);
+            break;
 
-    case 2: // GUI
-        init_gui(argc, argv);
-        break;
+        case 2: // GUI
+            init_gui(argc, argv);
+            break;
 
-    default:
-        print_usage();
-        break;
+        default:
+            print_usage(1);
+            break;
     }
 
     return 0;
