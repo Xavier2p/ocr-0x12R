@@ -176,36 +176,36 @@ void gaussian_blur(Image *source)
     int width = source->width;
     int height = source->height;
     // allocate image
-    Image *target = malloc(sizeof(Image));
+    Image target = {.width = source->width, .height = source->height, .pixels = NULL, .path = NULL};
 
-    target->width = width;
-    target->height = height;
+    target.width = width;
+    target.height = height;
 
-    target->pixels = calloc(height, sizeof(Pixel *));
+    target.pixels = calloc(height, sizeof(Pixel *));
     for (int row = 0; row < height; row++)
     {
-        target->pixels[row] = calloc(width, sizeof(Pixel));
+        target.pixels[row] = calloc(width, sizeof(Pixel));
     }
 
     if (source->path != NULL)
     {
-        target->path = calloc(strlen(source->path) + 1, sizeof(char));
-        strcpy(target->path, source->path);
+        target.path = calloc(strlen(source->path) + 1, sizeof(char));
+        strcpy(target.path, source->path);
     }
 
     int *bxs = gaussian_kernel(radius, 3);
-    box_blur(source, target, width, height, (bxs[0] - 1) / 2);
-    box_blur(target, source, width, height, (bxs[1] - 1) / 2);
-    box_blur(source, target, width, height, (bxs[2] - 1) / 2);
+    box_blur(source, &target, width, height, (bxs[0] - 1) / 2);
+    box_blur(&target, source, width, height, (bxs[1] - 1) / 2);
+    box_blur(source, &target, width, height, (bxs[2] - 1) / 2);
 
     for (int i = 0; i < height; i++)
     {
         for (int j = 0; j < width; j++)
         {
-            source->pixels[i][j] = target->pixels[i][j];
+            source->pixels[i][j] = target.pixels[i][j];
         }
     }
 
     free(bxs);
-    free_image(target);
+    free_image(&target);
 }

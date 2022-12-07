@@ -17,6 +17,8 @@
 #include "homographic_transform.h"
 #include "adaptative_threshold.h"
 #include "segmentation.h"
+#include "write_number.h"
+#include "../../sudoku_solver/sudoku_solver.h"
 
 void image_traitment(Image *image);
 

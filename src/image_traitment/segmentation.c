@@ -113,11 +113,11 @@ double *create_square_image(Image *image, int i, int j, int size, int cordi,
         }
     }
 
-    Image tmp_resized = resize_image(&tmp, SIZE_OF_NEURAL_INPUT);
+    resize_image(&tmp, SIZE_OF_NEURAL_INPUT);
 
-    clean_image(&tmp_resized);
+    clean_image(&tmp);
 
-    save_image(&tmp_resized, "res_");
+    save_image(&tmp, "res_");
 
     double *res =
         calloc(SIZE_OF_NEURAL_INPUT * SIZE_OF_NEURAL_INPUT, sizeof(double));
@@ -125,10 +125,9 @@ double *create_square_image(Image *image, int i, int j, int size, int cordi,
     for (int y = 0; y < SIZE_OF_NEURAL_INPUT; ++y)
         for (int x = 0; x < SIZE_OF_NEURAL_INPUT; ++x)
             res[y * SIZE_OF_NEURAL_INPUT + x] =
-                tmp_resized.pixels[y][x].r == 255 ? 1.0 : 0.0;
+                tmp.pixels[y][x].r == 255 ? 1.0 : 0.0;
 
     free_image(&tmp);
-    free_image(&tmp_resized);
 
     return res;
 }

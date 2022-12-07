@@ -45,7 +45,7 @@ void free_image(Image *image);
 
 Image copy_image(Image *image);
 
-Image resize_image(Image *image, int dimension);
+void resize_image(Image *image, int dimension);
 
 void save_image(Image *image, char *name);
 #endif

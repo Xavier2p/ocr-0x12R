@@ -35,22 +35,21 @@ void main_image(const char* path)
     // Import image
     SDL_Surface* surface = IMG_Load(path);
     printf("Imported image of size %ix%i\n", surface->w, surface->h);
-    Image tmp_image = create_image(surface, surface->w, surface->h);
+    Image image = create_image(surface, surface->w, surface->h);
 
     // Create the name to save image
-    tmp_image.path = (char*)calloc(strlen(path) + 5, sizeof(char));
-    tmp_image.path[0] = 'r';
-    tmp_image.path[1] = 'e';
-    tmp_image.path[2] = 's';
-    tmp_image.path[3] = '_';
-    strcat(tmp_image.path, path);
+    image.path = (char*)calloc(strlen(path) + 5, sizeof(char));
+    image.path[0] = 'r';
+    image.path[1] = 'e';
+    image.path[2] = 's';
+    image.path[3] = '_';
+    strcat(image.path, path);
 
     // Resize the image and free the others
-    Image image = resize_image(&tmp_image, 800);
+    resize_image(&image, 800);
     printf("new h = %i , new w = %i\n", image.height, image.width);
 
     // Free imnage and surface used for import
-    free_image(&tmp_image);
     SDL_FreeSurface(surface);
 
     // Initialise the neural network

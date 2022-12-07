@@ -11,6 +11,7 @@ GtkWidget* fixed_one = NULL;
 GtkLabel* label_one = NULL;
 GtkWidget* button_Launch = NULL;
 GtkButton* custom_params = NULL;
+GtkButton* button_save = NULL;
 GtkWidget* dialog = NULL;
 GError* error = NULL;
 gchar* filename_ui = NULL;
@@ -56,6 +57,7 @@ void init_gui(int argc, char* argv[])
     label_one = GTK_LABEL(gtk_builder_get_object(builder, "label_one"));
     dialog = GTK_WIDGET(gtk_builder_get_object(builder, "dialog_settings"));
     custom_params = GTK_BUTTON(gtk_builder_get_object(builder, "custom_nn"));
+    button_save = GTK_BUTTON(gtk_builder_get_object(builder, "save-button"));
 
     // Load CSS
     GtkCssProvider* cssProvider = gtk_css_provider_new();
@@ -117,7 +119,17 @@ void on_button_Next_clicked()
     }
 
     else
+    {
         gtk_label_set_text(GTK_LABEL(label_one), (const gchar*)"END");
+        free_image(&image);
+    }
+}
+
+void on_save_button_clicked()
+{
+    gtk_label_set_text(GTK_LABEL(label_one), (const gchar*)"Saved image");
+    save_image(&image, "saved");
+    printf("Image saved\n");
 }
 
 void on_button_appply_settings_clicked()
@@ -179,5 +191,15 @@ void on_button_Launch_clicked()
 
     gtk_label_set_text(GTK_LABEL(label_one),
                        (const gchar*)"OCR in progress...");
-    // solve_all();
+
+    for (int i = pc; i < STEPS; i++)
+    {
+        char* verbose = steps[i](&image);
+        printf("[OCR IN PROGRESS] -> %s\n", verbose);
+        pc =  i;
+    }
+    change_image_on_gui(&image, "main_image", builder);
+    gtk_label_set_text(GTK_LABEL(label_one), "Solved sudoku");
 }
+
+

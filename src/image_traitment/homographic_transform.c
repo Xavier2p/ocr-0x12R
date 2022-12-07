@@ -95,9 +95,11 @@ void homographic_transform(Image *image, Square *square, int size)
             errx(EXIT_FAILURE,
                  "Error while allocating pixels pointers for the image");
     }
-
-    new_image.path = calloc(strlen(image->path) + 1, sizeof(char));
-    strcpy(new_image.path, image->path);
+    if (image->path != NULL)
+    {
+        new_image.path = calloc(strlen(image->path) + 1, sizeof(char));
+        strcpy(new_image.path, image->path);
+    }
 
     for (int i = 0; i < size; i++)
     {

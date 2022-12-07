@@ -82,14 +82,16 @@ void set_all_pixel(Image *image, int i, int j, unsigned int val)
 
 void free_image(Image *image)
 {
-    free(image->path);
+    if (image->path != NULL)
+        free(image->path);
+
     for (unsigned int x = 0; x < image->height; x++)
         free(image->pixels[x]);
 
     free(image->pixels);
 }
 
-Image resize_image(Image *image, int dimension)
+void resize_image(Image *image, int dimension)
 {
     int new_width = 0;
     int new_height = 0;
@@ -153,7 +155,8 @@ Image resize_image(Image *image, int dimension)
     }
 
     // return the new image
-    return new_image;
+    free_image(image);
+    *image = new_image;
 }
 
 void save_image(Image *image, char *name)

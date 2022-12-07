@@ -68,8 +68,6 @@ void resize_draw(Image *src, Image *number_img, int x, int y, int dimension,
                 src->pixels[x * block + i + gap][y * block + j + gap] = brown;
         }
     }
-
-    // return src;
 }
 
 void add_number(Image *src, int x, int y, int number, int color)
@@ -130,6 +128,8 @@ void add_number(Image *src, int x, int y, int number, int color)
     int size = (src->width + src->height) / 2;
 
     resize_draw(src, &number_img, x, y, size, color);
+
+    SDL_FreeSurface(number_img_sdl);
 }
 
 Image write_numbers(int **origin, int **solved)
@@ -150,5 +150,6 @@ Image write_numbers(int **origin, int **solved)
         }
     }
 
+    SDL_FreeSurface(sudoku_sdl);
     return sudoku_img;
 }

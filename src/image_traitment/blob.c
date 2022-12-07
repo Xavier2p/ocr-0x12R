@@ -186,10 +186,10 @@ Square find_corners(Image *image)
 
     Square corners = compute_corners(image);
 
-    //    draw_dot(image, &corners.bl, 4);
-    //    draw_dot(image, &corners.br, 4);
-    //    draw_dot(image, &corners.tl, 4);
-    //    draw_dot(image, &corners.tr, 4);
+    draw_dot(image, &corners.bl, 4);
+    draw_dot(image, &corners.br, 4);
+    draw_dot(image, &corners.tl, 4);
+    draw_dot(image, &corners.tr, 4);
 
     return corners;
 }
