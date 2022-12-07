@@ -69,6 +69,7 @@ char* launcher_segmentation(Image* image)
 
     origin = segmentation(image, &n);
     free_network(&n);
+
     return "Segmentation done, please check the data";
 }
 
@@ -109,10 +110,8 @@ int launcher_train(double hl, double nbn, double lr)
 
 Image *get_first_image()
 {
+    //    homographic_transform(&first_image, &corners, 756);
+    //  save_image(&first_image, "first_image.jpeg");
     return &first_image;
 }
 
-int** get_origin_grid()
-{
-    return origin;
-}

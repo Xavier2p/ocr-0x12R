@@ -178,7 +178,8 @@ void on_button_apply_settings_clicked()
 void on_fixed_edit_focus()
 {
     Image *prim_image = get_first_image();
-    change_image_on_gui(prim_image, "prim_image", builder);
+    save_image(prim_image, "prim.jpeg");
+    change_image_on_gui(prim_image, "primary-image", builder);
 }
 void on_button_edit_clicked()
 {
@@ -205,8 +206,7 @@ void on_button_apply_edits_clicked()
     sscanf((char*)gtk_entry_get_text(new_value), "%d", val);
     gtk_widget_hide(edit_dialog);
     gtk_label_set_text(GTK_LABEL(label_one),
-                       (const gchar*)"The image has been edited, press next or "
-                                     "launch to see the result");
+                       (const gchar*)"New image");
     printf("col = %d\nline = %d\nval = %d\n", *col, *line, *val);
     free(col);
     free(line);
@@ -248,20 +248,29 @@ void on_button_Launch_clicked()
         return;
     }
 
-    else if (pc < STEPS)
+    if (pc == STEP_BEFORE - 1)
+        pc++;
+
+    if (pc < STEPS)
     {
         gtk_label_set_text(GTK_LABEL(label_one),
                            (const gchar*)"OCR in progress...");
 
-        for (int i = pc; i < STEPS; i++)
+        for (; pc < STEPS; pc++)
         {
-            char* verbose = steps[i](&image);
+            char* verbose = steps[pc](&image);
             printf("[OCR IN PROGRESS] -> %s\n", verbose);
-            pc = i;
+            if (pc == STEP_BEFORE - 1)
+            {
+                printf("step_before done\n");
+                break;
+            }
         }
 
         change_image_on_gui(&image, "main_image", builder);
-        gtk_label_set_text(GTK_LABEL(label_one), "Solved sudoku");;
+        gtk_label_set_text(GTK_LABEL(label_one), pc == STEP_BEFORE - 1
+                ? "Please check the grid\nThen, press [Next] or [Launch]"
+                : "Solved sudoku");
         gtk_widget_show(GTK_WIDGET(button_edit));
         save_image(&image, "solved.jpeg");
     }
