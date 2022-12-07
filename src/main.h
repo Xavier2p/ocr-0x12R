@@ -35,7 +35,7 @@ static const char* ARGS_HELP =
 "   -n n / --nb-neurons n: Specify the numbers of neurons per hidden layer (default: 200)\n"
 "   -a n / --learning-rate n: Specify the learning rate (default: 0.1)\n"
 "[ General options ]\n"
-"   --mode mode: Specify the mode to use. Can be one of IMAGE/TRAIN/GUI (default is GUI)\n"
+"   --mode mode: Specify the mode to use. Can be one of IMAGE/TRAIN/GUI (default: GUI)\n"
 "   -h / --help: Show usage and quit\n"
 ;
 

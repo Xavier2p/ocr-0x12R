@@ -3,6 +3,7 @@
 #include "../image_traitment/include/image_traitment.h"
 
 Square corners;
+int user_input = 0;
 
 char* laucher_resize(Image* image)
 {
@@ -61,8 +62,7 @@ char* launcher_homographic_transform(Image* image)
 char* launcher_segmentation(Image* image)
 {
     Network n;
-    load_weights(&n, PATH_TO_WEIGHTS);
-    // FAIRE LA SELECTION DES POIDS OU LINPUT
+    load_weights(&n, user_input);
 
     int** origin = segmentation(image, &n);
     int** solved = calloc(10, sizeof(int*));
@@ -97,5 +97,6 @@ char* launcher_segmentation(Image* image)
 
 int launcher_train(double hl, double nbn, double lr)
 {
+    user_input = 1;
     return training(hl, nbn, lr, NULL, 1);
 }
