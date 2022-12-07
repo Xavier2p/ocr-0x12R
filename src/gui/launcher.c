@@ -97,5 +97,5 @@ char* launcher_segmentation(Image* image)
 
 int launcher_train(double hl, double nbn, double lr)
 {
-    return training(NULL, hl, nbn, lr, NULL, 1);
+    return training(hl, nbn, lr, NULL, 1);
 }

@@ -71,8 +71,14 @@ void save_weights(Network* network, char* path)
     fclose(file);
 }
 
-void load_weights(Network* network, char* path)
+void load_weights(Network* network, int path_status)
 {
+    char* path;
+    if (path_status == 0)
+        path =  "src/neural_network/saved_data/best_weights.data";
+    if (path_status == 1)
+        path =  "src/neural_network/saved_data/weights.data";
+
     printf("%s\r", "Loading weights file... Please wait..");
 
     if (access(path, F_OK) != 0)
