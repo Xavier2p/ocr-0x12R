@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.40.0 -->
+<!-- Generated with glade 3.38.2 -->
 <interface>
   <requires lib="gtk+" version="3.24"/>
   <!-- interface-css-provider-path gui.css -->
@@ -367,6 +367,29 @@ Only if you know what are you doing</property>
           <packing>
             <property name="x">5</property>
             <property name="y">140</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="save-button">
+            <property name="label" translatable="yes">Save Image</property>
+            <property name="width-request">200</property>
+            <property name="height-request">30</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">True</property>
+            <property name="tooltip-text" translatable="yes">Save Image on your PC</property>
+            <property name="margin-left">10</property>
+            <property name="margin-right">10</property>
+            <property name="margin-top">10</property>
+            <property name="margin-bottom">10</property>
+            <signal name="clicked" handler="on_save_button_clicked" swapped="no"/>
+            <style>
+              <class name="button"/>
+            </style>
+          </object>
+          <packing>
+            <property name="x">5</property>
+            <property name="y">325</property>
           </packing>
         </child>
         <style>
