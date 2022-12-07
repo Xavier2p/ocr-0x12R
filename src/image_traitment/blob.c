@@ -1,237 +1,195 @@
-#include "../../include/image_traitment/blob.h"
+#include "include/blob.h"
 
-void free_blob_list(MyList *list)
+int blob_detection(Image *image, Dot start, unsigned int prev, int new_color)
 {
-    Node *n = list->head;
-    for (; n != NULL; n = n->next)
-    {
-        Blob *blob = (Blob *)n->value;
-        free(blob->dots);
-    }
-    free_list(list);
-}
-
-Blob copy_blob(Blob *blob)
-{
-    Blob res = { .length = blob->length, .dots = NULL };
-    res.dots = (Dot *)calloc(blob->length, sizeof(Dot));
-    for (int i = 0; i < blob->length; ++i)
-    {
-        Dot tmp = { .X = blob->dots[i].X, .Y = blob->dots[i].Y };
-        res.dots[i] = tmp;
-    }
-    return res;
-}
-
-int manhattan_distance(Dot *d1, Dot *d2)
-{
-    int x1 = d1->X;
-    int x2 = d2->X;
-    int y1 = d1->Y;
-    int y2 = d2->Y;
-    return abs(x2 - x1) + abs(y2 - y1);
-}
-
-void rec_blob(Image *cimage, int i, int j, MyList *current_blob)
-{
-    int w = cimage->width;
-    int h = cimage->height;
-    Pixel **pixels = cimage->pixels;
-
-    set_all_pixel(cimage, i, j, 420);
-    Dot dot = { .X = i, .Y = j };
-    append(current_blob, Dot_tovptr(dot));
-    for (int k = -1; k < 2; ++k)
-    {
-        for (int l = -1; l < 2; ++l)
-        {
-            if (i + k < 0 || i + k >= h || j + l < 0 || j + l >= w)
-                continue;
-            if (pixels[i + k][j + l].r != 255)
-                continue;
-            rec_blob(cimage, i + k, j + l, current_blob);
-        }
-    }
-}
-
-MyList clear_blob(MyList *all_blob, int *index_max)
-{
-    MyList cleared_blob = { NULL, NULL, 0 };
-    Node *n = all_blob->head;
-    // Get average length of each blob
-    int average = 0;
-    for (int i = 0; n != NULL; n = n->next, ++i)
-    {
-        Blob *tmp_blob = (Blob *)n->value;
-        average += tmp_blob->length;
-    }
-    average /= all_blob->length;
-
-    // Remove blob that are under the average size
-    n = all_blob->head;
-    for (size_t i = 0; n != NULL; n = n->next, ++i)
-    {
-        Blob *tmp_blob = (Blob *)n->value;
-        if (tmp_blob->length > average)
-        {
-            Blob new_blob = copy_blob(tmp_blob);
-            append(&cleared_blob, Blob_tovptr(new_blob));
-        }
-    }
-
-    int max = 0;
-    for (size_t i = 0; i < cleared_blob.length; ++i)
-    {
-        Blob *tmp_blob = get_value(&cleared_blob, i);
-        if (tmp_blob->length > max)
-        {
-            max = tmp_blob->length;
-            *index_max = (int)i;
-        }
-    }
-
-    return cleared_blob;
-}
-
-/*
- *res[0]: top left A
- *res[1]: top right B
- *res[2]: bot left D
- *res[3]: bot right C
- */
-Dot *find_corners(Blob *blob, Image *image)
-{
-    int len = blob->length;
     int w = image->width;
     int h = image->height;
-    Dot top_left, top_right, bot_left, bot_right;
+    int nb_dots = 0;
 
-    int dist_A = INT_MAX;
-    Dot dot_A = { .X = 0, .Y = h };
-    int dist_B = INT_MAX;
-    Dot dot_B = { .X = w, .Y = h };
-    int dist_C = INT_MAX;
-    Dot dot_C = { .X = w, .Y = 0 };
-    int dist_D = INT_MAX;
-    Dot dot_D = { .X = 0, .Y = 0 };
-    int tmp_dist;
-    for (int i = 0; i < len; ++i)
+    struct slisthead head;
+    SLIST_INIT(&head);
+
+    struct DotQueue *p = malloc(sizeof(*p));
+    p->dot = start;
+    SLIST_INSERT_HEAD(&head, p, next);
+
+    while (!SLIST_EMPTY(&head))
     {
-        Dot d = blob->dots[i];
-        tmp_dist = manhattan_distance(&d, &dot_A);
-        if (tmp_dist < dist_A)
+        p = SLIST_FIRST(&head);
+        SLIST_REMOVE_HEAD(&head, next);
+
+        int x = p->dot.X;
+        int y = p->dot.Y;
+        free(p);
+
+        if (x < 0 || x >= w || y < 0 || y >= h)
+            continue;
+
+        if (image->pixels[y][x].r == prev)
         {
-            top_left.X = d.X;
-            top_left.Y = d.Y;
-            dist_A = tmp_dist;
-        }
-        tmp_dist = manhattan_distance(&d, &dot_B);
-        if (tmp_dist < dist_B)
-        {
-            top_right.X = d.X;
-            top_right.Y = d.Y;
-            dist_B = tmp_dist;
-        }
-        tmp_dist = manhattan_distance(&d, &dot_C);
-        if (tmp_dist < dist_C)
-        {
-            bot_right.X = d.X;
-            bot_right.Y = d.Y;
-            dist_C = tmp_dist;
-        }
-        tmp_dist = manhattan_distance(&d, &dot_D);
-        if (tmp_dist < dist_D)
-        {
-            bot_left.X = d.X;
-            bot_left.Y = d.Y;
-            dist_C = tmp_dist;
+            set_all_pixel(image, y, x, new_color);
+            nb_dots++;
+
+            p = malloc(sizeof(*p));
+            p->dot.X = x - 1;
+            p->dot.Y = y;
+            SLIST_INSERT_HEAD(&head, p, next);
+
+            p = malloc(sizeof(*p));
+            p->dot.X = x + 1;
+            p->dot.Y = y;
+            SLIST_INSERT_HEAD(&head, p, next);
+
+            p = malloc(sizeof(*p));
+            p->dot.X = x;
+            p->dot.Y = y - 1;
+            SLIST_INSERT_HEAD(&head, p, next);
+
+            p = malloc(sizeof(*p));
+            p->dot.X = x;
+            p->dot.Y = y + 1;
+            SLIST_INSERT_HEAD(&head, p, next);
         }
     }
-    Dot *res = (Dot *)calloc(4, sizeof(Dot));
-    res[0] = top_left;
-    res[1] = top_right;
-    res[2] = bot_right;
-    res[3] = bot_left;
 
-    return res;
+    return nb_dots;
 }
 
-void draw_blob(Image *image, MyList *all_blob)
+Square compute_corners(Image *image)
 {
-    Node *n = all_blob->head;
-    int size = 1;
-    int width = image->width;
-    int height = image->height;
-    for (; n != NULL; n = n->next)
+    Pixel **pixels = image->pixels;
+    int w = image->width;
+    int h = image->height;
+
+    Dot tl = { 0, 0 };
+    Dot br = { 0, 0 };
+    Dot bl = { 0, 0 };
+    Dot tr = { 0, 0 };
+
+    size_t minSum = w + h;
+    size_t maxSum = 0;
+    int minDiff = w > h ? w : h;
+    int maxDiff = -1 * minDiff;
+
+    for (int y = 0; y < h; ++y)
     {
-        Blob *tmp_blob = (Blob *)n->value;
-        for (int b = 0; b < tmp_blob->length; ++b)
+        for (int x = 0; x < w; ++x)
         {
-            Dot dot = tmp_blob->dots[b];
-            int x = dot.X;
-            int y = dot.Y;
-            for (int i = -size; i < size; ++i)
+            if (pixels[y][x].r != 88)
+                continue;
+
+            size_t sum = x + y;
+            int diff = x - y;
+
+            if (sum < minSum)
             {
-                for (int j = -size; j < size; ++j)
-                {
-                    if (x + i >= 0 && x + i < height && j + y >= 0
-                        && j + y < width)
-                        image->pixels[x + i][y + j].b = 255;
-                }
+                minSum = sum;
+                tl.X = x;
+                tl.Y = y;
+            }
+
+            if (sum > maxSum)
+            {
+                maxSum = sum;
+                br.X = x;
+                br.Y = y;
+            }
+
+            if (diff < minDiff)
+            {
+                minDiff = diff;
+                bl.X = x;
+                bl.Y = y;
+            }
+
+            if (diff > maxDiff)
+            {
+                maxDiff = diff;
+                tr.X = x;
+                tr.Y = y;
             }
         }
     }
+
+    Square res = { .tl = tl, .tr = tr, .bl = bl, .br = br };
+    return res;
 }
 
-MyList find_blob(Image *image)
+Dot find_biggest_blob(Image *image)
 {
     int w = image->width;
     int h = image->height;
-    Image cimage = copy_image(image);
-    Pixel **pixels = cimage.pixels;
-    MyList all_blob = { NULL, NULL, 0 };
+    Image c_image = copy_image(image);
+
+    Dot max_start;
+    int max_point = 0;
 
     for (int i = 0; i < h; ++i)
     {
         for (int j = 0; j < w; ++j)
         {
-            if (pixels[i][j].r != 255)
-                continue;
-            MyList blob_list = { NULL, NULL, 0 };
-            rec_blob(&cimage, i, j, &blob_list);
+            Dot tmp_start = { .X = j, .Y = i };
+            int tmp_nb = blob_detection(&c_image, tmp_start, 255, 0);
 
-            Blob final_blob;
-            final_blob.length = blob_list.length;
-            final_blob.dots = (Dot *)calloc(final_blob.length, sizeof(Dot));
-
-            Node *n = blob_list.head;
-            for (size_t k = 0; n != NULL; ++k, n = n->next)
+            if (tmp_nb > max_point)
             {
-                Dot *tmp_dot = (Dot *)n->value;
-                Dot new_dot = { .X = tmp_dot->X, .Y = tmp_dot->Y };
-                final_blob.dots[k] = new_dot;
+                max_start.X = tmp_start.X;
+                max_start.Y = tmp_start.Y;
+                max_point = tmp_nb;
             }
-
-            free_list(&blob_list);
-            append(&all_blob, Blob_tovptr(final_blob));
         }
     }
-    int index_max;
-    MyList cleared_blob = clear_blob(&all_blob, &index_max);
-    free_blob_list(&all_blob);
-    free_image(&cimage);
-    draw_blob(image, &cleared_blob);
-    printf("%zu\n", cleared_blob.length);
 
-    Blob *biggest_blob = get_value(&cleared_blob, index_max);
-    printf("%d\n", biggest_blob->length);
-    Dot *corners = find_corners(biggest_blob, image);
-    for (int i = 0; i < 4; ++i)
+    free_image(&c_image);
+    return max_start;
+}
+
+void remove_small_blob(Image *image)
+{
+    int threshold = 60;
+    int w = image->width;
+    int h = image->height;
+
+    for (int i = 0; i < h; ++i)
     {
-        draw_dot(image, &corners[i], 6);
+        for (int j = 0; j < w; ++j)
+        {
+            if (image->pixels[i][j].r != 255)
+                continue;
+
+            Dot tmp_start = { .X = j, .Y = i };
+            int tmp_nb = blob_detection(image, tmp_start, 255, 88);
+
+            if (tmp_nb < threshold)
+            {
+                blob_detection(image, tmp_start, 88, 0);
+            }
+        }
     }
 
-    free(corners);
+    for (int i = 0; i < h; ++i)
+    {
+        for (int j = 0; j < w; ++j)
+        {
+            Dot tmp_start = { .X = j, .Y = i };
+            if (image->pixels[i][j].r == 88)
+                blob_detection(image, tmp_start, 88, 255);
+        }
+    }
+}
 
-    return cleared_blob;
+Square find_corners(Image *image)
+{
+    Dot biggest_blob_dot = find_biggest_blob(image);
+
+    blob_detection(image, biggest_blob_dot, 255, 88);
+
+    Square corners = compute_corners(image);
+
+    draw_dot(image, &corners.bl, 4);
+    draw_dot(image, &corners.br, 4);
+    draw_dot(image, &corners.tl, 4);
+    draw_dot(image, &corners.tr, 4);
+
+    return corners;
 }

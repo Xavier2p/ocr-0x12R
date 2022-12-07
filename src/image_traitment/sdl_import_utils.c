@@ -15,7 +15,7 @@
  *
  * =====================================================================================
  */
-#include "../../include/image_traitment/sdl_import_utils.h"
+#include "include/sdl_import_utils.h"
 
 Uint32 get_pixel(SDL_Surface *surface, int x, int y)
 {

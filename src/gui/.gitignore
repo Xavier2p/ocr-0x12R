@@ -1,9 +1,0 @@
-*.o
-*.d
-*~
-*.swp
-.vscode/
-.DS_Store
-gui
-.vscode/
-.idea/

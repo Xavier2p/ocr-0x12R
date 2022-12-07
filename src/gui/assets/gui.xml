@@ -1,7 +1,188 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.40.0 -->
+<!-- Generated with glade 3.38.2 -->
 <interface>
   <requires lib="gtk+" version="3.24"/>
+  <!-- interface-css-provider-path gui.css -->
+  <object class="GtkDialog" id="dialog_settings">
+    <property name="can-focus">False</property>
+    <property name="title" translatable="yes">Settings of Neural Network</property>
+    <property name="type-hint">dialog</property>
+    <child internal-child="vbox">
+      <object class="GtkBox" id="dialog_settings-box">
+        <property name="can-focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox">
+            <property name="can-focus">False</property>
+            <property name="layout-style">end</property>
+            <child>
+              <object class="GtkButton" id="button-cancel-settings">
+                <property name="label" translatable="yes">Cancel</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
+                <signal name="clicked" handler="on_button_cancel_settings_clicked" swapped="no"/>
+                <style>
+                  <class name="button"/>
+                </style>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="button-appply-settings">
+                <property name="label" translatable="yes">Train</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
+                <signal name="clicked" handler="on_button_appply_settings_clicked" swapped="no"/>
+                <style>
+                  <class name="button"/>
+                </style>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkFixed" id="fixed-settings">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <child>
+              <object class="GtkLabel" id="label-settings">
+                <property name="width-request">300</property>
+                <property name="height-request">60</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">Settings</property>
+                <style>
+                  <class name="heading"/>
+                </style>
+              </object>
+            </child>
+            <child>
+              <object class="GtkEntry" id="entry-param1">
+                <property name="width-request">100</property>
+                <property name="height-request">30</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="margin-right">10</property>
+                <style>
+                  <class name="entry"/>
+                </style>
+              </object>
+              <packing>
+                <property name="x">150</property>
+                <property name="y">50</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="label-param-1">
+                <property name="width-request">100</property>
+                <property name="height-request">30</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">Hidden Layers</property>
+                <style>
+                  <class name="label"/>
+                </style>
+              </object>
+              <packing>
+                <property name="x">12</property>
+                <property name="y">50</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkEntry" id="entry-param2">
+                <property name="width-request">100</property>
+                <property name="height-request">30</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="margin-right">10</property>
+                <style>
+                  <class name="entry"/>
+                </style>
+              </object>
+              <packing>
+                <property name="x">150</property>
+                <property name="y">100</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="label-param2">
+                <property name="width-request">100</property>
+                <property name="height-request">30</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">Neurons</property>
+                <style>
+                  <class name="label"/>
+                </style>
+              </object>
+              <packing>
+                <property name="x">12</property>
+                <property name="y">100</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkEntry" id="entry-param3">
+                <property name="width-request">100</property>
+                <property name="height-request">30</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="margin-right">10</property>
+                <property name="margin-bottom">20</property>
+                <style>
+                  <class name="entry"/>
+                </style>
+              </object>
+              <packing>
+                <property name="x">150</property>
+                <property name="y">150</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="label-param3">
+                <property name="width-request">100</property>
+                <property name="height-request">30</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">Learning Rate</property>
+                <style>
+                  <class name="label"/>
+                </style>
+              </object>
+              <packing>
+                <property name="x">12</property>
+                <property name="y">150</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+    <style>
+      <class name="bg"/>
+    </style>
+  </object>
   <object class="GtkWindow" id="window">
     <property name="can-focus">False</property>
     <property name="title" translatable="yes">0x12R</property>
@@ -11,47 +192,18 @@
         <property name="visible">True</property>
         <property name="can-focus">False</property>
         <child>
-          <object class="GtkButton" id="button_Save">
-            <property name="label" translatable="yes">Save</property>
-            <property name="width-request">60</property>
-            <property name="height-request">35</property>
-            <property name="visible">True</property>
-            <property name="can-focus">True</property>
-            <property name="receives-default">True</property>
-            <property name="tooltip-text" translatable="yes">Save the solved grid</property>
-            <property name="halign">start</property>
-            <property name="valign">start</property>
-            <property name="margin-left">1</property>
-            <property name="margin-right">1</property>
-            <property name="margin-start">10</property>
-            <property name="margin-end">10</property>
-            <property name="margin-top">10</property>
-            <property name="margin-bottom">10</property>
-            <signal name="clicked" handler="on_button_Save_clicked" swapped="no"/>
-            <style>
-              <class name="button"/>
-            </style>
-          </object>
-          <packing>
-            <property name="x">5</property>
-            <property name="y">425</property>
-          </packing>
-        </child>
-        <child>
           <object class="GtkButton" id="button_Quit">
             <property name="label" translatable="yes">Quit</property>
-            <property name="width-request">60</property>
-            <property name="height-request">35</property>
+            <property name="width-request">200</property>
+            <property name="height-request">30</property>
             <property name="visible">True</property>
             <property name="can-focus">True</property>
             <property name="receives-default">True</property>
             <property name="tooltip-text" translatable="yes">Quit the OCR</property>
             <property name="halign">start</property>
             <property name="valign">start</property>
-            <property name="margin-left">1</property>
-            <property name="margin-right">1</property>
-            <property name="margin-start">10</property>
-            <property name="margin-end">10</property>
+            <property name="margin-left">10</property>
+            <property name="margin-right">10</property>
             <property name="margin-top">10</property>
             <property name="margin-bottom">10</property>
             <signal name="clicked" handler="on_button_Quit_clicked" swapped="no"/>
@@ -60,7 +212,7 @@
             </style>
           </object>
           <packing>
-            <property name="x">85</property>
+            <property name="x">5</property>
             <property name="y">425</property>
           </packing>
         </child>
@@ -81,78 +233,29 @@
           </packing>
         </child>
         <child>
-          <object class="GtkButton" id="button_Rotate">
-            <property name="label" translatable="yes">Rotate Image</property>
-            <property name="width-request">200</property>
-            <property name="height-request">30</property>
-            <property name="visible">True</property>
-            <property name="can-focus">True</property>
-            <property name="receives-default">True</property>
-            <property name="tooltip-text" translatable="yes">Rotate Image</property>
-            <property name="halign">start</property>
-            <property name="valign">start</property>
-            <property name="margin-left">10</property>
-            <property name="margin-right">10</property>
-            <property name="margin-top">10</property>
-            <property name="margin-bottom">10</property>
-            <signal name="clicked" handler="on_button_Rotate_clicked" swapped="no"/>
-            <style>
-              <class name="button"/>
-            </style>
-          </object>
-          <packing>
-            <property name="x">5</property>
-            <property name="y">190</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton" id="button_Resize">
-            <property name="label" translatable="yes">Resize Image</property>
-            <property name="width-request">200</property>
-            <property name="height-request">30</property>
-            <property name="visible">True</property>
-            <property name="can-focus">True</property>
-            <property name="receives-default">True</property>
-            <property name="tooltip-text" translatable="yes">Resize Image</property>
-            <property name="halign">start</property>
-            <property name="valign">start</property>
-            <property name="margin-left">10</property>
-            <property name="margin-right">10</property>
-            <property name="margin-top">10</property>
-            <property name="margin-bottom">10</property>
-            <signal name="clicked" handler="on_button_Resize_clicked" swapped="no"/>
-            <style>
-              <class name="button"/>
-            </style>
-          </object>
-          <packing>
-            <property name="x">5</property>
-            <property name="y">240</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton" id="button_Settings">
+          <object class="GtkButton" id="custom_nn">
             <property name="label" translatable="yes">Settings</property>
             <property name="width-request">200</property>
             <property name="height-request">30</property>
             <property name="visible">True</property>
             <property name="can-focus">True</property>
             <property name="receives-default">True</property>
-            <property name="tooltip-text" translatable="yes">Edit Settings</property>
+            <property name="tooltip-text" translatable="yes">Settings of Neural Network.
+Only if you know what are you doing</property>
             <property name="halign">start</property>
             <property name="valign">start</property>
-            <property name="margin-start">10</property>
-            <property name="margin-end">10</property>
+            <property name="margin-left">10</property>
+            <property name="margin-right">10</property>
             <property name="margin-top">10</property>
             <property name="margin-bottom">10</property>
-            <signal name="clicked" handler="on_button_Settings_clicked" swapped="no"/>
+            <signal name="clicked" handler="on_custom_nn_clicked" swapped="no"/>
             <style>
               <class name="button"/>
             </style>
           </object>
           <packing>
             <property name="x">5</property>
-            <property name="y">300</property>
+            <property name="y">375</property>
           </packing>
         </child>
         <child>
@@ -187,6 +290,7 @@
             <property name="height-request">30</property>
             <property name="visible">True</property>
             <property name="can-focus">False</property>
+            <property name="tooltip-text" translatable="yes">Load an image from file</property>
             <property name="margin-left">10</property>
             <property name="margin-right">10</property>
             <property name="margin-top">10</property>
@@ -194,12 +298,12 @@
             <property name="title" translatable="yes">Load Image</property>
             <signal name="file-set" handler="file_select" swapped="no"/>
             <style>
-              <class name="button"/>
+              <class name="filechooserbutton"/>
             </style>
           </object>
           <packing>
             <property name="x">5</property>
-            <property name="y">140</property>
+            <property name="y">160</property>
           </packing>
         </child>
         <child>
@@ -215,14 +319,15 @@
         </child>
         <child>
           <object class="GtkImage" id="main_image">
-            <property name="width-request">100</property>
-            <property name="height-request">80</property>
+            <property name="width-request">400</property>
+            <property name="height-request">300</property>
             <property name="visible">True</property>
             <property name="can-focus">False</property>
+            <property name="pixbuf">logo_big.png</property>
           </object>
           <packing>
-            <property name="x">410</property>
-            <property name="y">103</property>
+            <property name="x">300</property>
+            <property name="y">20</property>
           </packing>
         </child>
         <child>
@@ -240,12 +345,51 @@
             <property name="margin-bottom">10</property>
             <signal name="clicked" handler="on_button_Next_clicked" swapped="no"/>
             <style>
-              <class name="button_launch"/>
+              <class name="button"/>
             </style>
           </object>
           <packing>
             <property name="x">320</property>
             <property name="y">425</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel" id="label-load">
+            <property name="width-request">200</property>
+            <property name="height-request">30</property>
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="label" translatable="yes">Choose an image:</property>
+            <style>
+              <class name="label"/>
+            </style>
+          </object>
+          <packing>
+            <property name="x">5</property>
+            <property name="y">140</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="save-button">
+            <property name="label" translatable="yes">Save Image</property>
+            <property name="width-request">200</property>
+            <property name="height-request">30</property>
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">True</property>
+            <property name="tooltip-text" translatable="yes">Save Image on your PC</property>
+            <property name="margin-left">10</property>
+            <property name="margin-right">10</property>
+            <property name="margin-top">10</property>
+            <property name="margin-bottom">10</property>
+            <signal name="clicked" handler="on_save_button_clicked" swapped="no"/>
+            <style>
+              <class name="button"/>
+            </style>
+          </object>
+          <packing>
+            <property name="x">5</property>
+            <property name="y">325</property>
           </packing>
         </child>
         <style>

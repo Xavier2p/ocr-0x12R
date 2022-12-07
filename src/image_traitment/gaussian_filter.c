@@ -1,6 +1,8 @@
-/* *
+/*
  * =====================================================================================
- *    Filename:  gaussian_filter.c *
+ *
+ *    Filename:  gaussian_filter.c
+ *
  *    Description: Perform gaussian filter on an image
  *
  *        Version:  1.0
@@ -13,87 +15,200 @@
  *
  * =====================================================================================
  */
+#include "include/gaussian_filter.h"
 
-#include "../../include/image_traitment/gaussian_filter.h"
-
-void surface_to_grayscale(Image *image)
+int get_pixel_one_dim(Image *source, int index)
 {
-    Pixel **pixels = image->pixels;
-    unsigned int w = image->width;
-    unsigned int h = image->height;
-
-    unsigned int r, g, b;
-    for (unsigned int i = 0; i < h; ++i)
-    {
-        for (unsigned int j = 0; j < w; ++j)
-        {
-            r = pixels[i][j].r;
-            g = pixels[i][j].g;
-            b = pixels[i][j].b;
-            unsigned int average = 0.3 * r + 0.59 * g + 0.11 * b;
-            set_all_pixel(image, i, j, average);
-        }
-    }
+    int i = index / source->width;
+    int j = index % source->width;
+    return source->pixels[i][j].r;
 }
 
-double **build_gaussian_kernel(int radius)
+void set_pixel_one_dim(Image *source, int index, int val)
 {
-    double sigma = radius / 2.0 > 1.0 ? radius / 2.0 : 1.0;
-    int kwidht = (2 * round(radius)) + 1;
+    int i = index / source->width;
+    int j = index % source->width;
+    set_all_pixel(source, i, j, val);
+}
 
-    double **kernel = calloc(kwidht, sizeof(double *));
-    for (int i = 0; i < kwidht; ++i)
-        kernel[i] = calloc(kwidht, sizeof(double));
-    double sum = 0.0;
+int *gaussian_kernel(int sigma, int n)
+{
+    float w_ideal = sqrt((12.0 * sigma * sigma / n) + 1);
+    int wl = floor(w_ideal);
+    if (wl % 2 == 0)
+        wl--;
+    int wu = wl + 2;
 
-    for (double x = -radius; x < radius; ++x)
-    {
-        for (double y = -radius; y < radius; ++y)
-        {
-            double exponum = -(x * x + y * y);
-            double expodeno = 2 * sigma * sigma;
-            double expression = exp(exponum / expodeno);
-            double kvalue = expression / (2 * M_PI * sigma * sigma);
+    float m_ideal =
+        (12 * sigma * sigma - n * wl * wl - 4 * n * wl - 3 * n) / (-4 * wl - 4);
+    int m = round(m_ideal);
 
-            kernel[(int)x + radius][(int)y + radius] = kvalue;
-            sum += kvalue;
-        }
-    }
+    int *kernel = calloc(n, sizeof(int));
 
-    for (int x = 0; x < kwidht; ++x)
-        for (int y = 0; y < kwidht; ++y)
-            kernel[x][y] /= sum;
+    for (int i = 0; i < n; i++)
+        kernel[i] = (i < m ? wl : wu);
 
     return kernel;
 }
 
-void gaussian_blur(Image *image, int radius)
+void box_blur_h(Image *source, Image *target, int w, int h, int radius)
 {
-    int kwidht = (2 * round(radius)) + 1;
-    double **kernel = build_gaussian_kernel(radius);
-
-    Image tmp_image = copy_image(image);
-    for (unsigned int x = radius; x < image->height - radius; ++x)
+    double iarr = (double)1 / (radius + radius + 1);
+    for (int i = 0; i < h; i++)
     {
-        for (unsigned int y = radius; y < image->width - radius; ++y)
-        {
-            double val = 0.0;
+        int ti = i * w;
+        int li = ti;
+        int ri = ti + radius;
+        int fv = get_pixel_one_dim(source, ti);
+        int lv = get_pixel_one_dim(source, ti + w - 1);
 
-            for (int _x = -radius; _x < radius; ++_x)
-            {
-                for (int _y = -radius; _y < radius; ++_y)
-                {
-                    double kvalue = kernel[_x + radius][_y + radius];
-                    val += tmp_image.pixels[x - _x][y - _y].r * kvalue;
-                }
-            }
-            set_all_pixel(image, x, y, val);
+        unsigned currennt_val = fv * (radius + 1);
+
+        for (int j = 0; j < radius; j++)
+        {
+            int val = get_pixel_one_dim(source, ti + j);
+            currennt_val += val;
+        }
+
+        for (int j = 0; j <= radius; j++)
+        {
+            int val = get_pixel_one_dim(source, ri++);
+            currennt_val += (val - fv);
+
+            set_pixel_one_dim(target, ti++, currennt_val * iarr);
+        }
+
+        for (int j = radius + 1; j < w - radius; j++)
+        {
+            int first_pixel_val = get_pixel_one_dim(source, ri++);
+            int second_pixle_val = get_pixel_one_dim(source, li++);
+
+            currennt_val += first_pixel_val - second_pixle_val;
+
+            set_pixel_one_dim(target, ti++, currennt_val * iarr);
+        }
+
+        for (int j = w - radius; j < w; j++)
+        {
+            int pixel_val = get_pixel_one_dim(source, li++);
+            currennt_val += lv - pixel_val;
+
+            set_pixel_one_dim(target, ti++, currennt_val * iarr);
+        }
+    }
+}
+
+void box_blur_t(Image *source, Image *target, int w, int h, int radius)
+{
+    double iarr = (double)1 / (radius + radius + 1);
+    for (int i = 0; i < w; i++)
+    {
+        int ti = i;
+        int li = ti;
+        int ri = ti + radius * w;
+
+        int fv = get_pixel_one_dim(source, ti);
+        int lv = get_pixel_one_dim(source, ti + w * (h - 1));
+        unsigned currennt_val = fv * (radius + 1);
+
+        for (int j = 0; j < radius; j++)
+        {
+            int val = get_pixel_one_dim(source, ti + j * w);
+            currennt_val += val;
+        }
+
+        for (int j = 0; j <= radius; j++)
+        {
+            int val = get_pixel_one_dim(source, ri);
+            currennt_val += val - fv;
+
+            set_pixel_one_dim(target, ti, currennt_val * iarr);
+
+            ri += w;
+            ti += w;
+        }
+
+        for (int j = radius + 1; j < h - radius; j++)
+        {
+            int first_pixel_val = get_pixel_one_dim(source, ri);
+            int second_pixle_val = get_pixel_one_dim(source, li);
+
+            currennt_val += first_pixel_val - second_pixle_val;
+
+            set_pixel_one_dim(target, ti, currennt_val * iarr);
+
+            li += w;
+            ri += w;
+            ti += w;
+        }
+
+        for (int j = h - radius; j < h; j++)
+        {
+            int pixel_val = get_pixel_one_dim(source, li);
+
+            currennt_val += lv + pixel_val;
+
+            set_pixel_one_dim(target, ti, currennt_val * iarr);
+
+            li += w;
+            ti += w;
+        }
+    }
+}
+
+void box_blur(Image *source, Image *target, int w, int h, int radius)
+{
+    for (int i = 0; i < h; i++)
+    {
+        for (int j = 0; j < w; j++)
+        {
+            target->pixels[i][j] = source->pixels[i][j];
         }
     }
 
-    for (int i = 0; i < kwidht; ++i)
-        free(kernel[i]);
-    free(kernel);
+    box_blur_h(target, source, w, h, radius);
+    box_blur_t(source, target, w, h, radius);
+}
 
-    free_image(&tmp_image);
+void gaussian_blur(Image *source)
+{
+    int radius = 2;
+    int width = source->width;
+    int height = source->height;
+    // allocate image
+    Image target = { .width = source->width,
+                     .height = source->height,
+                     .pixels = NULL,
+                     .path = NULL };
+
+    target.width = width;
+    target.height = height;
+
+    target.pixels = calloc(height, sizeof(Pixel *));
+    for (int row = 0; row < height; row++)
+    {
+        target.pixels[row] = calloc(width, sizeof(Pixel));
+    }
+
+    if (source->path != NULL)
+    {
+        target.path = calloc(strlen(source->path) + 1, sizeof(char));
+        strcpy(target.path, source->path);
+    }
+
+    int *bxs = gaussian_kernel(radius, 3);
+    box_blur(source, &target, width, height, (bxs[0] - 1) / 2);
+    box_blur(&target, source, width, height, (bxs[1] - 1) / 2);
+    box_blur(source, &target, width, height, (bxs[2] - 1) / 2);
+
+    for (int i = 0; i < height; i++)
+    {
+        for (int j = 0; j < width; j++)
+        {
+            source->pixels[i][j] = target.pixels[i][j];
+        }
+    }
+
+    free(bxs);
+    free_image(&target);
 }

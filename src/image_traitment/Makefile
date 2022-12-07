@@ -1,7 +1,7 @@
-CC = gcc -I../../include/
-CFLAGS = -Wall -Wextra -Werror -std=c99 `pkg-config --cflags sdl2 SDL2_image` -g
+CC = gcc -Iinclude/
+CFLAGS = -Werror -Wall -Wextra -pedantic -std=c99 `pkg-config --cflags sdl2 SDL2_image` -g #-fsanitize=address
 LDLIBS = `pkg-config --libs sdl2 SDL2_image` -lSDL2 -lm
-LDFLAGS = #-fsanitize=address
+LDFLAGS = -g #-fsanitize=address
 
 
 SRC =  $(shell find -name "*.c")
@@ -46,13 +46,13 @@ format:
 	find -name "*.[ch]" -exec clang-format --verbose -i {} \;
 
 
-$(BUILD)/%.o : %.c
-	$(CC) $(CFLAGS) -c $< -o $@ $(LDLFLAGS) $(CPPFLAGS) $(LDLIBS)
+$(build)/%.o : %.c
+	$(cc) $(cflags) -c $< -o $@ $(ldlflags) $(cppflags) $(ldlibs)
 
 clean:
-	rm -rf $(BUILD)
-	$(RM) $(EXEC)
-	${RM} res_*
-	${RM} double_tresh_res_image_0* hysteris_res_image_0* non_max_res_image_0* sobel_res_image_0* gaussian_blur_res_i* gray_scale_res_ima* brightness_res_im* contrast_res_ima* res_hough_res_ima* homographic_transform_res*
-	${RM} *.swp
+	@rm -rf $(BUILD)
+	@$(RM) $(EXEC)
+	@${RM} res_*
+	@${RM} double_tresh_res_image_0* hysteris_res_image_0* non_max_res_image_0* sobel_res_image_0* gaussian_blur_res_i* gray_scale_res_ima* brightness_res_im* contrast_res_ima* res_hough_res_ima* homographic_transform_res*
+	@${RM} *.swp
 

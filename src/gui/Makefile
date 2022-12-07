@@ -1,3 +1,4 @@
+# Makefile
 CC=gcc
 CPPFLAGS=
 CFLAGS=-Wall -Wextra `pkg-config --cflags gtk+-3.0 sdl2 SDL2_image` -rdynamic
@@ -19,21 +20,29 @@ init:
 	@$(shell mkdir -p $(BUILD))
 	@$(shell mkdir -p $(SRC:%=$(BUILD)/%))
 
-main:
-	${CC} ${CFLAGS} ${SRC} -o ${TARGET} ${LDLIBS}
+all: init gui clear
 
+clear:
+	find . -type d -empty -delete
+
+
+init:
+	$(shell mkdir -p $(BUILD))
+	$(shell mkdir -p $(SRC:%=$(BUILD)/%))
+
+gui: $(OBJ)
+	gcc -o $(EXEC) $(CFLAGS) $^ $(LDFLAGS) $(LDLIBS)
 
 format:
 	find -name "*.[ch]" -exec clang-format --verbose -i {} \;
 
-
-all: $(TARGET)
-
-$(TARGET): $(OBJ)
-	$(CC) $(LDFLAGS) -o $@ $^ $(LDLIBS)
-
-.PHONY: all
+$(build)/%.o : %.c
+	$(cc) $(cflags) -c $< -o $@ $(ldlflags) $(cppflags) $(ldlibs)
 
 clean:
-	${RM} $(OBJ) $(EXE) $(TARGET)
-	${RM} *_resized*
+	@${RM} *.o *.d
+	@${RM} $(OBJ) $(EXEC) $(TARGET)
+	@rm -rf $(BUILD)
+
+
+# END OF MAKEFILE

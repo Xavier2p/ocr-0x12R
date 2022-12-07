@@ -15,7 +15,7 @@
  *
  * =====================================================================================
  */
-#include "../../include/image_traitment/canny.h"
+#include "include/canny.h"
 
 int Gx[3][3] = { { -1, 0, 1 }, { -2, 0, 2 }, { -1, 0, 1 } };
 
@@ -210,16 +210,16 @@ void double_threshold(Image *image)
 void canny_edge_detection(Image *image)
 {
     double **theta = sobel_filter(image);
-    save_image(image, "sobel_");
+    //    save_image(image, "sobel_");
 
     non_max_suppression(image, theta);
-    save_image(image, "non_max_");
+    //    save_image(image, "non_max_");
 
     double_threshold(image);
-    save_image(image, "double_tresh_");
+    //    save_image(image, "double_tresh_");
 
     hysteris(image);
-    save_image(image, "hysteris_");
+    //    save_image(image, "hysteris_");
 
     for (unsigned int i = 0; i < image->height; ++i)
         free(theta[i]);

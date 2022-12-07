@@ -15,7 +15,7 @@
  *
  * =====================================================================================
  */
-#include "../../include/image_traitment/linkedlist.h"
+#include "include/linkedlist.h"
 
 void *Blob_tovptr(Blob blob)
 {
@@ -41,15 +41,6 @@ void *Line_tovptr(Line line)
     if (p == NULL)
         errx(1, "Not enough memory");
     *(Line *)p = line;
-    return p;
-}
-
-void *Square_tovptr(Square square)
-{
-    void *p = malloc(sizeof(Square));
-    if (p == NULL)
-        errx(1, "Not enough memory");
-    *(Square *)p = square;
     return p;
 }
 
