@@ -26,5 +26,7 @@ char* (*steps[STEPS])(Image* image) = {
 
 int launcher_train(double hl, double nbn, double lr);
 int** get_origin_grid();
+Image *get_first_image();
 
 #endif
+

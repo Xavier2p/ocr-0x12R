@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.40.0 -->
+<!-- Generated with glade 3.38.2 -->
 <interface>
   <requires lib="gtk+" version="3.24"/>
   <!-- interface-css-provider-path gui.css -->
@@ -58,13 +58,14 @@
         </child>
         <child>
           <object class="GtkFixed" id="fixed-edit">
-            <property name="width-request">100</property>
+            <property name="width-request">350</property>
             <property name="height-request">100</property>
             <property name="visible">True</property>
             <property name="can-focus">False</property>
+            <signal name="focus" handler="on_fixed_edit_focus" swapped="no"/>
             <child>
               <object class="GtkLabel" id="label-title-edit">
-                <property name="width-request">300</property>
+                <property name="width-request">350</property>
                 <property name="height-request">60</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
@@ -87,7 +88,7 @@
               </object>
               <packing>
                 <property name="x">150</property>
-                <property name="y">50</property>
+                <property name="y">315</property>
               </packing>
             </child>
             <child>
@@ -103,7 +104,7 @@
               </object>
               <packing>
                 <property name="x">150</property>
-                <property name="y">100</property>
+                <property name="y">365</property>
               </packing>
             </child>
             <child>
@@ -119,7 +120,7 @@
               </object>
               <packing>
                 <property name="x">12</property>
-                <property name="y">110</property>
+                <property name="y">375</property>
               </packing>
             </child>
             <child>
@@ -135,7 +136,7 @@
               </object>
               <packing>
                 <property name="x">150</property>
-                <property name="y">150</property>
+                <property name="y">415</property>
               </packing>
             </child>
             <child>
@@ -151,7 +152,7 @@
               </object>
               <packing>
                 <property name="x">12</property>
-                <property name="y">160</property>
+                <property name="y">425</property>
               </packing>
             </child>
             <child>
@@ -167,7 +168,19 @@
               </object>
               <packing>
                 <property name="x">12</property>
-                <property name="y">57</property>
+                <property name="y">325</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkImage" id="primary-image">
+                <property name="width-request">350</property>
+                <property name="height-request">250</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="pixbuf">logo_big.png</property>
+              </object>
+              <packing>
+                <property name="y">60</property>
               </packing>
             </child>
           </object>
@@ -239,11 +252,13 @@
         </child>
         <child>
           <object class="GtkFixed" id="fixed-settings">
+            <property name="width-request">350</property>
+            <property name="height-request">100</property>
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <child>
               <object class="GtkLabel" id="label-settings">
-                <property name="width-request">300</property>
+                <property name="width-request">350</property>
                 <property name="height-request">60</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
@@ -577,7 +592,6 @@ Only if you know what are you doing</property>
             <property name="label" translatable="yes">Edit Grid</property>
             <property name="width-request">200</property>
             <property name="height-request">30</property>
-            <property name="visible">False</property>
             <property name="can-focus">True</property>
             <property name="receives-default">True</property>
             <property name="tooltip-text" translatable="yes">Edit the grid</property>

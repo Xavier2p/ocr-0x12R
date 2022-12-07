@@ -175,16 +175,16 @@ void on_button_apply_settings_clicked()
  * @brief on_button_cancel_edit_clicked => close the dialog
  * @brief on_button_apply_edit_clicked => apply the parameters and train
  */
+void on_fixed_edit_focus()
+{
+    Image *prim_image = get_first_image();
+    change_image_on_gui(prim_image, "prim_image", builder);
+}
 void on_button_edit_clicked()
 {
     nb_column = GTK_ENTRY(gtk_builder_get_object(builder, "entry-col"));
     nb_row = GTK_ENTRY(gtk_builder_get_object(builder, "entry-line"));
     new_value = GTK_ENTRY(gtk_builder_get_object(builder, "entry-val"));
-
-    int** origin = get_origin_grid();
-
-
-
     gtk_label_set_text(GTK_LABEL(label_one), (const gchar*)"Editing the image");
     gtk_window_set_transient_for(GTK_WINDOW(edit_dialog), GTK_WINDOW(window));
     gtk_widget_show_all(edit_dialog);
@@ -220,7 +220,6 @@ void on_button_apply_edits_clicked()
  */
 void on_button_Next_clicked()
 {
-    gtk_widget_show(button_edit);
     if (selected == 0)
     {
         gtk_label_set_text(GTK_LABEL(label_one),
@@ -263,9 +262,7 @@ void on_button_Launch_clicked()
 
         change_image_on_gui(&image, "main_image", builder);
         gtk_label_set_text(GTK_LABEL(label_one), "Solved sudoku");;
-        gtk_widget_hide(button_next);
-        gtk_widget_hide(button_Launch);
-        gtk_widget_show(button_edit);
+        gtk_widget_show(GTK_WIDGET(button_edit));
         save_image(&image, "solved.jpeg");
     }
 }

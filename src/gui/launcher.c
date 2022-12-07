@@ -4,10 +4,12 @@
 
 Square corners;
 int** origin = NULL;
+Image first_image;
 
 char* laucher_resize(Image* image)
 {
     resize_image(image, 800);
+    first_image = copy_image(image);
     return "Resize image";
 }
 
@@ -103,6 +105,11 @@ char* launcher_solve(Image* image)
 int launcher_train(double hl, double nbn, double lr)
 {
     return training(NULL, hl, nbn, lr, NULL, 1);
+}
+
+Image *get_first_image()
+{
+    return &first_image;
 }
 
 int** get_origin_grid()
