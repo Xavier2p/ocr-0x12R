@@ -176,7 +176,10 @@ void gaussian_blur(Image *source)
     int width = source->width;
     int height = source->height;
     // allocate image
-    Image target = {.width = source->width, .height = source->height, .pixels = NULL, .path = NULL};
+    Image target = { .width = source->width,
+                     .height = source->height,
+                     .pixels = NULL,
+                     .path = NULL };
 
     target.width = width;
     target.height = height;

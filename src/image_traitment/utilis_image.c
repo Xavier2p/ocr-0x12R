@@ -172,6 +172,7 @@ void save_image(Image *image, char *name)
     else
     {
         res = malloc(strlen(name) + 1);
+        strcpy(res, name);
     }
 
     SDL_SaveBMP(final_surface, res);

@@ -35,6 +35,7 @@ int find_nbr_blob(Image *image)
         }
     }
 
+    free_image(&c_image);
     return nbr_blob;
 }
 

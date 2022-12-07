@@ -4,7 +4,7 @@
 #define STEPS 9
 
 // FUNCTIONS
-char* laucher_resize(Image *image);
+char* laucher_resize(Image* image);
 char* launcher_grayscale(Image* image);
 char* launcher_blur(Image* image);
 char* launcher_adaptative_threshold(Image* image);
@@ -16,9 +16,12 @@ char* launcher_homographic_transform(Image* image);
 char* launcher_segmentation(Image* image);
 
 //  Array of pointers to functions
-char* (*steps[STEPS])(Image* image) = { laucher_resize, launcher_grayscale,
-    launcher_blur, launcher_adaptative_threshold, launcher_blob,
-    launcher_erosion, launcher_find_corners, launcher_homographic_transform,
-    launcher_segmentation };
+char* (*steps[STEPS])(Image* image) = {
+    laucher_resize,        launcher_grayscale,
+    launcher_blur,         launcher_adaptative_threshold,
+    launcher_blob,         launcher_erosion,
+    launcher_find_corners, launcher_homographic_transform,
+    launcher_segmentation
+};
 
 #endif

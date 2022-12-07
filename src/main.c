@@ -60,7 +60,6 @@ void main_image(const char* path)
     // Compute all operation on the image to segment it
     image_traitment(&image);
 
-
     // Segment the image and export the grid for the sudoku solver
     int** sudoku_grid = segmentation(&image, &n);
 
@@ -84,7 +83,7 @@ void main_image(const char* path)
 }
 
 void main_train(unsigned int nb_hidden, unsigned int nb_neurons,
-           double learning_rate)
+                double learning_rate)
 {
     training(NULL, nb_hidden, nb_neurons, learning_rate, NULL, 1);
 }
@@ -167,73 +166,74 @@ int main(int argc, char** argv)
 
         switch (c)
         {
-            case 'v':
-                options.verbose = atoi(optarg);
-                break;
+        case 'v':
+            options.verbose = atoi(optarg);
+            break;
 
-            case 'i':
-                options.input = optarg;
-                break;
+        case 'i':
+            options.input = optarg;
+            break;
 
-            case 'm':
-                strcpy(output, optarg);
-                strtoupper(output);
-                int found = 0;
-                for (size_t i = 0; i < 3; ++i)
+        case 'm':
+            strcpy(output, optarg);
+            strtoupper(output);
+            int found = 0;
+            for (size_t i = 0; i < 3; ++i)
+            {
+                if (strcmp(optarg, MODE[i]) == 0)
                 {
-                    if (strcmp(optarg, MODE[i]) == 0)
-                    {
-                        found = 1;
-                        options.mode = i;
-                    }
+                    found = 1;
+                    options.mode = i;
                 }
-                if (found == 0)
-                    print_usage();
-                break;
-
-            case 'h':
+            }
+            if (found == 0)
                 print_usage();
-                break;
-
-            case 'l':
-                options.nb_layers = atoi(optarg);
-                break;
-
-            case 'n':
-                options.nb_neurons = atoi(optarg);
-                break;
-
-            case 'r':
-                options.learning_rate = atof(optarg);
-                break;
-
-            default:
-                print_usage();
-                break;
-        }
-    }
-
-    switch (options.mode)
-    {
-        case 0: // IMAGE
-            if (options.input == NULL)
-                errx(1,
-                        "Invalid arguments: IMAGE mode is specified without the -i "
-                        "flag");
-            main_image(options.input);
             break;
 
-        case 1: // TRAIN
-            main_train(options.nb_layers, options.nb_neurons, options.learning_rate);
+        case 'h':
+            print_usage();
             break;
 
-        case 2: // GUI
-            init_gui(argc, argv);
+        case 'l':
+            options.nb_layers = atoi(optarg);
+            break;
+
+        case 'n':
+            options.nb_neurons = atoi(optarg);
+            break;
+
+        case 'r':
+            options.learning_rate = atof(optarg);
             break;
 
         default:
             print_usage();
             break;
+        }
+    }
+
+    switch (options.mode)
+    {
+    case 0: // IMAGE
+        if (options.input == NULL)
+            errx(1,
+                 "Invalid arguments: IMAGE mode is specified without the -i "
+                 "flag");
+        main_image(options.input);
+        break;
+
+    case 1: // TRAIN
+        main_train(options.nb_layers, options.nb_neurons,
+                   options.learning_rate);
+        break;
+
+    case 2: // GUI
+        init_gui(argc, argv);
+        break;
+
+    default:
+        print_usage();
+        break;
     }
 
     return 0;

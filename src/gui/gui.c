@@ -97,6 +97,7 @@ void file_select(GtkFileChooserButton* button)
  */
 void on_button_Quit_clicked()
 {
+    free_image(&image);
     gtk_label_set_text(GTK_LABEL(label_one), (const gchar*)"Button Quit");
     g_object_unref(G_OBJECT(builder));
     gtk_main_quit();
@@ -121,10 +122,7 @@ void on_button_Next_clicked()
     }
 
     else
-    {
         gtk_label_set_text(GTK_LABEL(label_one), (const gchar*)"END");
-        free_image(&image);
-    }
 }
 
 void on_save_button_clicked()
@@ -194,18 +192,17 @@ void on_button_Launch_clicked()
     else if (pc < STEPS)
     {
         gtk_label_set_text(GTK_LABEL(label_one),
-                (const gchar*)"OCR in progress...");
+                           (const gchar*)"OCR in progress...");
 
         for (int i = pc; i < STEPS; i++)
         {
             char* verbose = steps[i](&image);
             printf("[OCR IN PROGRESS] -> %s\n", verbose);
-            pc =  i;
+            pc = i;
         }
 
         change_image_on_gui(&image, "main_image", builder);
         gtk_label_set_text(GTK_LABEL(label_one), "Solved sudoku");
+        save_image(&image, "solved.jpeg");
     }
 }
-
-

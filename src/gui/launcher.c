@@ -4,7 +4,7 @@
 
 Square corners;
 
-char* laucher_resize(Image *image)
+char* laucher_resize(Image* image)
 {
     resize_image(image, 800);
     return "Resize image";
@@ -22,25 +22,25 @@ char* launcher_blur(Image* image)
     return "Perform gaussian blur";
 }
 
-char *launcher_adaptative_threshold(Image *image)
+char* launcher_adaptative_threshold(Image* image)
 {
     adaptative_threshold(image);
     return "Threshold Applied";
 }
 
-char *launcher_blob(Image *image)
+char* launcher_blob(Image* image)
 {
     remove_small_blob(image);
     return "Removed small Blob";
 }
 
-char *launcher_erosion(Image *image)
+char* launcher_erosion(Image* image)
 {
     erosion(image);
     return "Erosion Applied";
 }
 
-char *launcher_dilatation(Image *image)
+char* launcher_dilatation(Image* image)
 {
     dilatation(image);
     return "Dilatation Applied";
@@ -64,9 +64,8 @@ char* launcher_segmentation(Image* image)
     load_weights(&n, PATH_TO_WEIGHTS);
     // FAIRE LA SELECTION DES POIDS OU LINPUT
 
-    int** origin =  segmentation(image, &n);
-    int **solved = calloc(10, sizeof(int*));
-
+    int** origin = segmentation(image, &n);
+    int** solved = calloc(10, sizeof(int*));
 
     for (int i = 0; i < 10; i++)
     {
@@ -85,9 +84,16 @@ char* launcher_segmentation(Image* image)
     *image = new_grid;
 
     free_network(&n);
+
+    for (int i = 0; i < 10; i++)
+    {
+        free(origin[i]);
+        free(solved[i]);
+    }
+    free(origin);
+    free(solved);
     return "Solved sudoku";
 }
-
 
 int launcher_train(double hl, double nbn, double lr)
 {

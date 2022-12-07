@@ -1,3 +1,4 @@
+#include "include/utilis_image.h"
 #include "include/write_number.h"
 
 void resize_draw(Image *src, Image *number_img, int x, int y, int dimension,
@@ -130,6 +131,7 @@ void add_number(Image *src, int x, int y, int number, int color)
     resize_draw(src, &number_img, x, y, size, color);
 
     SDL_FreeSurface(number_img_sdl);
+    free_image(&number_img);
 }
 
 Image write_numbers(int **origin, int **solved)
