@@ -3,6 +3,7 @@
 #include "../image_traitment/include/image_traitment.h"
 
 Square corners;
+int** origin = NULL;
 
 char* laucher_resize(Image* image)
 {
@@ -62,9 +63,15 @@ char* launcher_segmentation(Image* image)
 {
     Network n;
     load_weights(&n, PATH_TO_WEIGHTS);
-    // FAIRE LA SELECTION DES POIDS OU LINPUT
+    // Add the new file from Arthur
 
-    int** origin = segmentation(image, &n);
+    origin = segmentation(image, &n);
+    free_network(&n);
+    return "Segmentation done, please check the data";
+}
+
+char* launcher_solve(Image* image)
+{
     int** solved = calloc(10, sizeof(int*));
 
     for (int i = 0; i < 10; i++)
@@ -83,8 +90,6 @@ char* launcher_segmentation(Image* image)
 
     *image = new_grid;
 
-    free_network(&n);
-
     for (int i = 0; i < 10; i++)
     {
         free(origin[i]);
@@ -98,4 +103,9 @@ char* launcher_segmentation(Image* image)
 int launcher_train(double hl, double nbn, double lr)
 {
     return training(NULL, hl, nbn, lr, NULL, 1);
+}
+
+int** get_origin_grid()
+{
+    return origin;
 }

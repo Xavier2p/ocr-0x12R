@@ -2,6 +2,9 @@
 
 #include "includes/launcher.h"
 
+/**
+ * @brief define the variables
+ */
 Image image;
 GtkWidget* window = NULL;
 GtkWidget* button_Load = NULL;
@@ -12,7 +15,10 @@ GtkLabel* label_one = NULL;
 GtkWidget* button_Launch = NULL;
 GtkButton* custom_params = NULL;
 GtkButton* button_save = NULL;
+GtkButton* button_edit = NULL;
+GtkButton* button_next = NULL;
 GtkWidget* dialog = NULL;
+GtkWidget* edit_dialog = NULL;
 GError* error = NULL;
 gchar* filename_ui = NULL;
 char* filename_image = NULL;
@@ -23,6 +29,11 @@ int selected = 0;
 GtkEntry* param1 = NULL;
 GtkEntry* param2 = NULL;
 GtkEntry* param3 = NULL;
+
+// params for custom edit of image
+GtkEntry* nb_column = NULL;
+GtkEntry* nb_row = NULL;
+GtkEntry* new_value = NULL;
 
 /**
  * @brief  initialize the GUI
@@ -58,6 +69,9 @@ void init_gui(int argc, char* argv[])
     dialog = GTK_WIDGET(gtk_builder_get_object(builder, "dialog_settings"));
     custom_params = GTK_BUTTON(gtk_builder_get_object(builder, "custom_nn"));
     button_save = GTK_BUTTON(gtk_builder_get_object(builder, "save-button"));
+    edit_dialog = GTK_WIDGET(gtk_builder_get_object(builder, "dialog-edit"));
+    button_edit = GTK_BUTTON(gtk_builder_get_object(builder, "button-edit"));
+    button_next = GTK_BUTTON(gtk_builder_get_object(builder, "button-next"));
 
     // Load CSS
     GtkCssProvider* cssProvider = gtk_css_provider_new();
@@ -93,8 +107,16 @@ void file_select(GtkFileChooserButton* button)
 }
 
 /**
- * @brief This function is called when the user click on the button "Quit"
+ * These are the callbacks for the buttons at left
+ * @brief on_save_button_clicked => save the image
+ * @brief on_button_Quit_clicked => quit the program
  */
+void on_save_button_clicked()
+{
+    gtk_label_set_text(GTK_LABEL(label_one), (const gchar*)"Saved image");
+    save_image(&image, "saved.jpeg");
+    printf("Image saved\n");
+}
 void on_button_Quit_clicked()
 {
     free_image(&image);
@@ -103,8 +125,102 @@ void on_button_Quit_clicked()
     gtk_main_quit();
 }
 
+/**
+ * Functions for the custom parameters for NN
+ * @brief on_custom_nn_clicked => open the dialog
+ * @brief on_button_cancel_settings_clicked => close the dialog
+ * @brief on_button_apply_settings_clicked => apply the parameters and retrain
+ */
+void on_custom_nn_clicked()
+{
+    param1 = GTK_ENTRY(gtk_builder_get_object(builder, "entry-param1"));
+    param2 = GTK_ENTRY(gtk_builder_get_object(builder, "entry-param2"));
+    param3 = GTK_ENTRY(gtk_builder_get_object(builder, "entry-param3"));
+
+    gtk_label_set_text(GTK_LABEL(label_one),
+                       (const gchar*)"Choose your parameters");
+    gtk_window_set_transient_for(GTK_WINDOW(dialog), GTK_WINDOW(window));
+    gtk_widget_show_all(dialog);
+    gtk_dialog_run(GTK_DIALOG(dialog));
+    gtk_widget_hide(dialog);
+}
+void on_button_cancel_settings_clicked()
+{
+    gtk_widget_hide(dialog);
+}
+void on_button_apply_settings_clicked()
+{
+    int* nb_layers = calloc(1, sizeof(int));
+    int* nb_neuron = calloc(1, sizeof(int));
+    sscanf((char*)gtk_entry_get_text(param1), "%d", nb_layers);
+    sscanf((char*)gtk_entry_get_text(param2), "%d", nb_neuron);
+    double learningr = char_to_double((char*)gtk_entry_get_text(param3));
+    gtk_widget_hide(dialog);
+    gtk_label_set_text(GTK_LABEL(label_one),
+                       (const gchar*)"Settings applied, the Neural Network "
+                                     "will be retrained");
+    printf("training network....................................ok\n");
+    printf("nb_layers = %d\nnb_neuron = %d\nlearningr = %f\n", *nb_layers,
+           *nb_neuron, learningr);
+    launcher_train((double)*nb_layers, (double)*nb_neuron, learningr);
+    gtk_label_set_text(GTK_LABEL(label_one),
+                       (const gchar*)"Neural Network retrained");
+    free(nb_layers);
+    free(nb_neuron);
+}
+
+/**
+ * Functions for the edit dialog
+ * @brief on_button_edit_clicked => open the dialog
+ * @brief on_button_cancel_edit_clicked => close the dialog
+ * @brief on_button_apply_edit_clicked => apply the parameters and train
+ */
+void on_button_edit_clicked()
+{
+    nb_column = GTK_ENTRY(gtk_builder_get_object(builder, "entry-col"));
+    nb_row = GTK_ENTRY(gtk_builder_get_object(builder, "entry-line"));
+    new_value = GTK_ENTRY(gtk_builder_get_object(builder, "entry-val"));
+
+    int** origin = get_origin_grid();
+
+
+
+    gtk_label_set_text(GTK_LABEL(label_one), (const gchar*)"Editing the image");
+    gtk_window_set_transient_for(GTK_WINDOW(edit_dialog), GTK_WINDOW(window));
+    gtk_widget_show_all(edit_dialog);
+    gtk_dialog_run(GTK_DIALOG(edit_dialog));
+    gtk_widget_hide(edit_dialog);
+}
+void on_button_cancel_edit_clicked()
+{
+    gtk_widget_hide(edit_dialog);
+}
+void on_button_apply_edits_clicked()
+{
+    int* col = calloc(1, sizeof(int));
+    int* line = calloc(1, sizeof(int));
+    int* val = calloc(1, sizeof(int));
+    sscanf((char*)gtk_entry_get_text(nb_column), "%d", col);
+    sscanf((char*)gtk_entry_get_text(nb_row), "%d", line);
+    sscanf((char*)gtk_entry_get_text(new_value), "%d", val);
+    gtk_widget_hide(edit_dialog);
+    gtk_label_set_text(GTK_LABEL(label_one),
+                       (const gchar*)"The image has been edited, press next or "
+                                     "launch to see the result");
+    printf("col = %d\nline = %d\nval = %d\n", *col, *line, *val);
+    free(col);
+    free(line);
+    free(val);
+}
+
+/**
+ * These are the runner functions
+ * @brief on_button_Next_clicked => run the next step
+ * @brief on_button_Launch_clicked => run all the remaining steps
+ */
 void on_button_Next_clicked()
 {
+    gtk_widget_show(button_edit);
     if (selected == 0)
     {
         gtk_label_set_text(GTK_LABEL(label_one),
@@ -124,62 +240,6 @@ void on_button_Next_clicked()
     else
         gtk_label_set_text(GTK_LABEL(label_one), (const gchar*)"END");
 }
-
-void on_save_button_clicked()
-{
-    gtk_label_set_text(GTK_LABEL(label_one), (const gchar*)"Saved image");
-    save_image(&image, "saved.jpeg");
-    printf("Image saved\n");
-}
-
-void on_button_appply_settings_clicked()
-{
-    int* nb_layers = calloc(1, sizeof(int));
-    int* nb_neuron = calloc(1, sizeof(int));
-    sscanf((char*)gtk_entry_get_text(param1), "%d", nb_layers);
-    sscanf((char*)gtk_entry_get_text(param2), "%d", nb_neuron);
-    double learningr = char_to_double((char*)gtk_entry_get_text(param3));
-    gtk_widget_destroy(dialog);
-    gtk_label_set_text(GTK_LABEL(label_one),
-                       (const gchar*)"Settings applied, the Neural Network "
-                                     "will be retrained");
-    printf("training network....................................ok\n");
-    printf("nb_layers = %d\nnb_neuron = %d\nlearningr = %f\n", *nb_layers,
-           *nb_neuron, learningr);
-    launcher_train((double)*nb_layers, (double)*nb_neuron, learningr);
-    gtk_label_set_text(GTK_LABEL(label_one),
-                       (const gchar*)"Neural Network retrained");
-    free(nb_layers);
-    free(nb_neuron);
-}
-
-/**
- * @brief  This function is called when the user click on the button "cancel"
- */
-void on_button_cancel_settings_clicked()
-{
-    gtk_widget_hide(dialog);
-}
-
-/**
- * @brief This function is called when the user click on the button "Settings"
- */
-void on_custom_nn_clicked()
-{
-    param1 = GTK_ENTRY(gtk_builder_get_object(builder, "entry-param1"));
-    param2 = GTK_ENTRY(gtk_builder_get_object(builder, "entry-param2"));
-    param3 = GTK_ENTRY(gtk_builder_get_object(builder, "entry-param3"));
-    gtk_label_set_text(GTK_LABEL(label_one),
-                       (const gchar*)"Choose your parameters");
-    gtk_window_set_transient_for(GTK_WINDOW(dialog), GTK_WINDOW(window));
-    gtk_widget_show_all(dialog);
-    gtk_dialog_run(GTK_DIALOG(dialog));
-    gtk_widget_destroy(dialog);
-}
-
-/**
- * @brief This function is called when the user click on the button "Launch"
- */
 void on_button_Launch_clicked()
 {
     if (selected == 0)
@@ -202,7 +262,10 @@ void on_button_Launch_clicked()
         }
 
         change_image_on_gui(&image, "main_image", builder);
-        gtk_label_set_text(GTK_LABEL(label_one), "Solved sudoku");
+        gtk_label_set_text(GTK_LABEL(label_one), "Solved sudoku");;
+        gtk_widget_hide(button_next);
+        gtk_widget_hide(button_Launch);
+        gtk_widget_show(button_edit);
         save_image(&image, "solved.jpeg");
     }
 }

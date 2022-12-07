@@ -8,3 +8,4 @@ main
 .vscode/
 .idea/
 .DS_Store
+weights.data

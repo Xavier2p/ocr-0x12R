@@ -24,4 +24,7 @@ char* (*steps[STEPS])(Image* image) = {
     launcher_segmentation
 };
 
+int launcher_train(double hl, double nbn, double lr);
+int** get_origin_grid();
+
 #endif
