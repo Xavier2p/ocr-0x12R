@@ -17,8 +17,6 @@
  * =====================================================================================
  */
 #include "main.h"
-#include <stdio.h>
-#include "neural_network/include/training.h"
 
 //----- HELPER FUNCTIONS -----//
 
@@ -71,13 +69,6 @@ void main_image(const char* path)
     int input_n = scanf("%c", &input);
     input = toupper(input);
 
-    while (input_n != 1 || (input != 'Y' && input != 'N'))
-    {
-        printf("%s\n", "Wrong input. [Y/N] ? (default: N)");
-        input_n = scanf("%c", &input);
-        input = toupper(input);
-    }
-
     // Initialise the neural network
     Network n;
     load_weights(&n, input == 'Y' ? 1 : 0);
@@ -111,17 +102,10 @@ void main_image(const char* path)
 void main_train(unsigned int nb_hidden, unsigned int nb_neurons,
         double learning_rate)
 {
-    printf("%s\n", "Do you wish to test the existing weights? [Y/N]");
+    printf("%s\n", "Do you wish to test the existing weights? [Y/N] (default: N)");
     char input;
-    int input_n = scanf("%c", &input);
+    int input_n = scanf(" %c", &input);
     input = toupper(input);
-
-    while (input_n != 1 || (input != 'Y' && input != 'N'))
-    {
-        printf("%s\n", "Wrong input. [Y/N] ? (default: N)");
-        input_n = scanf("%c", &input);
-        input = toupper(input);
-    }
 
     if (input == 'Y')
         training(nb_hidden, nb_neurons, learning_rate, NULL, 0);
