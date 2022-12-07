@@ -162,10 +162,18 @@ void resize_image(Image *image, int dimension)
 void save_image(Image *image, char *name)
 {
     SDL_Surface *final_surface = create_surface(image);
-    char *res = malloc(strlen(name) + strlen(image->path) + 1);
+    char *res;
+    if (image->path != NULL)
+    {
+        res = malloc(strlen(name) + strlen(image->path) + 1);
+        strcpy(res, name);
+        strcat(res, image->path);
+    }
+    else
+    {
+        res = malloc(strlen(name) + 1);
+    }
 
-    strcpy(res, name);
-    strcat(res, image->path);
     SDL_SaveBMP(final_surface, res);
 
     SDL_FreeSurface(final_surface);

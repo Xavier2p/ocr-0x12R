@@ -84,6 +84,8 @@ void file_select(GtkFileChooserButton* button)
     gtk_label_set_text(GTK_LABEL(label_one), (const gchar*)"Loaded image");
     SDL_Surface* surface = IMG_Load(filename_image);
     image = create_image(surface, surface->w, surface->h);
+    image.path = malloc(1);
+    image.path[0] = '\0';
     printf("Image loaded: %s\n", filename_image);
     change_image_on_gui(&image, "main_image", builder);
     pc = 0;
@@ -128,7 +130,7 @@ void on_button_Next_clicked()
 void on_save_button_clicked()
 {
     gtk_label_set_text(GTK_LABEL(label_one), (const gchar*)"Saved image");
-    save_image(&image, "saved");
+    save_image(&image, "saved.jpeg");
     printf("Image saved\n");
 }
 
@@ -189,17 +191,21 @@ void on_button_Launch_clicked()
         return;
     }
 
-    gtk_label_set_text(GTK_LABEL(label_one),
-                       (const gchar*)"OCR in progress...");
-
-    for (int i = pc; i < STEPS; i++)
+    else if (pc < STEPS)
     {
-        char* verbose = steps[i](&image);
-        printf("[OCR IN PROGRESS] -> %s\n", verbose);
-        pc =  i;
+        gtk_label_set_text(GTK_LABEL(label_one),
+                (const gchar*)"OCR in progress...");
+
+        for (int i = pc; i < STEPS; i++)
+        {
+            char* verbose = steps[i](&image);
+            printf("[OCR IN PROGRESS] -> %s\n", verbose);
+            pc =  i;
+        }
+
+        change_image_on_gui(&image, "main_image", builder);
+        gtk_label_set_text(GTK_LABEL(label_one), "Solved sudoku");
     }
-    change_image_on_gui(&image, "main_image", builder);
-    gtk_label_set_text(GTK_LABEL(label_one), "Solved sudoku");
 }
 
 

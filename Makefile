@@ -57,4 +57,5 @@ clean:
 	@${RM} -r $(BUILD)
 	@${RM} res_*
 	@${RM} grid.result
+	@${RM} saved*
 
