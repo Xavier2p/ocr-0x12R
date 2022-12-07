@@ -17,6 +17,7 @@
  * =====================================================================================
  */
 #include "main.h"
+#include <stdio.h>
 
 //----- HELPER FUNCTIONS -----//
 
@@ -98,7 +99,19 @@ void main_train(unsigned int nb_hidden, unsigned int nb_neurons,
 {
     training(NULL, nb_hidden, nb_neurons, learning_rate, NULL, 1);
 
-    printf("%s\n", "Do you wish to save these weights in order to use them in IMAGE mode?");
+    const char* output = "Do you wish to save these weights in order to use them in IMAGE mode? [Y/N]";
+    printf("%s\n",output);
+    char save;
+    int n = scanf("%c", &save);
+
+    while (n != 1 || (save != 'Y' && save != 'N'))
+    {
+        printf("%s\n%s\n", "Wrong input.", output);
+        n = scanf("%c", &save);
+    }
+
+    if (save == 'Y')
+        rename("src/neural_network/saved_data/weights.data", "src/neural_network/saved_data/best_weights.data");
 }
 
 int main(int argc, char** argv)
