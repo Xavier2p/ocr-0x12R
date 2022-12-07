@@ -18,9 +18,9 @@
 #include "include/adaptative_threshold.h"
 #include "include/utilis_image.h"
 
-#define ADAPTIVETHRESHOLDING_RANGE 5
-#define ADAPTIVETHRESHOLING_C 3
-#define DILATAION_RANGE 2
+#define ADAPTIVETHRESHOLDING_RANGE 8
+#define ADAPTIVETHRESHOLING_C 4
+#define DILATAION_RANGE 3
 #define EROSION_RANGE 3
 
 // Compute adaptive threshold on the image
@@ -101,9 +101,9 @@ void dilatation(Image *image)
                      l < j + DILATAION_RANGE && count != 1; l++)
                 {
                     if (k >= 0 && k < h && l >= 0 && l < w
-                        && pixels[k][l].r == 255)
+                        && pixels[k][l].r == 88)
                     {
-                        set_all_pixel(image, i, j, 255);
+                        set_all_pixel(image, i, j, 88);
                         count = 1;
                     }
                 }

@@ -146,7 +146,7 @@ Dot find_biggest_blob(Image *image)
 
 void remove_small_blob(Image *image)
 {
-    int threshold = 60;
+    int threshold = 70;
     int w = image->width;
     int h = image->height;
 
