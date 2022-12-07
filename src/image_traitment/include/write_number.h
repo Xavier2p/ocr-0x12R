@@ -5,5 +5,6 @@
 
 
 Image write_numbers(int **origin, int **solved);
+void change_number(Image *sudoku_img, int **grid, int x, int y, int number);
 
 #endif

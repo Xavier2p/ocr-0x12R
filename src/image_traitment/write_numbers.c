@@ -53,6 +53,8 @@ void resize_draw(Image *src, Image *number_img, int x, int y, int dimension,
     int i_ratio = (int)((h1 << 16) / new_height) + 1;
 
 
+    Pixel white = src->pixels[x*block+gap-1][y*block+gap-1]; 
+
     Pixel blue = { .r = 87,
                 .g = 112,
                 .b = 255 };
@@ -60,7 +62,6 @@ void resize_draw(Image *src, Image *number_img, int x, int y, int dimension,
     Pixel brown = { .r = 139,
                 .g = 69,
                 .b = 19 };
-
 
 
     // calculate the new pixels
@@ -75,17 +76,23 @@ void resize_draw(Image *src, Image *number_img, int x, int y, int dimension,
             j2 = ((j * j_ratio) >> 16);
             i2 = ((i * i_ratio) >> 16);
 
+            //take the background of the current block
             Pixel curP = { .r = number_img->pixels[i2][j2].r,
                         .g = number_img->pixels[i2][j2].g,
                         .b = number_img->pixels[i2][j2].b };
 
             //color in blue
-            if (color && curP.r < 12)
+            if (color == 1 && curP.r < 12)
                 src->pixels[x*block+i+gap][y*block+j+gap] = blue;
 
             //color in brown
-            else if (curP.r < 12)
+            else if (!color &&curP.r < 12)
                 src->pixels[x*block+i+gap][y*block+j+gap] = brown;
+
+            //color in white and search the brown color
+            else if (color == 2 && curP.r < 12)
+                src->pixels[x*block+i+gap][y*block+j+gap] = white;
+
         }
     }
 
@@ -180,4 +187,15 @@ Image write_numbers(int **origin, int **solved)
     }
 
     return sudoku_img;
+}
+
+
+
+
+void change_number(Image *sudoku_img, int **grid, int x, int y, int number)
+{
+    add_number(sudoku_img, x, y, grid[x][y], 2); //white
+    add_number(sudoku_img, x, y, number, 0); //brown
+                                             
+    grid[x][y] = number;
 }
