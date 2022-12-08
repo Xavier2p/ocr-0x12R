@@ -131,75 +131,75 @@ int main(int argc, char** argv)
 
         switch (c)
         {
-            case 'i':
-                options.input = optarg;
-                break;
+        case 'i':
+            options.input = optarg;
+            break;
 
-            case 'm':
-                strcpy(output, optarg);
-                strtoupper(output);
-                int found = 0;
-                for (size_t i = 0; i < 3; ++i)
+        case 'm':
+            strcpy(output, optarg);
+            strtoupper(output);
+            int found = 0;
+            for (size_t i = 0; i < 3; ++i)
+            {
+                if (strcmp(output, MODE[i]) == 0)
                 {
-                    if (strcmp(output, MODE[i]) == 0)
-                    {
-                        found = 1;
-                        options.mode = i;
-                    }
+                    found = 1;
+                    options.mode = i;
                 }
-                if (found == 0)
-                    print_usage(1);
-
-                break;
-
-            case 'h':
-                print_usage(0);
-                break;
-
-            case 'l':
-                options.nb_layers = atoi(optarg);
-                break;
-
-            case 'n':
-                options.nb_neurons = atoi(optarg);
-                break;
-
-            case 'a':
-                options.learning_rate = atof(optarg);
-                break;
-
-            default:
+            }
+            if (found == 0)
                 print_usage(1);
-                break;
-        }
-    }
 
-    switch (options.mode)
-    {
-        case 0: // IMAGE
-            if (options.input == NULL)
-                errx(1,
-                        "Invalid arguments: IMAGE mode is specified without the -i "
-                        "flag");
-
-            if (access(options.input, F_OK) != 0)
-                errx(EXIT_FAILURE, "Specified file doesn't exist.");
-
-            main_image(options.input);
             break;
 
-        case 1: // TRAIN
-            main_train(options.nb_layers, options.nb_neurons,
-                    options.learning_rate);
+        case 'h':
+            print_usage(0);
             break;
 
-        case 2: // GUI
-            init_gui(argc, argv);
+        case 'l':
+            options.nb_layers = atoi(optarg);
+            break;
+
+        case 'n':
+            options.nb_neurons = atoi(optarg);
+            break;
+
+        case 'a':
+            options.learning_rate = atof(optarg);
             break;
 
         default:
             print_usage(1);
             break;
+        }
+    }
+
+    switch (options.mode)
+    {
+    case 0: // IMAGE
+        if (options.input == NULL)
+            errx(1,
+                 "Invalid arguments: IMAGE mode is specified without the -i "
+                 "flag");
+
+        if (access(options.input, F_OK) != 0)
+            errx(EXIT_FAILURE, "Specified file doesn't exist.");
+
+        main_image(options.input);
+        break;
+
+    case 1: // TRAIN
+        main_train(options.nb_layers, options.nb_neurons,
+                   options.learning_rate);
+        break;
+
+    case 2: // GUI
+        init_gui(argc, argv);
+        break;
+
+    default:
+        print_usage(1);
+        break;
     }
 
     return 0;
