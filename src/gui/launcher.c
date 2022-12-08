@@ -1,6 +1,7 @@
 #include "includes/gui.h"
 #include "../neural_network/include/training.h"
 #include "../image_traitment/include/image_traitment.h"
+#include "../image_traitment/include/write_number.h"
 
 Square corners;
 int** origin = NULL;
@@ -70,6 +71,11 @@ char* launcher_segmentation(Image* image)
     origin = segmentation(image, &n);
     free_network(&n);
 
+    Image tmp = write_numbers(origin, origin);
+
+    free_image(image);
+    *image = tmp;
+
     return "Segmentation done, please check the data";
 }
 
@@ -81,9 +87,7 @@ char* launcher_solve(Image* image)
     {
         solved[i] = calloc(10, sizeof(int));
         for (int j = 0; j < 10; j++)
-        {
             solved[i][j] = origin[i][j];
-        }
     }
 
     solve_sudoku(solved);
@@ -100,6 +104,7 @@ char* launcher_solve(Image* image)
     }
     free(origin);
     free(solved);
+    free_image(&first_image);
     return "Solved sudoku";
 }
 
@@ -113,5 +118,13 @@ Image *get_first_image()
     //    homographic_transform(&first_image, &corners, 756);
     //  save_image(&first_image, "first_image.jpeg");
     return &first_image;
+}
+
+void set_new_number(Image *image, int x, int y, int value)
+{
+    origin[x][y] = value;
+    Image new_grid = write_numbers(origin, origin);
+    free_image(image);
+    *image = new_grid;
 }
 

@@ -21,6 +21,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
+                <property name="margin-bottom">10</property>
                 <signal name="clicked" handler="on_button_cancel_edit_clicked" swapped="no"/>
                 <style>
                   <class name="button"/>
@@ -33,12 +34,14 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="button-apply-edits">
+              <object class="GtkButton" id="button-ok-edits">
                 <property name="label" translatable="yes">Ok</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <signal name="clicked" handler="on_button_apply_edits_clicked" swapped="no"/>
+                <property name="margin-end">10</property>
+                <property name="margin-bottom">10</property>
+                <signal name="clicked" handler="on_button_ok_edits_clicked" swapped="no"/>
                 <style>
                   <class name="button"/>
                 </style>
@@ -77,34 +80,34 @@
             </child>
             <child>
               <object class="GtkEntry" id="entry-col">
-                <property name="width-request">100</property>
+                <property name="width-request">90</property>
                 <property name="height-request">30</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
-                <property name="margin-right">10</property>
+                <property name="margin-end">10</property>
                 <style>
                   <class name="entry"/>
                 </style>
               </object>
               <packing>
-                <property name="x">150</property>
-                <property name="y">315</property>
+                <property name="x">140</property>
+                <property name="y">335</property>
               </packing>
             </child>
             <child>
               <object class="GtkEntry" id="entry-line">
-                <property name="width-request">100</property>
+                <property name="width-request">90</property>
                 <property name="height-request">30</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
-                <property name="margin-right">10</property>
+                <property name="margin-end">10</property>
                 <style>
                   <class name="entry"/>
                 </style>
               </object>
               <packing>
-                <property name="x">150</property>
-                <property name="y">365</property>
+                <property name="x">140</property>
+                <property name="y">385</property>
               </packing>
             </child>
             <child>
@@ -120,23 +123,23 @@
               </object>
               <packing>
                 <property name="x">12</property>
-                <property name="y">375</property>
+                <property name="y">395</property>
               </packing>
             </child>
             <child>
               <object class="GtkEntry" id="entry-val">
-                <property name="width-request">100</property>
+                <property name="width-request">90</property>
                 <property name="height-request">30</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
-                <property name="margin-right">10</property>
+                <property name="margin-end">10</property>
                 <style>
                   <class name="entry"/>
                 </style>
               </object>
               <packing>
-                <property name="x">150</property>
-                <property name="y">415</property>
+                <property name="x">140</property>
+                <property name="y">435</property>
               </packing>
             </child>
             <child>
@@ -152,7 +155,7 @@
               </object>
               <packing>
                 <property name="x">12</property>
-                <property name="y">425</property>
+                <property name="y">445</property>
               </packing>
             </child>
             <child>
@@ -168,19 +171,44 @@
               </object>
               <packing>
                 <property name="x">12</property>
-                <property name="y">325</property>
+                <property name="y">345</property>
               </packing>
             </child>
             <child>
               <object class="GtkImage" id="primary-image">
-                <property name="width-request">350</property>
-                <property name="height-request">250</property>
+                <property name="width-request">330</property>
+                <property name="height-request">230</property>
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
+                <property name="margin-start">10</property>
+                <property name="margin-end">10</property>
+                <property name="margin-top">10</property>
+                <property name="margin-bottom">10</property>
                 <property name="pixbuf">logo_big.png</property>
               </object>
               <packing>
                 <property name="y">60</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="button-apply-edits">
+                <property name="label" translatable="yes">Apply Value</property>
+                <property name="width-request">330</property>
+                <property name="height-request">30</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
+                <property name="margin-start">10</property>
+                <property name="margin-end">10</property>
+                <property name="margin-top">10</property>
+                <property name="margin-bottom">10</property>
+                <signal name="clicked" handler="on_button_apply_edits_clicked" swapped="no"/>
+                <style>
+                  <class name="button_launch"/>
+                </style>
+              </object>
+              <packing>
+                <property name="y">480</property>
               </packing>
             </child>
           </object>
@@ -215,6 +243,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
+                <property name="margin-bottom">10</property>
                 <signal name="clicked" handler="on_button_cancel_settings_clicked" swapped="no"/>
                 <style>
                   <class name="button"/>
@@ -232,6 +261,8 @@
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
+                <property name="margin-end">10</property>
+                <property name="margin-bottom">10</property>
                 <signal name="clicked" handler="on_button_apply_settings_clicked" swapped="no"/>
                 <style>
                   <class name="button"/>

@@ -32,8 +32,8 @@ void set_image_to_gui(GdkPixbuf* pixbuf, char* GtkimageID, GtkBuilder* builder)
     GtkImage* imageWidget =
         GTK_IMAGE(gtk_builder_get_object(builder, GtkimageID)); // get image
 
-    int width = 400;
-    int height = 300;
+    int width = strcmp(GtkimageID, "main_image") ? 300 : 400;
+    int height = strcmp(GtkimageID, "main_image") ? 200 : 300;
 
     // get image size
     int image_width = gdk_pixbuf_get_width(pixbuf);

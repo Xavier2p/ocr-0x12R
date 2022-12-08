@@ -178,7 +178,6 @@ void on_button_apply_settings_clicked()
 void on_fixed_edit_focus()
 {
     Image *prim_image = get_first_image();
-    save_image(prim_image, "prim.jpeg");
     change_image_on_gui(prim_image, "primary-image", builder);
 }
 void on_button_edit_clicked()
@@ -204,13 +203,20 @@ void on_button_apply_edits_clicked()
     sscanf((char*)gtk_entry_get_text(nb_column), "%d", col);
     sscanf((char*)gtk_entry_get_text(nb_row), "%d", line);
     sscanf((char*)gtk_entry_get_text(new_value), "%d", val);
-    gtk_widget_hide(edit_dialog);
     gtk_label_set_text(GTK_LABEL(label_one),
                        (const gchar*)"New image");
-    printf("col = %d\nline = %d\nval = %d\n", *col, *line, *val);
+    set_new_number(&image, *col, *line, *val);
+    gtk_entry_set_text(nb_column, "");
+    gtk_entry_set_text(nb_row, "");
+    gtk_entry_set_text(new_value, "");
+    change_image_on_gui(&image, "main_image", builder);
     free(col);
     free(line);
     free(val);
+}
+void on_button_ok_edits_clicked()
+{
+    gtk_widget_hide(edit_dialog);
 }
 
 /**
@@ -261,10 +267,7 @@ void on_button_Launch_clicked()
             char* verbose = steps[pc](&image);
             printf("[OCR IN PROGRESS] -> %s\n", verbose);
             if (pc == STEP_BEFORE - 1)
-            {
-                printf("step_before done\n");
                 break;
-            }
         }
 
         change_image_on_gui(&image, "main_image", builder);
@@ -275,3 +278,4 @@ void on_button_Launch_clicked()
         save_image(&image, "solved.jpeg");
     }
 }
+

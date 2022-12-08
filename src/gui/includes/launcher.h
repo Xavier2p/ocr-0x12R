@@ -28,6 +28,7 @@ char* (*steps[STEPS])(Image* image) = {
 
 int launcher_train(double hl, double nbn, double lr);
 Image *get_first_image();
+void set_new_number(Image *image, int col, int row, int number);
 
 #endif
 

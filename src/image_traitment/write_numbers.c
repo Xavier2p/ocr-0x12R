@@ -1,21 +1,14 @@
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_pixels.h>
-#include <SDL2/SDL_surface.h>
-#include <err.h>
-#include <math.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-#include "../../include/image_traitment/utilis_image.h"
+#include "include/write_number.h"
 
 
-void resize_draw(Image *src, Image *number_img, int x, int y, int dimension){
+void resize_draw(Image *src, Image *number_img, int x, int y, int dimension,
+        int color){
 
     int block = dimension / 9;
     int num_size = dimension / 14;
-    int gap = block / 4;
+    int gap = (block - num_size) / 2;
+    //int xgap = gap * 4 / 5;
+
 
     int new_width = 0;
     int new_height = 0;
@@ -37,8 +30,10 @@ void resize_draw(Image *src, Image *number_img, int x, int y, int dimension){
     {
         new_width = num_size;
         new_height = (int)((float)num_size
-                           * ((float)number_img->height / (float)number_img->width));
+                * ((float)number_img->height / (float)number_img->width));
     }
+
+
 
     int w1 = number_img->width;
     int h1 = number_img->height;
@@ -46,89 +41,50 @@ void resize_draw(Image *src, Image *number_img, int x, int y, int dimension){
     int j_ratio = (int)((w1 << 16) / new_width) + 1;
     int i_ratio = (int)((h1 << 16) / new_height) + 1;
 
-    Pixel p = { .r = 35,
-                .g = 122,
-                .b = 198 };
+    Pixel white = src->pixels[x*block+gap-1][y*block+gap-1]; 
 
+    Pixel blue = { .r = 133,
+                .g = 161,
+                .b = 242 };
+
+    Pixel brown = { .r = 255,
+                .g = 124,
+                .b = 107 };
+
+    Pixel brown_change = { .r = 135,
+                .g = 227,
+                .b = 207 };
     // calculate the new pixels
     int j2, i2;
     for (int i = 0; i < new_height; i++)
     {
         for (int j = 0; j < new_width; j++)
         {
+            //i += x;
+            //j += y;
+
             j2 = ((j * j_ratio) >> 16);
             i2 = ((i * i_ratio) >> 16);
 
+            //take the background of the current block
             Pixel curP = { .r = number_img->pixels[i2][j2].r,
-                           .g = number_img->pixels[i2][j2].g,
-                           .b = number_img->pixels[i2][j2].b };
+                .g = number_img->pixels[i2][j2].g,
+                .b = number_img->pixels[i2][j2].b };
 
-            // color in blue
-            if (color && curP.r < 12)
-                src->pixels[x * block + i + gap][y * block + j + gap] = blue;
+            //color in blue
+            if (color == 1 && curP.r < 12)
+                src->pixels[x*block+i+gap][y*block+j+gap] = blue;
 
-            // color in brown
-            else if (curP.r < 12)
-                src->pixels[x * block + i + gap][y * block + j + gap] = brown;
-        }
-    }
-}
+            //color in brown
+            else if (!color &&curP.r < 12)
+                src->pixels[x*block+i+gap][y*block+j+gap] = brown;
+            else if (color == 3 && curP.r < 12)
+                src->pixels[xblock+i+gap][yblock+j+gap] = brown_change;
 
-void add_number(Image *src, int x, int y, int number, int color)
-{
-    const char *file;
+                    //color in white and search the brown color
+            else if (color == 2 && curP.r < 12)
+                src->pixels[x*block+i+gap][y*block+j+gap] = white;
 
-    switch (number)
-    {
-    case 0:
-        file = "src/image_traitment/numbers/0.png";
-        break;
-
-    case 1:
-        file = "src/image_traitment/numbers/1.png";
-        break;
-
-    case 2:
-        file = "src/image_traitment/numbers/2.png";
-        break;
-
-    case 3:
-        file = "src/image_traitment/numbers/3.png";
-        break;
-
-    case 4:
-        file = "src/image_traitment/numbers/4.png";
-        break;
-
-    case 5:
-        file = "src/image_traitment/numbers/5.png";
-        break;
-
-    case 6:
-        file = "src/image_traitment/numbers/6.png";
-        break;
-
-    case 7:
-        file = "src/image_traitment/numbers/7.png";
-        break;
-
-    case 8:
-        file = "src/image_traitment/numbers/8.png";
-        break;
-
-    case 9:
-        file = "src/image_traitment/numbers/9.png";
-        break;
-
-    default:
-        errx(EXIT_FAILURE, "Invalid number value");
-=======
-                        .g = number_img->pixels[i2][j2].g,
-                        .b = number_img->pixels[i2][j2].b };
-
-            //if black value
-            if (curP.r < 12)
-                src->pixels[x*block+i+gap][y*block+j+gap] = p;
         }
     }
 
@@ -138,71 +94,70 @@ void add_number(Image *src, int x, int y, int number, int color)
 
 
 
-void add_number(Image *src, int x, int y, int number){
+void add_number(Image *src, int x, int y, int number, int color){
 
     const char *file;
 
     switch ( number )
     {
         case 0:
-            file = "numbers/0.png";
+            file = "src/image_traitment/numbers/0.png";
             break;
 
         case 1:
-            file = "numbers/1.png";
+            file = "src/image_traitment/numbers/1.png";
             break;
 
         case 2:
-            file = "numbers/2.png";
+            file = "src/image_traitment/numbers/2.png";
             break;
 
         case 3:
-            file = "numbers/3.png";
+            file = "src/image_traitment/numbers/3.png";
             break;
 
         case 4:
-            file = "numbers/4.png";
+            file = "src/image_traitment/numbers/4.png";
             break;
 
         case 5:
-            file = "numbers/5.png";
+            file = "src/image_traitment/numbers/5.png";
             break;
 
         case 6:
-            file = "numbers/6.png";
+            file = "src/image_traitment/numbers/6.png";
             break;
 
         case 7:
-            file = "numbers/7.png";
+            file = "src/image_traitment/numbers/7.png";
             break;
 
         case 8:
-            file = "numbers/8.png";
+            file = "src/image_traitment/numbers/8.png";
             break;
 
         case 9:
-            file = "numbers/9.png";
+            file = "src/image_traitment/numbers/9.png";
             break;
 
 
         default:
             errx(EXIT_FAILURE, "Invalid number value");
->>>>>>> number2
     }
 
     SDL_Surface *number_img_sdl = IMG_Load(file);
 
-<<<<<<< HEAD
-    Image number_img =
-        create_image(number_img_sdl, number_img_sdl->w, number_img_sdl->h);
+
+    Image number_img = create_image(number_img_sdl, number_img_sdl->w,
+            number_img_sdl->h);
 
     int size = (src->width + src->height) / 2;
 
     resize_draw(src, &number_img, x, y, size, color);
 
-    SDL_FreeSurface(number_img_sdl);
-    free_image(&number_img);
+
 }
+
 
 Image write_numbers(int **origin, int **solved)
 {
@@ -210,43 +165,29 @@ Image write_numbers(int **origin, int **solved)
 
     Image sudoku_img = create_image(sudoku_sdl, sudoku_sdl->w, sudoku_sdl->h);
 
-=======
 
-    Image number_img = create_image(number_img_sdl, number_img_sdl->w,
-                                    number_img_sdl->h);
-
-    int size = src->width;
-
-    resize_draw(src, &number_img, x, y, size);
-
-
-}
-
-
-void write_numbers(Image *src, int **virgin, int **solved)
-{
->>>>>>> number2
     for (int y = 0; y < 9; y++)
     {
         for (int x = 0; x < 9; x++)
         {
-<<<<<<< HEAD
-            if (origin[x][y] == 0)
-                add_number(&sudoku_img, x, y, solved[x][y], 1); // blue
+            if (origin[x][y] == 0 && origin != solved)
+                add_number(&sudoku_img, x, y, solved[x][y], 1); //blue
 
-            else
-                add_number(&sudoku_img, x, y, solved[x][y], 0); // brown
+            else if (origin[x][y] != 0)
+                add_number(&sudoku_img, x, y, solved[x][y], 0); //brown
         }
     }
 
-    SDL_FreeSurface(sudoku_sdl);
     return sudoku_img;
-=======
-            if (virgin[x][y] == 0)
-            {
-                add_number(src, x, y, solved[x][y]);
-            }
-        }
-    }
->>>>>>> number2
+}
+
+
+
+
+void change_number(Image *sudoku_img, int **grid, int x, int y, int number)
+{
+    add_number(sudoku_img, x, y, grid[x][y], 2); //white
+    add_number(sudoku_img, x, y, number, 3); //brown
+
+    grid[x][y] = number;
 }
