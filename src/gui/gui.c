@@ -104,6 +104,9 @@ void file_select(GtkFileChooserButton* button)
     change_image_on_gui(&image, "main_image", builder);
     pc = 0;
     selected = 1;
+    gtk_widget_hide(GTK_WIDGET(button_edit));
+    gtk_widget_hide(edit_dialog);
+    gtk_widget_show(GTK_WIDGET(button_save));
 }
 
 /**

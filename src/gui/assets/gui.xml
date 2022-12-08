@@ -599,7 +599,7 @@ Only if you know what are you doing</property>
             <property name="label" translatable="yes">Save Image</property>
             <property name="width-request">200</property>
             <property name="height-request">30</property>
-            <property name="visible">True</property>
+            <property name="visible">False</property>
             <property name="can-focus">True</property>
             <property name="receives-default">True</property>
             <property name="tooltip-text" translatable="yes">Save Image on your PC</property>
