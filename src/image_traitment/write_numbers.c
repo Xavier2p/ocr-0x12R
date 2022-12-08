@@ -1,4 +1,3 @@
-#include "include/utilis_image.h"
 #include "include/write_number.h"
 
 void resize_draw(Image *src, Image *number_img, int x, int y, int dimension,
@@ -40,33 +39,42 @@ void resize_draw(Image *src, Image *number_img, int x, int y, int dimension,
     int j_ratio = (int)((w1 << 16) / new_width) + 1;
     int i_ratio = (int)((h1 << 16) / new_height) + 1;
 
-    Pixel blue = { .r = 87, .g = 112, .b = 255 };
+    Pixel white = src->pixels[x * block + gap - 1][y * block + gap - 1];
 
-    Pixel brown = { .r = 139, .g = 69, .b = 19 };
+    Pixel blue = { .r = 133, .g = 161, .b = 242 };
 
+    Pixel brown = { .r = 255, .g = 124, .b = 107 };
+
+    Pixel brown_change = { .r = 135, .g = 227, .b = 207 };
     // calculate the new pixels
     int j2, i2;
     for (int i = 0; i < new_height; i++)
     {
         for (int j = 0; j < new_width; j++)
         {
-            // i += x;
-            // j += y;
-
             j2 = ((j * j_ratio) >> 16);
             i2 = ((i * i_ratio) >> 16);
 
+            // take the background of the current block
             Pixel curP = { .r = number_img->pixels[i2][j2].r,
                            .g = number_img->pixels[i2][j2].g,
                            .b = number_img->pixels[i2][j2].b };
 
             // color in blue
-            if (color && curP.r < 12)
+            if (color == 1 && curP.r < 12)
                 src->pixels[x * block + i + gap][y * block + j + gap] = blue;
 
             // color in brown
-            else if (curP.r < 12)
+            else if (!color && curP.r < 12)
                 src->pixels[x * block + i + gap][y * block + j + gap] = brown;
+
+            else if (color == 3 && curP.r < 12)
+                src->pixels[x * block + i + gap][y * block + j + gap] =
+                    brown_change;
+
+            // color in white and search the brown color
+            else if (color == 2 && curP.r < 12)
+                src->pixels[x * block + i + gap][y * block + j + gap] = white;
         }
     }
 }
@@ -129,9 +137,6 @@ void add_number(Image *src, int x, int y, int number, int color)
     int size = (src->width + src->height) / 2;
 
     resize_draw(src, &number_img, x, y, size, color);
-
-    SDL_FreeSurface(number_img_sdl);
-    free_image(&number_img);
 }
 
 Image write_numbers(int **origin, int **solved)
@@ -144,14 +149,23 @@ Image write_numbers(int **origin, int **solved)
     {
         for (int x = 0; x < 9; x++)
         {
-            if (origin[x][y] == 0)
+            if (origin[x][y] == 0 && origin != solved)
                 add_number(&sudoku_img, x, y, solved[x][y], 1); // blue
 
-            else
+            else if (origin[x][y] != 0)
                 add_number(&sudoku_img, x, y, solved[x][y], 0); // brown
         }
     }
 
-    SDL_FreeSurface(sudoku_sdl);
     return sudoku_img;
+}
+
+void change_number(Image *sudoku_img, int **grid, int x, int y, int number)
+{
+    add_number(sudoku_img, x, y, grid[x][y], 2); // white
+
+    if (number != 0)
+        add_number(sudoku_img, x, y, number, 3); // brown
+
+    grid[x][y] = number;
 }

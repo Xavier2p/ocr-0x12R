@@ -100,8 +100,8 @@ int run(Network* network, double image[])
     return fetch_result(network);
 }
 
-int training(double nb_hidden, double nb_neurons,
-             double learning_rate, double image[], int state)
+int training(double nb_hidden, double nb_neurons, double learning_rate,
+             double image[], int state)
 {
     Network n;
     Network* network = &n;

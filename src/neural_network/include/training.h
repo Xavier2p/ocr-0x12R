@@ -29,7 +29,7 @@ int is_empty(double image[]);
 
 int run(Network* network, double image[]);
 
-int training(double nb_hidden, double nb_neurons,
-             double learning_rate, double image[], int state);
+int training(double nb_hidden, double nb_neurons, double learning_rate,
+             double image[], int state);
 
 #endif

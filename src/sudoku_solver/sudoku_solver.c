@@ -26,11 +26,15 @@ void print_grid(int** sudoku_grid)
     {
         for (int j = 0; j < 9; ++j)
         {
+            if (j == 3 || j == 6)
+                printf("|");
             printf("%d", sudoku_grid[i][j]);
         }
+
         printf("\n");
+        if (i == 2 || i == 5)
+            printf("-----------\n");
     }
-    printf("\n");
 }
 
 int is_safe(int** grid, int row, int col, int num)
@@ -155,7 +159,6 @@ void solve_sudoku(int** grid)
     }
     else
     {
-        printf("i = %d\n", i);
         printf("Sudoku solved:\n");
 
         print_grid(grid);
