@@ -35,6 +35,7 @@ Arch/Manjaro  : sudo pacman -S libgtk-3-dev
 git clone https://github.com/Fach-OCR/ocr-0x12R.git
 cd ocr-0x12R
 make
+./main
 ```
 
 
