@@ -1,5 +1,5 @@
 #include "include/training.h"
-#include <stdio.h>
+#include <err.h>
 
 //----- HELPER FUNCTIONS -----//
 
@@ -88,7 +88,7 @@ int is_empty(double image[])
     for (unsigned int i = 0; i < 784; i++)
         median += image[i];
 
-    return median < 12;
+    return median < 20;
 }
 
 int run(Network* network, double image[])
@@ -100,35 +100,30 @@ int run(Network* network, double image[])
     return fetch_result(network);
 }
 
-int training(char path[], double nb_hidden, double nb_neurons,
-             double learning_rate, double image[], int state)
+int training(double nb_hidden, double nb_neurons, double learning_rate,
+             double image[], int state)
 {
     Network n;
     Network* network = &n;
 
-    if (state == 2 && path == NULL)
+    if (state == 2)
     {
-        load_weights(network, "src/neural_network/saved_data/weights.data");
+        load_weights(network, 0);
         return run(network, image);
     }
     else if (state == 0 || state == 1)
     {
-        if (((state == 0) && path == NULL)
-            || ((state == 1)
-                && (nb_hidden == 0 || nb_neurons == 0 || learning_rate == 0)))
-            printf("rtfm\n");
-
         double clean_input[784] = { 0.0 };
         load_numeric(train_image, test_image, train_label, test_label);
 
         remove_cursor(1);
 
         if (state == 0)
-            load_weights(network, path);
+            load_weights(network, 1);
         if (state == 1)
         {
             train(nb_hidden, nb_neurons, learning_rate);
-            load_weights(network, "src/neural_network/saved_data/weights.data");
+            load_weights(network, 1);
         }
 
         int success_rate = test(network, clean_input);
@@ -142,7 +137,7 @@ int training(char path[], double nb_hidden, double nb_neurons,
     }
     else
     {
-        print_usage();
+        err(1, "NN: wrong arguments!");
         return 0;
     }
 }
