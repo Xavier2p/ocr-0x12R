@@ -20,13 +20,10 @@
 
 //----- HELPER FUNCTIONS -----//
 
-char* strtoupper(char* string)
+void strtoupper(char* string)
 {
     for (size_t i = 0; i < strlen(string); i++)
-    {
         string[i] = toupper(string[i]);
-    }
-    return string;
 }
 void print_usage(int error_code)
 {
@@ -73,15 +70,18 @@ void main_image(const char* path)
     int** sudoku_grid = segmentation(&image, &n);
     printf("\nNon-Solved Grid: \n");
     print_grid(sudoku_grid);
+    printf("\n");
+
     // Solve the grid
     solve_sudoku(sudoku_grid);
-    printf("\nSolved Grid: \n");
-    print_grid(sudoku_grid);
+
     for (int i = 0; i < 10; ++i)
         free(sudoku_grid[i]);
+
     free(sudoku_grid);
     free_network(&n);
     free_image(&image);
+
     printf("\n");
     SDL_Quit();
 }
@@ -111,6 +111,7 @@ int main(int argc, char** argv)
         0.1, // learning rate
         2, // mode
     };
+
     static struct option long_options[] = {
         { "mode", required_argument, 0, 'm' },
         { "help", no_argument, 0, 'h' },
@@ -119,68 +120,87 @@ int main(int argc, char** argv)
         { "learning-rate", required_argument, 0, 'a' },
         { 0, 0, 0, 0 }
     };
+
     while (1)
     {
         int option_index = 0;
         c = getopt_long(argc, argv, OPTSTR, long_options, &option_index);
+
         if (c == -1)
             break;
+
         switch (c)
         {
-        case 'i':
-            options.input = optarg;
-            break;
-        case 'm':
-            strcpy(output, optarg);
-            strtoupper(output);
-            int found = 0;
-            for (size_t i = 0; i < 3; ++i)
-            {
-                if (strcmp(optarg, MODE[i]) == 0)
+            case 'i':
+                options.input = optarg;
+                break;
+
+            case 'm':
+                strcpy(output, optarg);
+                strtoupper(output);
+                int found = 0;
+                for (size_t i = 0; i < 3; ++i)
                 {
-                    found = 1;
-                    options.mode = i;
+                    if (strcmp(output, MODE[i]) == 0)
+                    {
+                        found = 1;
+                        options.mode = i;
+                    }
                 }
-            }
-            if (found == 0)
+                if (found == 0)
+                    print_usage(1);
+
+                break;
+
+            case 'h':
+                print_usage(0);
+                break;
+
+            case 'l':
+                options.nb_layers = atoi(optarg);
+                break;
+
+            case 'n':
+                options.nb_neurons = atoi(optarg);
+                break;
+
+            case 'a':
+                options.learning_rate = atof(optarg);
+                break;
+
+            default:
                 print_usage(1);
+                break;
+        }
+    }
+
+    switch (options.mode)
+    {
+        case 0: // IMAGE
+            if (options.input == NULL)
+                errx(1,
+                        "Invalid arguments: IMAGE mode is specified without the -i "
+                        "flag");
+
+            if (access(options.input, F_OK) != 0)
+                errx(EXIT_FAILURE, "Specified file doesn't exist.");
+
+            main_image(options.input);
             break;
-        case 'h':
-            print_usage(0);
+
+        case 1: // TRAIN
+            main_train(options.nb_layers, options.nb_neurons,
+                    options.learning_rate);
             break;
-        case 'l':
-            options.nb_layers = atoi(optarg);
+
+        case 2: // GUI
+            init_gui(argc, argv);
             break;
-        case 'n':
-            options.nb_neurons = atoi(optarg);
-            break;
-        case 'a':
-            options.learning_rate = atof(optarg);
-            break;
+
         default:
             print_usage(1);
             break;
-        }
     }
-    switch (options.mode)
-    {
-    case 0: // IMAGE
-        if (options.input == NULL)
-            errx(1,
-                 "Invalid arguments: IMAGE mode is specified without the -i "
-                 "flag");
-        main_image(options.input);
-        break;
-    case 1: // TRAIN
-        main_train(options.nb_layers, options.nb_neurons,
-                   options.learning_rate);
-        break;
-    case 2: // GUI
-        init_gui(argc, argv);
-        break;
-    default:
-        print_usage(1);
-        break;
-    }
+
     return 0;
 }

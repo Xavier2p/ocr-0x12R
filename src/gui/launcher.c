@@ -53,7 +53,23 @@ char* launcher_dilatation(Image* image)
 
 char* launcher_find_corners(Image* image)
 {
+    Image copy = copy_image(image);
+    dilatation(&copy);
     corners = find_corners(image);
+    find_corners(&copy);
+
+    for (unsigned int i = 0; i < image->height; ++i)
+    {
+        for (unsigned int j = 0; j < image->width; ++j)
+        {
+            if (copy.pixels[i][j].r == 88)
+            {
+                set_all_pixel(image, i, j, 88);
+            }
+        }
+    }
+
+    free_image(&copy);
     return "Corners found";
 }
 

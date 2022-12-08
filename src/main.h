@@ -38,13 +38,13 @@ static const char* ARGS_HELP =
     "(default: 200)\n"
     "   -a n / --learning-rate n: Specify the learning rate (default: 0.1)\n"
     "[ General options ]\n"
-    "   --mode mode: Specify the mode to use. Can be one of IMAGE/TRAIN/GUI "
+    "   --mode MODE: Specify the mode to use. Can be one of IMAGE/TRAIN/GUI "
     "(default: GUI)\n"
     "   -h / --help: Show usage and quit\n";
 
 //----- HELPER FUNCTIONS -----//
 
-char* strtoupper(char* string);
+void strtoupper(char* string);
 
 void print_usage(int error_code);
 

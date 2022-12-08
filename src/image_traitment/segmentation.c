@@ -62,13 +62,67 @@ void clean_image(Image *image)
     {
         for (unsigned int j = 0; j < image->width; j++)
         {
+            // Biggest blob is gray so put it in white
             if (image->pixels[i][j].r == 88)
             {
                 set_all_pixel(image, i, j, 255);
             }
+            // Other blob to earase
             else if (image->pixels[i][j].r == 255)
             {
                 set_all_pixel(image, i, j, 0);
+            }
+        }
+    }
+
+    // Remove the top pixels touching the border
+    for (unsigned int i = 0; i < 2; ++i)
+    {
+        for (unsigned int j = 0; j < image->width; ++j)
+        {
+            if (image->pixels[i][j].r == 255)
+            {
+                Dot start = { .X = j, .Y = i };
+                blob_detection(image, start, 255, 0);
+            }
+        }
+    }
+
+    // Remove the bottom pixels touching the border
+    for (unsigned int i = image->height - 3; i < image->height; ++i)
+    {
+        for (unsigned int j = 0; j < image->width; ++j)
+        {
+            if (image->pixels[i][j].r == 255)
+            {
+                Dot start = { .X = j, .Y = i };
+                blob_detection(image, start, 255, 0);
+            }
+        }
+    }
+
+    // Remove the left pixels touching the border
+    for (unsigned int i = 0; i < image->height; ++i)
+    {
+        for (unsigned int j = 0; j < 2; ++j)
+        {
+            if (image->pixels[i][j].r == 255)
+            {
+                Dot start = { .X = j, .Y = i };
+                blob_detection(image, start, 255, 0);
+            }
+        }
+    }
+
+    // Remove the right pixels touching the border
+    for (unsigned int i = 0; i < image->height; ++i)
+    {
+        for (unsigned int j = image->width - 3; j < image->width; ++j)
+        {
+            if (image->pixels[i][j].r == 255)
+            {
+                Dot start = { .X = j, .Y = i };
+                blob_detection(image, start, 255, 0);
             }
         }
     }
@@ -117,8 +171,6 @@ double *create_square_image(Image *image, int i, int j, int size, int cordi,
     resize_image(&tmp, SIZE_OF_NEURAL_INPUT);
 
     clean_image(&tmp);
-
-    save_image(&tmp, "res_");
 
     double *res =
         calloc(SIZE_OF_NEURAL_INPUT * SIZE_OF_NEURAL_INPUT, sizeof(double));

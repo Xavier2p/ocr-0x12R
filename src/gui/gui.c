@@ -204,7 +204,7 @@ void on_button_apply_edits_clicked()
     gtk_label_set_text(GTK_LABEL(label_one), (const gchar*)"Edited Image");
 
     if (*col > 0 && *col <= 9 && *line > 0 && *line <= 9 && *val <= 9)
-        set_new_number(&image, *col + 1, *line + 1, *val);
+        set_new_number(&image, *col - 1, *line - 1, *val);
 
     gtk_entry_set_text(nb_column, "");
     gtk_entry_set_text(nb_row, "");
@@ -234,6 +234,9 @@ void on_button_Next_clicked()
                            (const gchar*)"Please select an image first");
         return;
     }
+
+    if (pc == STEP_BEFORE - 1)
+        gtk_widget_show(GTK_WIDGET(button_edit));
 
     if (pc < STEPS)
     {
