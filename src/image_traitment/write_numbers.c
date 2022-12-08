@@ -137,6 +137,8 @@ void add_number(Image *src, int x, int y, int number, int color)
     int size = (src->width + src->height) / 2;
 
     resize_draw(src, &number_img, x, y, size, color);
+
+    free_image(&number_img);
 }
 
 Image write_numbers(int **origin, int **solved)
