@@ -122,9 +122,6 @@ Image *get_first_image()
 
 void set_new_number(Image *image, int x, int y, int value)
 {
-    origin[x][y] = value;
-    Image new_grid = write_numbers(origin, origin);
-    free_image(image);
-    *image = new_grid;
+    change_number(image, origin, y, x, value);
 }
 

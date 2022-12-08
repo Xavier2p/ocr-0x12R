@@ -175,11 +175,6 @@ void on_button_apply_settings_clicked()
  * @brief on_button_cancel_edit_clicked => close the dialog
  * @brief on_button_apply_edit_clicked => apply the parameters and train
  */
-void on_fixed_edit_focus()
-{
-    Image *prim_image = get_first_image();
-    change_image_on_gui(prim_image, "primary-image", builder);
-}
 void on_button_edit_clicked()
 {
     nb_column = GTK_ENTRY(gtk_builder_get_object(builder, "entry-col"));
@@ -188,6 +183,8 @@ void on_button_edit_clicked()
     gtk_label_set_text(GTK_LABEL(label_one), (const gchar*)"Editing the image");
     gtk_window_set_transient_for(GTK_WINDOW(edit_dialog), GTK_WINDOW(window));
     gtk_widget_show_all(edit_dialog);
+    Image *prim_image = get_first_image();
+    change_image_on_gui(prim_image, "primary-image", builder);
     gtk_dialog_run(GTK_DIALOG(edit_dialog));
     gtk_widget_hide(edit_dialog);
 }
@@ -200,16 +197,22 @@ void on_button_apply_edits_clicked()
     int* col = calloc(1, sizeof(int));
     int* line = calloc(1, sizeof(int));
     int* val = calloc(1, sizeof(int));
+
     sscanf((char*)gtk_entry_get_text(nb_column), "%d", col);
     sscanf((char*)gtk_entry_get_text(nb_row), "%d", line);
     sscanf((char*)gtk_entry_get_text(new_value), "%d", val);
     gtk_label_set_text(GTK_LABEL(label_one),
-                       (const gchar*)"New image");
-    set_new_number(&image, *col, *line, *val);
+                       (const gchar*)"Edited Image");
+
+    if (*col > 0 && *col <= 9 && *line > 0 && *line <= 9 && *val <= 9)
+        set_new_number(&image, *col + 1, *line + 1, *val);
+
     gtk_entry_set_text(nb_column, "");
     gtk_entry_set_text(nb_row, "");
     gtk_entry_set_text(new_value, "");
+
     change_image_on_gui(&image, "main_image", builder);
+
     free(col);
     free(line);
     free(val);

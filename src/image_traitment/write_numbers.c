@@ -60,9 +60,6 @@ void resize_draw(Image *src, Image *number_img, int x, int y, int dimension,
     {
         for (int j = 0; j < new_width; j++)
         {
-            //i += x;
-            //j += y;
-
             j2 = ((j * j_ratio) >> 16);
             i2 = ((i * i_ratio) >> 16);
 
@@ -76,20 +73,17 @@ void resize_draw(Image *src, Image *number_img, int x, int y, int dimension,
                 src->pixels[x*block+i+gap][y*block+j+gap] = blue;
 
             //color in brown
-            else if (!color &&curP.r < 12)
+            else if (!color && curP.r < 12)
                 src->pixels[x*block+i+gap][y*block+j+gap] = brown;
+
             else if (color == 3 && curP.r < 12)
-                src->pixels[xblock+i+gap][yblock+j+gap] = brown_change;
+                src->pixels[x*block+i+gap][y*block+j+gap] = brown_change;
 
                     //color in white and search the brown color
             else if (color == 2 && curP.r < 12)
                 src->pixels[x*block+i+gap][y*block+j+gap] = white;
-
         }
     }
-
-    //return src;
-
 }
 
 
@@ -187,7 +181,9 @@ Image write_numbers(int **origin, int **solved)
 void change_number(Image *sudoku_img, int **grid, int x, int y, int number)
 {
     add_number(sudoku_img, x, y, grid[x][y], 2); //white
-    add_number(sudoku_img, x, y, number, 3); //brown
+    
+    if (number != 0)
+        add_number(sudoku_img, x, y, number, 3); //brown
 
     grid[x][y] = number;
 }
